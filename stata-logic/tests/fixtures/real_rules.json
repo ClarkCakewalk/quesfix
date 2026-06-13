@@ -1,0 +1,1550 @@
+[
+ {
+  "name": "same_lg_1",
+  "logic": "(a01 != Sex)"
+ },
+ {
+  "name": "same_lg_2",
+  "logic": "((Birth_2 != a02z01) | (Birth_3 != a02z02) & (a02z01 < 991))"
+ },
+ {
+  "name": "same_lg_3",
+  "logic": "(((Birth2_2 != d37b01) | (Birth2_3 != d37b02)) & (inlist(d02a,2) | d15==2) & (d37b01 < 991 & Birth2_2 > 0))"
+ },
+ {
+  "name": "same_lg_4",
+  "logic": "(d02a==2 & inlist(d02b,1) & Marry !=\"從未結婚\" & First==0)"
+ },
+ {
+  "name": "same_lg_5",
+  "logic": "(d02a==2 & inlist(d02b,2) & Marry !=\"已婚\" & First==0)"
+ },
+ {
+  "name": "same_lg_6",
+  "logic": "(d02a==2 & inlist(d02b,4) & Marry !=\"離婚\" & First==0)"
+ },
+ {
+  "name": "same_lg_7",
+  "logic": "(d02a==2 & inlist(d02b,3) & Marry !=\"分居\" & First==0)"
+ },
+ {
+  "name": "same_lg_8",
+  "logic": "(d02a==2 & inlist(d02b,5) & Marry !=\"喪偶\" & First==0)"
+ },
+ {
+  "name": "same_lg_9",
+  "logic": "((inlist(a18,2,3,4,5) & (a19z01==1)) & (a18 < 96 & a19z01 < 96))"
+ },
+ {
+  "name": "same_lg_10",
+  "logic": "(!((a19z02 >=104 & a19z02 <= 107) | (a19z10 >= 104 & a19z10 <=107 )) & (a18==5))"
+ },
+ {
+  "name": "same_lg_11",
+  "logic": "(((leave_time - enter_time < 0.25) & (leave_time - enter_time) < . ) & (a19z01==2) & (a02z01 >= 83 & a02z01 < 94))"
+ },
+ {
+  "name": "same_lg_12",
+  "logic": "(((leave_time - enter_time) >= 0.42 & (leave_time - enter_time) < . ) & (a19z01==2) & (a02z01 >= 83 & a02z01 < 94))"
+ },
+ {
+  "name": "same_lg_13",
+  "logic": "(((leave_time - enter_time < 0.91) & (leave_time - enter_time) < . ) & (a19z01==2) & (a02z01 >= 94 & a02z01 < .))"
+ },
+ {
+  "name": "same_lg_14",
+  "logic": "(((leave_time - enter_time) >= 1.00 & (leave_time - enter_time) < . ) & (a19z01==2) & (a02z01 >= 94 & a02z01 < .))"
+ },
+ {
+  "name": "same_lg_15",
+  "logic": "(((a19z02 > 0 & a19z02 < 89) | (a19z10 > 0 & a19z10 < 89)) & (a18==3))"
+ },
+ {
+  "name": "same_lg_16",
+  "logic": "((( b01 < 14) & (a18==2)) & (b01 < 96))"
+ },
+ {
+  "name": "same_lg_17",
+  "logic": "(((leave_time - enter_time) < 2.91 & (leave_time - enter_time) < . ) & (a81==2 & a19z01==2) & (a02z01 > 0 & a02z01 <= 82))"
+ },
+ {
+  "name": "same_lg_18",
+  "logic": "(((leave_time - enter_time) > 3.00 & (leave_time - enter_time) < . ) & (a18==2 & a19z01==2) & (a02z01 > 0 & a02z01 <= 82))"
+ },
+ {
+  "name": "same_lg_19",
+  "logic": "(((leave_time - enter_time) < 1.41 & (leave_time - enter_time) < . ) & (a18==2 & a19z01==2) & (a02z01 >= 83 & a02z01 <= .))"
+ },
+ {
+  "name": "same_lg_20",
+  "logic": "(((leave_time - enter_time) > 1.5 & (leave_time - enter_time) < . ) & (a81==2 & a19z01==2) & (a02z01 >= 83 & a02z01 < .))"
+ },
+ {
+  "name": "same_lg_21",
+  "logic": "((a19z02 - a02z01 < 18 & (a19z02 > 0 & a19z02 <= 113)) | (a19z10 - a02z01 < 18 & (a19z10 > 0 & a19z10 <=113 )) & (a02z01 > 0 & a02z01 <=113))"
+ },
+ {
+  "name": "same_lg_22",
+  "logic": "((a19z04 < a19z02 & a19z02 <=113) | (a19z08 < a19z06 & a19z06 <=113) | (a19z12 < a19z10 & a19z10 <=113))"
+ },
+ {
+  "name": "same_lg_23",
+  "logic": "(((a19z04 + (a19z05/12) < a19z02 + (a19z03/12)) & (a19z02 <=113 & a19z04 <=113) & (a19z03 <= 12 & a19z05 <= 12)) | ((a19z08 + (a19z09/12) < a19z06 + (a19z07/12)) & (a19z06 <=113 & a19z08 <=113) & (a19z07 <= 12 & a19z09 <= 12)) | ((a19z12 + (a19z13/12) < a19z10 + (a19z11/12)) & (a19z10 <=113 & a19z12 <=113) & (a19z11 <= 12 & a19z13 <= 12)))"
+ },
+ {
+  "name": "same_lg_24",
+  "logic": "((a19z06 + (a19z07/12) <= a19z02+ (a19z03/12)) & (a19z06 < 991 & a19z07 < 13) & (a19z02 < 991 & a19z03 < 13))"
+ },
+ {
+  "name": "same_lg_24_1",
+  "logic": "(((move_time < graduate_time & move_time != . & graduate_time !=.) | (move_time < enter1_time2 & move_time !=. & enter1_time2 != .) | ((move_time < enter2_time2 & move_time != . & enter2_time2 != .) | (move_time < enter2_time4 & move_time != . & enter2_time4 != .))) & f04==10)"
+ },
+ {
+  "name": "same_lg_25",
+  "logic": "(c04z06r1==1 & (c04z01r1+c04z02r1+c04z03r1+c04z05r1+c04z94r1+c04z95r1) !=0)"
+ },
+ {
+  "name": "same_lg_26",
+  "logic": "(c20z06r1==1 & (c20z01r1+c20z02r1+c20z03r1+c20z05r1+c20z07r1+c20z94r1) !=0)"
+ },
+ {
+  "name": "same_lg_27",
+  "logic": "(((c04z06r1==1) & (k04z02r1==0 & k04z03r1==0) & Lastm_y <= 112) | ((c20z06r1==1) & (k04z02r1==0 & k04z03r1==0) & Lastm_y <= 112))"
+ },
+ {
+  "name": "same_lg_28",
+  "logic": "((start_time < last_time | (Lastm_y > c21z01r1 & c21z01r1 < 996) | (Lastm_y > c22z01r1 & c22z01r1 < 996)) & inlist(c02r1,1,2,3) & (inlist(Jobcheckr1,3) | (c04z01r1==1 | c04z06r1==1 | c04z94r1==1 | c20z01r1==1 | c20z06r1==1 | c20z07r1==1 | c20z94r1==1)) & !(First==1 & d01 != 96))"
+ },
+ {
+  "name": "same_lg_29",
+  "logic": "((start_time < last_time | (Lastm_y > c21z01r2 & c21z01r2 < 996) | (Lastm_y > c22z01r2 & c22z01r2 < 996)) & inlist(c02r2,1,2,3) & ((d02a==2 & d15 !=1) | d15==2) & (inlist(Jobcheckr2,3) | (c04z01r2==1 | c04z06r2==1 | c04z94r2==1 | c20z01r2==1 | c20z06r2==1 | c20z07r2==1 | c20z94r2==1)))"
+ },
+ {
+  "name": "same_lg_30",
+  "logic": "((inlist(c02r1,1,3) & c05r1==8) | (c02r1==2 & !inlist(c05r1,8) & c05r1 != 96))"
+ },
+ {
+  "name": "same_lg_31",
+  "logic": "((inlist(c02r2,1,3) & c05r2==8) | (c02r2==2 & !inlist(c05r2,8) & c05r2 != 96))"
+ },
+ {
+  "name": "same_lg_32",
+  "logic": "(c02r1==2 & (!inlist(c05r1,8) & c05r1 != 96))"
+ },
+ {
+  "name": "same_lg_33",
+  "logic": "(c02r2==2 & (!inlist(c05r2,8) & c05r2 != 96))"
+ },
+ {
+  "name": "same_lg_34",
+  "logic": "((c05r1==8 & ((c15z01r1 *10 + c15z02r1) > 0)) & (c15z01r1 <= 99 & c15z02r1 <= 99) & c16r1==1)"
+ },
+ {
+  "name": "same_lg_35",
+  "logic": "(c05r1==8 & (c18r1 > 1 & c18r1 <=24))"
+ },
+ {
+  "name": "same_lg_36",
+  "logic": "((c05r2==8 & ((c15z01r2 *10 + c15z02r2) > 0)) & (c15z01r2 <= 99 & c15z02r2 <= 99) & c16r2==1)"
+ },
+ {
+  "name": "same_lg_37",
+  "logic": "(c05r2==8 & (c18r2 > 1 & c18r2 <=24))"
+ },
+ {
+  "name": "same_lg_38",
+  "logic": "((c05r1==5 & ((c15z01r1 *10 + c15z02r1) <= 0)) & (c15z01r1 < 91 & c15z02r1 < 10) & c16r1==1)"
+ },
+ {
+  "name": "same_lg_39",
+  "logic": "((c05r2==5 & ((c15z01r2 *10 + c15z02r2) <= 0)) & (c15z01r2 < 91 & c15z02r2 < 10) & c16r2==1)"
+ },
+ {
+  "name": "same_lg_40",
+  "logic": "(c05r1==5 & c18r1==1)"
+ },
+ {
+  "name": "same_lg_41",
+  "logic": "(c05r2==5 & c18r2==1)"
+ },
+ {
+  "name": "same_lg_42",
+  "logic": "(inlist(c02r1,1,3) & ((c15z01r1*10 + c15z02r1) <= 0 & (c15z01r1 < 91 & c15z02r1 < 10)) & c16r1==1)"
+ },
+ {
+  "name": "same_lg_43",
+  "logic": "(inlist(c02r1,1,3) & c18r1==1)"
+ },
+ {
+  "name": "same_lg_44",
+  "logic": "(c02r1==2 & ((c15z01r1 *10 + c15z02r1) > 0 & (c15z01r1 <= 95 & c15z02r1 <= 95)))"
+ },
+ {
+  "name": "same_lg_45",
+  "logic": "(c02r1==2 & inrange(c18r1,2,24))"
+ },
+ {
+  "name": "same_lg_46",
+  "logic": "(inlist(c02r2,1,3) & ((c15z01r2*10 + c15z02r2) <= 0 & (c15z01r2 < 91 & c15z02r2 < 10)) & c16r2==1)"
+ },
+ {
+  "name": "same_lg_47",
+  "logic": "(c02r2==1 & c18r2==1)"
+ },
+ {
+  "name": "same_lg_48",
+  "logic": "(c02r2==2 & ((c15z01r2 *10 + c15z02r2) > 0 & (c15z01r2 <= 95 & c15z02r2 <= 95)))"
+ },
+ {
+  "name": "same_lg_49",
+  "logic": "(c02r2==2 & inrange(c18r2,2,24))"
+ },
+ {
+  "name": "same_lg_50",
+  "logic": "(((c15z01r1*10 + c15z02r1) > 1000 | (c15z01r1*10 + c15z02r1) < 24 ) & (c15z01r1 < 95 & c15z02r1 < 96) & c16r1==1 & (c19br1 >= 40 & c19br1 < 991))"
+ },
+ {
+  "name": "same_lg_51",
+  "logic": "((c32 > c19br1) & (c32 > 0 & c32 < 996) & (c19br1 > 0 & c19br1 < 996))"
+ },
+ {
+  "name": "same_lg_52",
+  "logic": "((c32 > 30) & (c32 > 0 & c32 < 996))"
+ },
+ {
+  "name": "same_lg_53",
+  "logic": "(((c15z01r2*10 + c15z02r2) > 1000 | (c15z01r2*10 + c15z02r2) < 24 ) & (c15z01r2 < 95 & c15z02r2 < 96) & c16r2==1 & (c19br2 >= 40 & c19br2 < 991))"
+ },
+ {
+  "name": "same_lg_54",
+  "logic": "((c19br1 >= 71 & c19br1 < 996 & inlist(c05r1,3,4,5,6,7,94)) | (c19br1 >= 71 & c19br1 < 996 & inlist(c05r1,96)))"
+ },
+ {
+  "name": "same_lg_55",
+  "logic": "((c19br1 < 20 & inlist(c05r1,3,4,5,6,7,94)) | (c19br1 < 20 & inlist(c05r1,96)))"
+ },
+ {
+  "name": "same_lg_56",
+  "logic": "((c19ar1==6 & c19d==1) | (c19d==3 & inlist(c19ar1,1,2,3,4,5)))"
+ },
+ {
+  "name": "same_lg_57",
+  "logic": "((c19br2 >= 71 & c19br2 < 996 & inlist(c05r2,3,4,5,6,7,94)) | (c19br2 >= 71 & c19br2 < 996 & inlist(c05r2,96)))"
+ },
+ {
+  "name": "same_lg_58",
+  "logic": "((c19br2 < 20 & inlist(c05r2,3,4,5,6,7,94)) | (c19br2 < 20 & inlist(c05r2,96)))"
+ },
+ {
+  "name": "same_lg_59",
+  "logic": "(((c21z01r1 - a02z01) < 15) & (c21z01r1 < 991 & a02z01 < 991))"
+ },
+ {
+  "name": "same_lg_60",
+  "logic": "(((c22z01r1 - a02z01) < 15) & (c22z01r1 < 991 & a02z01 < 991))"
+ },
+ {
+  "name": "same_lg_61",
+  "logic": "(((c21z01r1 - a02z01) > 70) & (c21z01r1 < 991 & a02z01 < 991))"
+ },
+ {
+  "name": "same_lg_62",
+  "logic": "(((c22z01r1 - a02z01) > 70) & (c22z01r1 < 991 & a02z01 < 991))"
+ },
+ {
+  "name": "same_lg_63",
+  "logic": "(((start_work - birth_spouse) < 15) & (start_work !=. & birth_spouse !=.))"
+ },
+ {
+  "name": "same_lg_64",
+  "logic": "(((start_work - birth_spouse) < 15) & (start_work !=. & birth_spouse !=.))"
+ },
+ {
+  "name": "same_lg_65",
+  "logic": "(((start_work - birth_spouse) > 70) & (start_work != . & birth_spouse != .))"
+ },
+ {
+  "name": "same_lg_66",
+  "logic": "(((start_work - birth_spouse) > 70) & (start_work !=.))"
+ },
+ {
+  "name": "same_lg_67",
+  "logic": "(start_time < leave_time & (leave_time > 0 & leave_time < .))"
+ },
+ {
+  "name": "same_lg_68",
+  "logic": "((113 - a02z01) < 50 & (inlist(c25,7) | inlist(c34r1,8)) & (a02z01 <= 113))"
+ },
+ {
+  "name": "same_lg_69",
+  "logic": "((c13z02r1 != x05) & (c14z01r1==1) & (c13z02r1 < 9996))"
+ },
+ {
+  "name": "same_lg_70",
+  "logic": "(((c31z01 * 10 + c31z02) > (c15z01r1 *10 + c15z02r1)) & (c31z01 < 91 & c31z02 < 91 & c15z01r1 < 91 & c15z02r1 < 91) & c16r1==1)"
+ },
+ {
+  "name": "same_lg_71",
+  "logic": "(inlist(c13z02r1,2,3,99) & (x05 >=100 & x05 <=984))"
+ },
+ {
+  "name": "same_lg_72",
+  "logic": "(inlist(c13z02r2,2,3,99) & (f16z03==1 | d13==1 | d45==1) & (x05 >=100 & x05 <=984))"
+ },
+ {
+  "name": "same_lg_73",
+  "logic": "(d02a==1 & d02b==1)"
+ },
+ {
+  "name": "same_lg_74",
+  "logic": "(((cohabitate_time < meet_time & (cohabitate_time != . & meet_time != .)) | (d16z01 < d11z01 & d11z01 <= 113)) | ((113 - d17z01) < d11z01 & (d17z01 > 0 & d17z01 < 96 & d11z01 > 0 & d11z01 < 996)))"
+ },
+ {
+  "name": "same_lg_75",
+  "logic": "(((d16z01 - a02z01 <= 15 & d16z01 > 0 & d16z01 < 991) | ((113 - d17z01 - a02z01 <= 15) & d17z01 < 96)) & a02z01 > 0 & a02z01 <= 113)"
+ },
+ {
+  "name": "same_lg_76",
+  "logic": "(abs(age2 - age) >= 25 & (age < . & age2 < . ))"
+ },
+ {
+  "name": "same_lg_77",
+  "logic": "(((proposal_time < meet_time) & (proposal_time != . & meet_time != .)) | (d11z01 > d20z01 & d11z01 < 996 & d20z01 < 996))"
+ },
+ {
+  "name": "same_lg_78",
+  "logic": "((d20z01 - a02z01 <= 15) & (d20z01 > 0 & d20z01 < 991) & (a02z01 > 0 & a02z01 <= 113))"
+ },
+ {
+  "name": "same_lg_79",
+  "logic": "((d40z03 > age_spouse) & (d40z03 < 96))"
+ },
+ {
+  "name": "same_lg_80",
+  "logic": "((d41 < spouse_byr) & (d41 < 995))"
+ },
+ {
+  "name": "same_lg_81",
+  "logic": "(d44==1 & (c13z02r1 != c13z02r2 | c13z01r1 != c13z01r2) & (c13z02r1 < 9996 & c13z02r2 < 9996))"
+ },
+ {
+  "name": "same_lg_82",
+  "logic": "((g02z02 + g02z03 != g02z01) & (g02z01 < 95 & g02z02 < 95 & g02z03 < 95))"
+ },
+ {
+  "name": "same_lg_83",
+  "logic": "(g02z01==0 & cores_ch != 0)"
+ },
+ {
+  "name": "same_lg_84",
+  "logic": "((cores_marbro > 0 & f16z10==0) & j01z05 < 5)"
+ },
+ {
+  "name": "same_lg_85",
+  "logic": "((cores_marsis > 0 & f16z11==0) & j01z05 < 5)"
+ },
+ {
+  "name": "same_lg_86",
+  "logic": "((cores_sinbro > 0 & f16z12==0) & j01z05 < 5)"
+ },
+ {
+  "name": "same_lg_87",
+  "logic": "((cores_sinsis > 0 & f16z13==0) & j01z05 < 5)"
+ },
+ {
+  "name": "same_lg_88",
+  "logic": "((h07af1 < Lastm_y & F1==1 & h07af1 <=113) | (h07bf1 > 0 & h07bf1 < 20))"
+ },
+ {
+  "name": "same_lg_89",
+  "logic": "((h07am1 < Lastm_y & M1==1 & h07am1 <=113) | (h07bm1 > 0 & h07bm1 < 20))"
+ },
+ {
+  "name": "same_lg_90",
+  "logic": "((h07af2 < Lastm_y & h07af2 <=113 & ((d02a==2 & d15==96) | d15==2)) | (h07bf2 > 0 & h07bf2 <= 30))"
+ },
+ {
+  "name": "same_lg_91",
+  "logic": "((h07am2 < Lastm_y & h07am2 <=113 & ((d02a==2 & d15==96) | d15==2)) | (h07bm2 > 0 & h07bm2 <= 30))"
+ },
+ {
+  "name": "same_lg_92",
+  "logic": "(h13f1==5 & h14f1==6 & (h16f1 > 0 & h16f1 <96))"
+ },
+ {
+  "name": "same_lg_93",
+  "logic": "(h13m1==5 & h14m1==6 & (h16m1 > 0 & h16m1 <96))"
+ },
+ {
+  "name": "same_lg_94",
+  "logic": "((h13f1==5 & h14f1==6) & (inlist(h17f1,1,2) | inlist(h18f1,1,2)))"
+ },
+ {
+  "name": "same_lg_95",
+  "logic": "((h13f2==5 & h14f2==6) & (inlist(h17f2,1,2) | inlist(h18f2,1,2)))"
+ },
+ {
+  "name": "same_lg_96",
+  "logic": "((h13m1==5 & h14m1==6) & (inlist(h17m1,1,2) | inlist(h18m1,1,2)))"
+ },
+ {
+  "name": "same_lg_97",
+  "logic": "((h13m2==5 & h14m2==6) & (inlist(h17m2,1,2) | inlist(h18m2,1,2)))"
+ },
+ {
+  "name": "same_lg_98",
+  "logic": "((d43z01 + d43z02 + d43z03 +d43z04) != d43z05 & (d43z01 >= 0 & d43z01 < 96))"
+ },
+ {
+  "name": "same_lg_99",
+  "logic": "( d43z05==0 & h24z02==1)"
+ },
+ {
+  "name": "same_lg_100",
+  "logic": "( d43z05==0 & h25z02==1)"
+ },
+ {
+  "name": "same_lg_101",
+  "logic": "(inlist(d02b,1,4,5) & (d13==2) & h24z02==1)"
+ },
+ {
+  "name": "same_lg_102",
+  "logic": "(inlist(d02b,1,4,5) & (d13==2) & h25z02==1)"
+ },
+ {
+  "name": "same_lg_103",
+  "logic": "((d10z01*12 + d10z02) ==0 & (d10z01 < 91 & d10z02 < 13))"
+ },
+ {
+  "name": "same_lg_104",
+  "logic": "((113 - (a02z01 + a02z02/12) - (d17z01 + (d17z02/12)) <=15) & (d17z01 < 96 & d17z02 < 13 & a02z01 < 991 & a02z02 < 13))"
+ },
+ {
+  "name": "same_lg_105",
+  "logic": "(d15==2 & (last_view < coh_start) & coh_start != .)"
+ },
+ {
+  "name": "same_lg_106",
+  "logic": "(((proposal_time < cohabitate_time) & (proposal_time != . & cohabitate_time != .)) | (d16z01 > d20z01 & d16z01 < 991) | ((113 - d17z01) > d20z01 & (d17z01 < 96 & d20z01 < 996)))"
+ },
+ {
+  "name": "same_lg_107",
+  "logic": "((last_view + coh_period > until_now & last_view < . & coh_period < .) | (d17z01 + Lastm_y > 113 & d17z01 < 91))"
+ },
+ {
+  "name": "same_lg_108",
+  "logic": "((d17z01*12 + d17z02) ==0 & (d17z01 < 91 & d17z02 < 13))"
+ },
+ {
+  "name": "same_lg_109",
+  "logic": "((a27 / ((a26 / 100)^2)) < 10 & (a26 < 991 & a27 < 991))"
+ },
+ {
+  "name": "same_lg_110",
+  "logic": "((a27 / ((a26 / 100)^2)) > 60 & (a26 < 991 & a27 < 991))"
+ },
+ {
+  "name": "same_lg_111",
+  "logic": "(d69a==1 & a27==995)"
+ },
+ {
+  "name": "same_lg_112",
+  "logic": "(inlist(f01,1,94) & (f02==0))"
+ },
+ {
+  "name": "same_lg_113",
+  "logic": "(inlist(f01,1,94) & (f02 >= 10 & f02 < 96))"
+ },
+ {
+  "name": "same_lg_114",
+  "logic": "((f03z01 < Lastm_y | (f03z01<= Lastm_y & f03z02 < Lastm_m)) & (f01==1) & (f03z01 > 0 & f03z01 <= 113 & f03z02 > 0 & f03z02 < 13))"
+ },
+ {
+  "name": "same_lg_115",
+  "logic": "((livetime_y > x03z01 & livetime_y < . ) | (livetime_y >= x03z01 & livetime_m > x03z02 & (livetime_y < . & livetime_m < . )) & !(First==1 & d01 !=96) & f01==1)"
+ },
+ {
+  "name": "same_lg_116",
+  "logic": "(f08z01==0 | f09z01==0)"
+ },
+ {
+  "name": "same_lg_117",
+  "logic": "((f08z01 + f08z02==0) & (f08z01 < 991 & f08z02 < 991))"
+ },
+ {
+  "name": "same_lg_118",
+  "logic": "((f09z01 + f09z02 + f09z03==0) & (f09z01 < 91 & f09z02 < 91 & f09z03 < 91))"
+ },
+ {
+  "name": "same_lg_119",
+  "logic": "(((f16z03==1 | d13==1) & inlist(d45,2,94,97,98)) | (f16z03 !=1 & inlist(d45,1)) | (inlist(d13,2,97,98) & inlist(d45,1)))"
+ },
+ {
+  "name": "same_lg_120",
+  "logic": "(f04==3 & (inlist(c04z06r1,1) | inlist(c20z06r1,1)))"
+ },
+ {
+  "name": "same_lg_121",
+  "logic": "(f04==13 & (inlist(d02a,2) | (d15==2)))"
+ },
+ {
+  "name": "same_lg_122",
+  "logic": "((d13==2) & f16z03==1)"
+ },
+ {
+  "name": "same_lg_123",
+  "logic": "(inlist(h06f1,6,96) & inlist(h06m1,6,96) & f05==6)"
+ },
+ {
+  "name": "same_lg_124",
+  "logic": "(inlist(h06f2,6,96) & inlist(h06m2,6,96) & f05==7)"
+ },
+ {
+  "name": "same_lg_125",
+  "logic": "(inlist(c02r1,3) & ((c15z01r1*10) + c15z02r1)==0 & (c15z01r1 < 91 & c15z02r1 < 10))"
+ },
+ {
+  "name": "same_lg_126",
+  "logic": "(inlist(c02r1,3) & c19br1<= 1)"
+ },
+ {
+  "name": "same_lg_127",
+  "logic": "(inlist(c02r2,3) & ((c15z01r2*10) + c15z02r2)==0 & (c15z01r2 < 91 & c15z02r2 < 10))"
+ },
+ {
+  "name": "same_lg_128",
+  "logic": "(inlist(c02r2,3) & c19br2 <= 1)"
+ },
+ {
+  "name": "same_lg_129",
+  "logic": "((inlist(c02r1,1,3) & inlist(c05r1,8)) | (c02r1==2 & inlist(c05r1,3,4,5,6,7)))"
+ },
+ {
+  "name": "same_lg_130",
+  "logic": "((inlist(c02r2,1,3) & inlist(c05r2,8)) | (c02r2==2 & inlist(c05r2,3,4,5,6,7)))"
+ },
+ {
+  "name": "same_lg_131",
+  "logic": "((c02r1==2 & !inlist(c05r1,8,96,97,98)) | (inlist(c02r1,1,3) & c05r1==8))"
+ },
+ {
+  "name": "same_lg_132",
+  "logic": "((c02r2==2 & !inlist(c05r2,8,96,97,98)) | (inlist(c02r2,1,3) & c05r2==8))"
+ },
+ {
+  "name": "same_lg_133",
+  "logic": "(inlist(c30,8) & ((c31z01*10+c31z02) > 0) & (c31z01 < 91 & c31z02 < 10))"
+ },
+ {
+  "name": "same_lg_134",
+  "logic": "(inlist(c30,5) & ((c31z01*10+c31z02) == 0) & (c31z01 < 91 & c31z02 < 10))"
+ },
+ {
+  "name": "same_lg_135",
+  "logic": "((c15z01r1==95 | c15z02r1==95) & c18r1 != 24)"
+ },
+ {
+  "name": "same_lg_136",
+  "logic": "((c15z01r2==95 | c15z02r2==95) & c18r2 != 24)"
+ },
+ {
+  "name": "same_lg_137",
+  "logic": "((c26z01==95 | c26z02==95) & c27 != 24)"
+ },
+ {
+  "name": "same_lg_138",
+  "logic": "(inlist(c30,1,2,3,4,5,6,7,9) & ((c31z01*10+c31z02) == 0) & (c31z01 < 991 & c31z02 < 10))"
+ },
+ {
+  "name": "same_lg_139",
+  "logic": "(inlist(c29,1) & (c30==8))"
+ },
+ {
+  "name": "same_lg_140",
+  "logic": "(inlist(Jobcheckr1,1) & c04z95r1==1)"
+ },
+ {
+  "name": "same_lg_141",
+  "logic": "(inlist(Jobcheckr1,2) & c20z07r1==1)"
+ },
+ {
+  "name": "same_lg_142",
+  "logic": "((Jobcheckr1==3 & c20z07r1==0) & (c20z01r1==0 & c20z94r1==0))"
+ },
+ {
+  "name": "same_lg_142_1",
+  "logic": "((Jobcheckr1==3 & inlist(c02r1,1,2,3)) & (c20z07r1!=1 & !inlist(c20z07r1,97,98)) & (First==1 & d01 != 96))"
+ },
+ {
+  "name": "same_lg_142_2",
+  "logic": "(inlist(c02r2,1,2,3) & (c20z07r2 !=1 & !inlist(c20z07r2,96,97,98)) & ((First==1 & d01 != 96) | (d02a==1 | d15==1)))"
+ },
+ {
+  "name": "same_lg_143",
+  "logic": "(inlist(Jobcheckr2,1) & (d02a==2 | d15==2) & (c04z95r2==1))"
+ },
+ {
+  "name": "same_lg_144",
+  "logic": "(inlist(Jobcheckr2,2) & c20z07r2==1)"
+ },
+ {
+  "name": "same_lg_145",
+  "logic": "((Jobcheckr2==3 & c20z07r2==0) & (c20z01r2==0 & c20z94r2==0))"
+ },
+ {
+  "name": "same_lg_146",
+  "logic": "((k26z01==1 & (c23z01> 0 & c23z01 < 112)) | (k26z01==1 & c24==1 & (c23z01>110 & c23z01<=112)))"
+ },
+ {
+  "name": "same_lg_147",
+  "logic": "(((d02a==2 & d02b==2) | d15==2) & ((d37b01 != Birth2_y & d37b01 < 96) | (d37b02 != Birth2_m & d37b02 < 13)) & First==0)"
+ },
+ {
+  "name": "same_lg_148",
+  "logic": "((f16z03==1 | inlist(d45,1)) & (d02b==3 | d01==3))"
+ },
+ {
+  "name": "same_lg_149",
+  "logic": "((d24==8 & d25z01==1) | (inlist(d24,1,2,3,4,5,6,7,9,94) & d25z01==2))"
+ },
+ {
+  "name": "same_lg_150",
+  "logic": "((d29==8 & d30z01==1) | (inlist(d29,1,2,3,4,5,6,7,9,94) & d30z01==2))"
+ },
+ {
+  "name": "same_lg_151",
+  "logic": "(d24==8 & (d25z01==1 | ((d25z02*10 + d25z03) >= 0 & (d25z02 < 91 & d25z03 < 9))))"
+ },
+ {
+  "name": "same_lg_152",
+  "logic": "(d29==8 & (d30z01==1 | ((d30z02*10 + d30z03) >= 0 & (d30z02 < 91 & d30z03 < 10))))"
+ },
+ {
+  "name": "same_lg_153",
+  "logic": "(d24==5 & (d25z01==2 | ((d25z02*10 + d25z03) == 0 & (d25z02 < 91 & d25z03 < 10))))"
+ },
+ {
+  "name": "same_lg_154",
+  "logic": "(d29==5 & (d30z01==2 | ((d30z02*10 + d30z03) ==0 & (d30z02 < 91 & d30z03 < 10))))"
+ },
+ {
+  "name": "same_lg_155",
+  "logic": "(c05r1==1 & inrange(c12r1,2,9))"
+ },
+ {
+  "name": "same_lg_156",
+  "logic": "(c05r2==1 & inrange(c12r2,2,9))"
+ },
+ {
+  "name": "same_lg_157",
+  "logic": "(c14z01r1==1 & inlist(c05r1,3,4,6,7) & (c19cr1/c19br1) < 0.5 & (c19cr1 < 996 & c19br1 < 996))"
+ },
+ {
+  "name": "same_lg_158",
+  "logic": "(c14z01r2==1 & inlist(c05r2,3,4,6,7) & (c19cr2/c19br2) < 0.5 & (c19cr2 < 996 & c19br2 < 996))"
+ },
+ {
+  "name": "same_lg_159",
+  "logic": "(inlist(c05r1,1,2,5,8,9) & (c14z01r1==1) & (f14==95))"
+ },
+ {
+  "name": "same_lg_160",
+  "logic": "(inlist(c05r2,1,2,5,8,9) & (f16z03==1 | d13==1 | d45==1) & (c14z01r2==1) & (f14==95))"
+ },
+ {
+  "name": "same_lg_161",
+  "logic": "(c14z01r1==1 & (c13z02r1 != x05) & (c13z02r1 < 9996))"
+ },
+ {
+  "name": "same_lg_162",
+  "logic": "(c14z01r2==1 & (d13==1 | d45==1 | f16z03==1) & (c13z02r2 != x05) & (c13z02r2 < 9996 & x05 != . ))"
+ },
+ {
+  "name": "same_lg_163",
+  "logic": "(c14z01r2==1 & (d13==2 | d45==2 | f16z03==0) & (c13z02r2 != d47z02) & (c13z02r2 < 9996 & d47z02 < 9996))"
+ },
+ {
+  "name": "same_lg_164",
+  "logic": "((c14z02r1 > 180 & c14z02r1 < 991) | ((c14z02r1 < 5) & (x05 != c13z02r1 & c13z02r1 != 9996)))"
+ },
+ {
+  "name": "same_lg_165",
+  "logic": "((c14z02r2 > 180 & c14z02r2 < 991) | ((c14z02r2 < 5) & ((f16z03==1 & x05 != c13z02r2 & c13z02r2 != 9996) | (f16z03==0 & d47z02 != c13z02r2 & (d47z02 < 9996 & c13z02r2 < 9996)))))"
+ },
+ {
+  "name": "same_lg_166",
+  "logic": "((c19cr1 > c19br1) & c19br1 < 991 & c19cr1 < 991)"
+ },
+ {
+  "name": "same_lg_167",
+  "logic": "((c19cr2 > c19br2) & c19br2 < 991 & c19cr2 < 991)"
+ },
+ {
+  "name": "same_lg_168",
+  "logic": "(inlist(c05r1, 3, 4, 6, 7) & c37r1==2)"
+ },
+ {
+  "name": "same_lg_169",
+  "logic": "(inlist(c05r2, 3, 4, 6, 7) & c37r2==2)"
+ },
+ {
+  "name": "same_lg_170",
+  "logic": "(inlist(c37r1,3,4) & inlist(c05r1, 1,2,3,4,5,8,9))"
+ },
+ {
+  "name": "same_lg_171",
+  "logic": "(inlist(c37r2,3,4) & inlist(c05r2, 1,2,3,4,5,8,9))"
+ },
+ {
+  "name": "same_lg_172",
+  "logic": "(c02r1==4 & inlist(c37r1,1,2,3,4,5))"
+ },
+ {
+  "name": "same_lg_172_1",
+  "logic": "((a19z04==995 | a19z08==995 | a19z12==995) & inlist(a18,1) & !inlist(c37r1,5))"
+ },
+ {
+  "name": "same_lg_172_2",
+  "logic": "((a19z04==995 | a19z08==995 | a19z12==995) & inlist(a18,2,3,5) & !inlist(c37r1,1,5) & (a02z01 > 88 & a02z01 < 991))"
+ },
+ {
+  "name": "same_lg_172_3",
+  "logic": "((a19z04==995 | a19z08==995 | a19z12==995) & inlist(a18,2,3,5) & !inlist(c37r1,1,5,6) & (a02z01> 0 & a02z01 <= 88))"
+ },
+ {
+  "name": "same_lg_173",
+  "logic": "(c02r2==4 & inlist(c37r2,1,2,3,4,5))"
+ },
+ {
+  "name": "same_lg_174",
+  "logic": "(c24==2 & !inlist(c25,3,4,5,6,96,97,98) | (c24==1 & inlist(c25,3,4,5,6,96)))"
+ },
+ {
+  "name": "same_lg_175",
+  "logic": "((c25==7 | c34r1==8) & ((113 - a02z01) < 50 & (a02z01 <=113)))"
+ },
+ {
+  "name": "same_lg_176",
+  "logic": "((inlist(h24z01,1,2) & h25z01==3) | (h24z01==3 & h25z01 !=3) | (h25z01==96 & !inlist(h24z01,3,96)))"
+ },
+ {
+  "name": "same_lg_177",
+  "logic": "((inlist(h24z02,1,2) & h25z02==3) | (h24z02==3 & h25z02 !=3) | (h25z02==96 & !inlist(h24z02,3,96)))"
+ },
+ {
+  "name": "same_lg_178",
+  "logic": "(h24z04==3 | h25z04==3)"
+ },
+ {
+  "name": "same_lg_179",
+  "logic": "(f04==1 & ((d02a==1 & inlist(d02b,3,4,5)) | d02a==2 | inlist(d01,3,4,5)))"
+ },
+ {
+  "name": "same_lg_180",
+  "logic": "(f04==13 & ((inlist(d02a,2) & d02b !=1) | (d15==2) | inlist(d01,2)))"
+ },
+ {
+  "name": "same_lg_181",
+  "logic": "(f06z01==1 & (f06z02*10 + f06z03) <=0)"
+ },
+ {
+  "name": "same_lg_182",
+  "logic": "(inlist(f11,1,5,6) & (f12 > 1 & f12 <= 95))"
+ },
+ {
+  "name": "same_lg_183",
+  "logic": "(inlist(f11,7) & (f12 > 5 & f12 < 94))"
+ },
+ {
+  "name": "same_lg_184",
+  "logic": "((j01z01 + j01z02 + j01z03 +j01z04) != j01z05 & (j01z05 > 0 & j01z05 < 96))"
+ },
+ {
+  "name": "same_lg_185",
+  "logic": "((inlist(h24z01,95) & (j01z05 > 0 & j01z05 < 96)) | (j01z05==0 & h24z01==1))"
+ },
+ {
+  "name": "same_lg_186",
+  "logic": "((inlist(h25z01,95,96) & (j01z05 > 0 & j01z05 < 96)) | (j01z05==0 & h25z01==1))"
+ },
+ {
+  "name": "same_lg_186_1",
+  "logic": "(check_sum > 0)"
+ },
+ {
+  "name": "same_lg_187",
+  "logic": "anymatch(sibs_e?, 1)"
+ },
+ {
+  "name": "same_lg_188",
+  "logic": "(k01 > 60 & k01 < 96)"
+ },
+ {
+  "name": "same_lg_189",
+  "logic": "(k02 > 60 & k02 < 96)"
+ },
+ {
+  "name": "same_lg_190",
+  "logic": "((((k29a01*10 + k29a02) >= 1500 | (k29a01*10 + k29a02) < 50 ) & (k29a01 < 9991 & k29a02 < 10)) | (k29a01 > 150 & k29a01 < 9995))"
+ },
+ {
+  "name": "same_lg_191",
+  "logic": "((k3031_total > k29_sum) & (k3031_total != . & k29_sum != .))"
+ },
+ {
+  "name": "same_lg_192",
+  "logic": "((c02r1==2 & (((k04z02r1 *10 + k04z03r1) > 0) & ((k04z02r1 *10 + k04z03r1) < . ))) & (c04z06r1==1 | c20z06r1==1))"
+ },
+ {
+  "name": "same_lg_193",
+  "logic": "((c02r1==2 & (((k04z02r1 *10 + k04z03r1) > 0) & ((k04z02r1 *10 + k04z03r1) < . ))) & (c21z01r1 <= 112 | c22z01r1 <=112))"
+ },
+ {
+  "name": "same_lg_194",
+  "logic": "((c02r2==2 & ((c21z01r2 < Lastm_y | (c21z01r2 <= Lastm_y & c21z02r2 < Lastm_m)) | (c22z01r2 < Lastm_y | (c22z01r2 <= Lastm_y & c22z02r2 < Lastm_m)))) & ((k04z02r2 *10 + k04z03r2) > 0 & (k04z02r2 < 9991 & k04z03r2 < 9991)) & First2==1)"
+ },
+ {
+  "name": "same_lg_195",
+  "logic": "((c02r2==2 & ((k04z02r2 *10 + k04z03r2 > 0) & ((k04z02r2 *10 + k04z03r2) < . ) & (k04z02r2 < 9996 & k04z03r2 < 9996))) & (c04z06r2==1 | c20z06r2==1 | (c21z01r2 < Lastm_y | (c21z01r2 <= Lastm_y & c21z02r2 < Lastm_m)) | (c22z01r2 < Lastm_y | (c22z01r2 <= Lastm_y & c22z02r2 < Lastm_m))) & First2==0)"
+ },
+ {
+  "name": "same_lg_196",
+  "logic": "(((new_mar < last_time & last_time != .) | (d03z01 < Lastm_y & d03z01 > 0 & d03z01 <=113 )) & inlist(d02a,1))"
+ },
+ {
+  "name": "same_lg_197",
+  "logic": "((last_time > last_time_leave) | (c23z01 < Lastm_y & (c23z01 > 0 & c23z01 <=113)))"
+ },
+ {
+  "name": "same_lg_198",
+  "logic": "((k2627sum > 0) & (k28z01 * 10 + k28z02 <= 3) & (k28z01 < 91 & k28z02 < 10))"
+ },
+ {
+  "name": "same_lg_199",
+  "logic": "(k26z01==1 & (c04z06r1==1 | c20z06r1==1))"
+ },
+ {
+  "name": "same_lg_200",
+  "logic": "(((c05r1==2 & (c04z06r1==1 | c20z06r1==1 | c22z01r1 <=112)) | c09r1==4) & k06z01==4)"
+ },
+ {
+  "name": "same_lg_201",
+  "logic": "(((c05r2==2 & (c04z06r2==1 | c20z06r2==1 | c22z01r2 <=112)) | c09r2==4) & k06z01==4)"
+ },
+ {
+  "name": "same_lg_202",
+  "logic": "(c15z01r1 != c15z02r1 & ((c15z01r1 > 90 & c15z01r1 <=99) | (c15z02r1 > 90 & c15z02r1 <=99)))"
+ },
+ {
+  "name": "same_lg_203",
+  "logic": "(c15z01r2 != c15z02r2 & ((c15z01r2 > 90 & c15z01r2 <=99) | (c15z02r2 > 90 & c15z02r2 <=99)))"
+ },
+ {
+  "name": "same_lg_204",
+  "logic": "(c26z01 != c26z02 & ((c26z01 > 90 & c26z01 <=99) | (c26z02 > 90 & c26z02 <=99)))"
+ },
+ {
+  "name": "same_lg_205",
+  "logic": "(c31z01 != c31z02 & ((c31z01 > 90 & c31z01 <=99) | (c31z02 > 90 & c31z02 <=99)))"
+ },
+ {
+  "name": "same_lg_206",
+  "logic": "(inlist(c35z01r1,1) & (c35z02r1 * 4 + c35z03r1)==0 & (c35z02r1 < 91 & c35z03r1 < 5))"
+ },
+ {
+  "name": "same_lg_207",
+  "logic": "(inlist(c35z01r2,1) & (c35z02r2 * 4 + c35z03r2)==0 & (c35z02r2 < 91 & c35z03r2 < 5))"
+ },
+ {
+  "name": "same_lg_208",
+  "logic": "(c35z02r1 != c35z03r1 & ((c35z02r1 > 90 & c35z02r1 <=99) | (c35z03r1 > 90 & c35z03r1 <=99)))"
+ },
+ {
+  "name": "same_lg_209",
+  "logic": "(c35z02r2 != c35z03r2 & ((c35z02r2 > 90 & c35z02r2 <=99) | (c35z03r2 > 90 & c35z03r2 <=99)))"
+ },
+ {
+  "name": "same_lg_210",
+  "logic": "(d03z01 != d03z02 & ((d03z01 > 990 & d03z01 <=999) | (d03z02 > 990 & d03z02 <=999)))"
+ },
+ {
+  "name": "same_lg_211",
+  "logic": "(d10z01 != d10z02 & ((d10z01 > 99 & d10z01 <=99) | (d10z02 > 90 & d10z02 <=99)))"
+ },
+ {
+  "name": "same_lg_212",
+  "logic": "(d11z01 != d11z02 & ((d11z01 > 990 & d11z01 <=999) | (d11z02 > 990 & d11z02 <=999)))"
+ },
+ {
+  "name": "same_lg_213",
+  "logic": "(d16z01 != d16z02 & ((d16z01 > 990 & d16z01 <=999) | (d16z02 > 990 & d16z02 <=999)))"
+ },
+ {
+  "name": "same_lg_214",
+  "logic": "(d17z01 != d17z02 & ((d17z01 > 90 & d17z01 <=99) | (d17z02 > 90 & d17z02 <=99)))"
+ },
+ {
+  "name": "same_lg_215",
+  "logic": "(d20z01 != d20z02 & ((d20z01 > 990 & d20z01 <=999) | (d20z02 > 990 & d20z02 <=999)))"
+ },
+ {
+  "name": "same_lg_216",
+  "logic": "(d25z01==1 & (d25z02 * 10 + d25z03)==0 & (d25z02 < 91 & d25z03 < 10))"
+ },
+ {
+  "name": "same_lg_217",
+  "logic": "(d25z02 != d25z03 & ((d25z02 > 90 & d25z03 <=99) | (d25z03 > 90 & d25z03 <=99)))"
+ },
+ {
+  "name": "same_lg_218",
+  "logic": "(d30z01==1 & (d30z02 * 10 + d30z03)==0 & (d30z02 < 91 & d30z03 < 10))"
+ },
+ {
+  "name": "same_lg_219",
+  "logic": "(d30z02 != d30z03 & ((d30z02 > 90 & d30z02 <=99) | (d30z03 > 90 & d30z03 <=99)))"
+ },
+ {
+  "name": "same_lg_220",
+  "logic": "(d31a01==1 & (d31a02 * 10 + d31a03)==0 & (d31a02 < 9991 & d31a03 < 10))"
+ },
+ {
+  "name": "same_lg_221",
+  "logic": "(d31a02 != d31a03 & ((d31a02 > 9990 & d31a02 <=9999) | (d31a03 > 9990 & d31a03 <=9999)))"
+ },
+ {
+  "name": "same_lg_222",
+  "logic": "(d31b01==1 & (d31b02 * 10 + d31b03)==0 & (d31b02 < 9991 & d31b03 < 10))"
+ },
+ {
+  "name": "same_lg_223",
+  "logic": "(d31b02 != d31b03 & ((d31b02 > 9990 & d31b02 <=9999) | (d31b03 > 9990 & d31b03 <=9999)))"
+ },
+ {
+  "name": "same_lg_224",
+  "logic": "(d33z03 != d33z04 & ((d33z03 > 9990 & d33z03 <=9999) | (d33z04 > 9990 & d33z04 <=9999)))"
+ },
+ {
+  "name": "same_lg_225",
+  "logic": "(inlist(d33z01,7,8) & (d33z03 * 10 + d33z04 < 2000) & (d33z03 < 9991 & d33z04 < 9991))"
+ },
+ {
+  "name": "same_lg_226",
+  "logic": "(((x03z01 - d03z01 + 1) < d33z02) & (d03z01 < 991 & d33z02 < 9991))"
+ },
+ {
+  "name": "same_lg_227",
+  "logic": "(d37a01 != d37a02 & ((d37a01 > 996 & d37a01 <=999) | (d37a02 > 990 & d37a02 <=999)))"
+ },
+ {
+  "name": "same_lg_228",
+  "logic": "(d37b01 != d37b02 & ((d37b01 > 996 & d37b01 <=999) | (d37b02 > 990 & d37b02 <=999)))"
+ },
+ {
+  "name": "same_lg_229",
+  "logic": "(f03z01 != f03z02 & ((f03z01 > 990 & f03z01 <=999) | (f03z02 > 990 & f03z02 <=999)))"
+ },
+ {
+  "name": "same_lg_230",
+  "logic": "(h21z01p1==1 & ((h21z02p1 * 10 + h21z03p1)==0) & (h21z02p1 < 991 & h21z03p1 < 10))"
+ },
+ {
+  "name": "same_lg_231",
+  "logic": "(h22z01p1==1 & ((h22z02p1 * 10 + h22z03p1)==0) & (h22z02p1 < 991 & h22z03p1 < 10))"
+ },
+ {
+  "name": "same_lg_232",
+  "logic": "(h21z02p1 != h21z03p1 & ((h21z02p1 > 990 & h21z02p1 <=999) | (h21z03p1 > 990 & h21z03p1 <=999)))"
+ },
+ {
+  "name": "same_lg_233",
+  "logic": "(h22z02p1 != h22z03p1 & ((h22z02p1 > 990 & h22z02p1 <=999) | (h22z03p1 > 990 & h22z03p1 <=999)))"
+ },
+ {
+  "name": "same_lg_234",
+  "logic": "(h21z01p2==1 & ((h21z02p2 * 10 + h21z03p2)==0) & (h21z02p2 < 991 & h21z03p2 < 10))"
+ },
+ {
+  "name": "same_lg_235",
+  "logic": "(h22z01p2==1 & ((h22z02p2 * 10 + h22z03p2)==0) & (h22z02p2 < 991 & h22z03p2 < 10))"
+ },
+ {
+  "name": "same_lg_236",
+  "logic": "(h21z02p2 != h21z03p2 & ((h21z02p2 > 990 & h21z02p2 <=999) | (h21z03p2 > 990 & h21z03p2 <=999)))"
+ },
+ {
+  "name": "same_lg_237",
+  "logic": "(h22z02p2 != h22z03p2 & ((h22z02p2 > 990 & h22z02p2 <=999) | (h22z03p2 > 990 & h22z03p2 <=999)))"
+ },
+ {
+  "name": "same_lg_238",
+  "logic": "(k04z02r1 != k04z03r1 & ((k04z02r1 > 9990 & k04z02r1 <=9999) | (k04z03r1 > 9990 & k04z03r1 <=9999)))"
+ },
+ {
+  "name": "same_lg_239",
+  "logic": "(k04z02r2 != k04z03r2 & ((k04z02r2 > 9990 & k04z02r2 <=9999) | (k04z03r2 > 9990 & k04z03r2 <=9999)))"
+ },
+ {
+  "name": "same_lg_240",
+  "logic": "(inlist(k06z01,1,2) & ((k06z02 * 10 + k06z03)==0) & (k06z02 < 9991 & k06z03 < 10))"
+ },
+ {
+  "name": "same_lg_241",
+  "logic": "(k06z02 != k06z03 & ((k06z02 > 9990 & k06z02 <=9999) | (k06z03 > 9990 & k06z03 <=9999)))"
+ },
+ {
+  "name": "same_lg_242",
+  "logic": "(k28z01 != k28z02 & ((k28z01 > 90 & k28z01 <=99) | (k28z02 > 90 & k28z02 <=99)))"
+ },
+ {
+  "name": "same_lg_243",
+  "logic": "(k29a01 != k29a02 & ((k29a01 > 9990 & k29a01 <=9999) | (k29a02 > 9990 & k29a02 <=9999)))"
+ },
+ {
+  "name": "same_lg_244",
+  "logic": "(k30a01 != k30a02 & ((k30a01 > 990 & k30a01 <=999) | (k30a02 > 990 & k30a02 <=999)))"
+ },
+ {
+  "name": "same_lg_245",
+  "logic": "(k31a01 != k31a02 & ((k31a01 > 990 & k31a01 <=999) | (k31a02 > 990 & k31a02 <=999)))"
+ },
+ {
+  "name": "same_lg_246",
+  "logic": "(k31b101 != k31b102 & ((k31b101 > 990 & k31b101 <=999) | (k31b102 > 990 & k31b102 <=999)))"
+ },
+ {
+  "name": "same_lg_247",
+  "logic": "(k31b201 != k31b202 & ((k31b201 > 990 & k31b201 <=999) | (k31b202 > 990 & k31b202 <=999)))"
+ },
+ {
+  "name": "same_lg_248",
+  "logic": "(((a19z02 > x03z01) | (a19z02>=x03z01 & a19z03 > x03z02)) & (a19z02 < 991 & a19z03 < 13))"
+ },
+ {
+  "name": "same_lg_249",
+  "logic": "(((a19z04 > x03z01) | (a19z04>= x03z01 & a19z05 > x03z02)) & (a19z04 < 991 & a19z05 < 13))"
+ },
+ {
+  "name": "same_lg_250",
+  "logic": "(((a19z06 > x03z01) | (a19z06>= x03z01 & a19z07 > x03z02)) & (a19z06 < 991 & a19z07 < 13))"
+ },
+ {
+  "name": "same_lg_251",
+  "logic": "(((a19z08 > x03z01) | (a19z08>= x03z01 & a19z09 > x03z02)) & (a19z08 < 991 & a19z09 < 13))"
+ },
+ {
+  "name": "same_lg_252",
+  "logic": "(((a19z10 > x03z01) | (a19z10>= x03z01 & a19z11 > x03z02)) & (a19z10 < 991 & a19z11 < 13))"
+ },
+ {
+  "name": "same_lg_253",
+  "logic": "(((a19z12 > x03z01) | (a19z12>= x03z01 & a19z13 > x03z02)) & (a19z12 < 991 & a19z13 < 13))"
+ },
+ {
+  "name": "same_lg_254",
+  "logic": "(((c21z01r1 > x03z01) | (c21z01r1>= x03z01 & c21z02r1 > x03z02)) & (c21z01r1 < 991 & c21z02r1 < 13))"
+ },
+ {
+  "name": "same_lg_255",
+  "logic": "(((c22z01r1 > x03z01) | (c22z01r1>= x03z01 & c22z02r1 > x03z02)) & (c22z01r1 < 991 & c22z02r1 < 13))"
+ },
+ {
+  "name": "same_lg_256",
+  "logic": "(((c23z01 > x03z01) | (c23z01>= x03z01 & c23z02 > x03z02)) & (c23z01 < 991 & c23z02 < 13))"
+ },
+ {
+  "name": "same_lg_257",
+  "logic": "(((d03z01 > x03z01) | (d03z01>= x03z01 & d03z02 > x03z02)) & (d03z01 < 991 & d03z02 < 13))"
+ },
+ {
+  "name": "same_lg_258",
+  "logic": "(((d11z01 > x03z01) | (d11z01== x03z01 & d11z02 > x03z02)) & (d11z01 < 991 & d11z02 < 13))"
+ },
+ {
+  "name": "same_lg_259",
+  "logic": "(((d37a01 > x03z01) | (d37a01== x03z01 & d37a02 > x03z02)) & (d37a01 < 991 & d37a02 < 13))"
+ },
+ {
+  "name": "same_lg_260",
+  "logic": "(((d37b01> x03z01) | (d37b01== x03z01 & d37b02 > x03z02)) & (d37b01 < 991 & d37b02 < 13))"
+ },
+ {
+  "name": "same_lg_260_1",
+  "logic": "(((c21z01r2 > x03z01) | (c21z01r2== x03z01 & c21z02r2 > x03z02)) & (c21z01r2 < 991 & c21z02r2 < 13))"
+ },
+ {
+  "name": "same_lg_261",
+  "logic": "(((c22z01r2 > x03z01) | (c22z01r2== x03z01 & c22z02r2 > x03z02)) & (c22z01r2 < 991 & c22z02r2 < 13))"
+ },
+ {
+  "name": "same_lg_262",
+  "logic": "(((f03z01 > x03z01) | (f03z01== x03z01 & f03z02 > x03z02)) & (f03z01 < 991 & f03z02 < 13))"
+ },
+ {
+  "name": "same_lg_263",
+  "logic": "(d71==3 & d69a==d70 & d70 < 96)"
+ },
+ {
+  "name": "same_lg_264",
+  "logic": "(d71==1 & d69a != d70 & d70 < 96)"
+ },
+ {
+  "name": "same_lg_265",
+  "logic": "((inlist(c33r1,1,2,3,4,5) & inlist(c02r1,1,2,3)) | (inlist(c33r1,96) & inlist(c02r1,4)))"
+ },
+ {
+  "name": "same_lg_266",
+  "logic": "((inlist(c33r2,1,2,3,4,5) & inlist(c02r2,1,2,3)) | (inlist(c33r2,96) & inlist(c02r2,4)))"
+ },
+ {
+  "name": "same_lg_267",
+  "logic": "(c15_total > k04_total & (c04z06r1==1 | c20z06r1==1) & c15_total < . & k04_total < . )"
+ },
+ {
+  "name": "same_lg_268",
+  "logic": "(c15_total > k04_total & (c04z06r2==1 | c20z06r2==1) & c15_total < . & k04_total < . )"
+ },
+ {
+  "name": "same_lg_269",
+  "logic": "((c19br1 + c32) >= 140 & (c19br1 > 0 & c19br1 < 991) & (c32 > 0 & c32 < 991))"
+ },
+ {
+  "name": "same_lg_270",
+  "logic": "((wage / (c19br1*4)) < 0.10 & c19br1 > 0 & c19br1 < 991 & wage < . & c02r1==1)"
+ },
+ {
+  "name": "same_lg_271",
+  "logic": "((swage / (c19br2*4)) < 0.10 & c19br2 > 0 & c19br2 < 991 & swage < . & c02r2==1)"
+ },
+ {
+  "name": "same_lg_272",
+  "logic": "((lwage / (c28*4)) < 0.10 & c28 > 0 & c28 < 991 & lwage < . )"
+ },
+ {
+  "name": "same_lg_273",
+  "logic": "(m13z01 + m13z02 + m14z01 + m14z02 + m15z01 + m15z02 == 0)"
+ },
+ {
+  "name": "same_lg_274",
+  "logic": "((m14z01*60 + m14z02) > (m13z01*60 + m13z02) & (m14z01 < 91 & m14z02 < 91 & m13z01 < 91 & m13z02 < 91))"
+ },
+ {
+  "name": "same_lg_275",
+  "logic": "((m16z01*60 + m16z02) > (m15z01*60 + m15z02) & (m16z01 < 91 & m16z02 < 91 & m15z01 < 91 & m15z02 < 91))"
+ },
+ {
+  "name": "same_lg_276",
+  "logic": "(m17z05==1 & ((m14z01*10 + m14z02 > 0 & m14z01 < 91 & m14z02 < 91) | (m16z01*10 + m16z02 > 0 & m16z01 < 91 & m16z02 < 91)))"
+ },
+ {
+  "name": "same_lg_277",
+  "logic": "(p03h01==3 & inlist(p03h02,1,2,97,98) & (a02z01 >= 62 & a02z01 < 991))"
+ },
+ {
+  "name": "same_lg_278",
+  "logic": "(p03h03==3 & inlist(p03h04,1,2,97,98) & (a02z01 >= 62 & a02z01 < 991))"
+ },
+ {
+  "name": "same_lg_279",
+  "logic": "(p03h05==3 & inlist(p03h06,1,2,97,98) & (a02z01 >= 62 & a02z01 < 991))"
+ },
+ {
+  "name": "same_lg_280",
+  "logic": "(p03h07==3 & inlist(p03h08,1,2,97,98) & (a02z01 >= 62 & a02z01 < 991))"
+ },
+ {
+  "name": "same_lg_281",
+  "logic": "(alive_sibs != (record_sibs - incorrect + new_sibs) & (alive_sibs <= 5))"
+ },
+ {
+  "name": "same_lg_282",
+  "logic": "((siblings != j01z05) & (j01z05 >= 0 & j01z05 < 6)) //表格題組至多僅記錄5位手足"
+ },
+ {
+  "name": "same_lg_283",
+  "logic": "((sib1_y != j02z01s1 & j02z01s1 < 995) | (sib1_m != j02z02s1 & j02z02s1 < 995))"
+ },
+ {
+  "name": "same_lg_284",
+  "logic": "((sib2_y != j02z01s2 & j02z01s2 < 995) | (sib2_m != j02z02s2 & j02z02s2 < 995))"
+ },
+ {
+  "name": "same_lg_285",
+  "logic": "((sib3_y != j02z01s3 & j02z01s3 < 995) | (sib3_m != j02z02s3 & j02z02s3 < 995))"
+ },
+ {
+  "name": "same_lg_286",
+  "logic": "((sib4_y != j02z01s4 & j02z01s4 < 995) | (sib4_m != j02z02s4 & j02z02s4 < 995))"
+ },
+ {
+  "name": "same_lg_287",
+  "logic": "((sib5_y != j02z01s5 & j02z01s5 < 995) | (sib5_m != j02z02s5 & j02z02s5 < 995))"
+ },
+ {
+  "name": "same_lg_288",
+  "logic": "(j02z01s1 != j02z02s1 & ((j02z01s1 > 990 & j02z01s1 <=999) | (j02z02s1 > 990 & j02z02s1 <=999) | (j02z01s1==0) | (j02z02s1==0)))"
+ },
+ {
+  "name": "same_lg_289",
+  "logic": "(j02z01s2 != j02z02s2 & ((j02z01s2 > 990 & j02z01s2 <=999) | (j02z02s2 > 990 & j02z02s2 <=999) | (j02z01s2==0) | (j02z02s2==0)))"
+ },
+ {
+  "name": "same_lg_290",
+  "logic": "(j02z01s3 != j02z02s3 & ((j02z01s3 > 990 & j02z01s3 <=999) | (j02z02s3 > 990 & j02z02s3 <=999) | (j02z01s3==0) | (j02z02s3==0)))"
+ },
+ {
+  "name": "same_lg_291",
+  "logic": "(j02z01s4 != j02z02s4 & ((j02z01s4 > 990 & j02z01s4 <=999) | (j02z02s4 > 990 & j02z02s4 <=999) | (j02z01s4==0) | (j02z02s4==0)))"
+ },
+ {
+  "name": "same_lg_292",
+  "logic": "(j02z01s5 != j02z02s5 & ((j02z01s5 > 990 & j02z01s5 <=999) | (j02z02s5 > 990 & j02z02s5 <=999) | (j02z01s5==0) | (j02z02s5==0)))"
+ },
+ {
+  "name": "same_lg_293",
+  "logic": "(((j06a01s1 > x03z01) | (j06a01s1 >= x03z01 & j06a02s1 > x03z02)) & (j06a01s1 < 991 & j06a02s1 < 13))"
+ },
+ {
+  "name": "same_lg_294",
+  "logic": "(((j06a01s2 > x03z01) | (j06a01s2 >= x03z01 & j06a02s2 > x03z02)) & (j06a01s2 < 991 & j06a02s2 < 13))"
+ },
+ {
+  "name": "same_lg_295",
+  "logic": "(((j06a01s3 > x03z01) | (j06a01s3 >= x03z01 & j06a02s3 > x03z02)) & (j06a01s3 < 991 & j06a02s3 < 13))"
+ },
+ {
+  "name": "same_lg_296",
+  "logic": "(((j06a01s4 > x03z01) | (j06a01s4 >= x03z01 & j06a02s4 > x03z02)) & (j06a01s4 < 991 & j06a02s4 < 13))"
+ },
+ {
+  "name": "same_lg_297",
+  "logic": "(((j06a01s5 > x03z01) | (j06a01s5 >= x03z01 & j06a02s5 > x03z02)) & (j06a01s5 < 991 & j06a02s5 < 13))"
+ },
+ {
+  "name": "same_lg_298",
+  "logic": "anymatch(j15errs_s?, 1)"
+ },
+ {
+  "name": "same_lg_299",
+  "logic": "anymatch(j15errs_s?, 1)"
+ },
+ {
+  "name": "same_lg_300",
+  "logic": "(d44==1 & (c05r1==1 | c05r2==1) & (c05r1 != 96 & c05r2 !=96))"
+ },
+ {
+  "name": "same_lg_301",
+  "logic": "(c21z01r1 != c21z02r1 & ((c21z01r1 > 990 & c21z01r1 <=999) | (c21z02r1 > 990 & c21z02r1 <=999)))"
+ },
+ {
+  "name": "same_lg_302",
+  "logic": "(c22z01r1 != c22z02r1 & ((c22z01r1 > 990 & c22z01r1 <=999) | (c22z02r1 > 990 & c22z02r1 <=999)))"
+ },
+ {
+  "name": "same_lg_303",
+  "logic": "(c21z01r2 != c21z02r2 & ((c21z01r2 > 990 & c21z01r2 <=999) | (c21z02r2 > 990 & c21z02r2 <=999)))"
+ },
+ {
+  "name": "same_lg_304",
+  "logic": "(c22z01r2 != c22z02r2 & ((c22z01r2 > 990 & c22z01r2 <=999) | (c22z02r2 > 990 & c22z02r2 <=999)))"
+ },
+ {
+  "name": "same_lg_305",
+  "logic": "((c23z01 >=112 & c23z01 < 991) & (k04z02r1*10 + k04z03r1)==0)"
+ },
+ {
+  "name": "same_lg_305_1",
+  "logic": "(inlist(Jobcheckr1,1,2) & (c23z01==0))"
+ },
+ {
+  "name": "same_lg_306",
+  "logic": "(inlist(c02r1,1) & ((c21z01r1 >=112 & c21z01r1 < 113) | (c22z01r1 >=112 & c22z01r1 < 113)) & (k04z02r1*10 + k04z03r1)==0)"
+ },
+ {
+  "name": "same_lg_307",
+  "logic": "(inlist(c02r2,1) & ((c21z01r2 >=112 & c21z01r2 < 113) | (c22z01r2 >=112 & c22z01r2 < 113)) & (k04z02r2*10 + k04z03r2)==0)"
+ },
+ {
+  "name": "same_lg_308",
+  "logic": "((((c15z01r1 *10) + c15z02r1) >= ((k04z02r1*10) + k04z03r1)) & (c15z01r1 >= 0 & c15z01r1 < 991 & c15z02r1 < 10) & (k04z02r1 >=0 & k04z02r1 < 9991 & k04z03r1 < 10))"
+ },
+ {
+  "name": "same_lg_309",
+  "logic": "((((c15z01r2 *10) + c15z02r2) >= ((k04z02r2*10) + k04z03r2)) & (c15z01r2 >= 0 & c15z01r2 < 991 & c15z02r2 < 10) & (k04z02r2 >=0 & k04z02r2 < 9991 & k04z03r2 < 10))"
+ },
+ {
+  "name": "same_lg_310",
+  "logic": "((d02a==7 & d08==2) & (inlist(h24z02,1,96,97,98,99) | inlist(h25z02,1,96,97,98,99)))"
+ },
+ {
+  "name": "same_lg_311",
+  "logic": "(d13==2 & (inlist(h24z02,1,96,97,98,99) | inlist(h25z02,1,96,97,98,99)))"
+ },
+ {
+  "name": "same_lg_312",
+  "logic": "(c04z01r1==1 | c20z01r1==1) & c23z01==993 & c29==2)"
+ },
+ {
+  "name": "c_lg_1",
+  "logic": "(((113 - a02z01) <= 16 | ((113 - a02z01) > 25 & (113 - a02z01) < . )) & a02z01 < 991 & inlist(Group,1) & (First==1 & d01 !=96))"
+ },
+ {
+  "name": "c_lg_2",
+  "logic": "((cb18z02 - cb06 < 3) & (inrange(cb09a,1,7) | inlist(cb08a,1,2)) & (cb13z05==0) & (cb18z01==1) & (cb18z02 < 991 & cb06 < 991))"
+ },
+ {
+  "name": "c_lg_3",
+  "logic": "((cb18z02 - cb06 >= 3) & (inrange(cb09a,1,7) | inlist(cb08a,1,2)) & (cb13z05==1) & (cb18z01==1) & (cb18z02 < 991 & cb06 < 991))"
+ },
+ {
+  "name": "c_lg_4",
+  "logic": "((cb18z02 - cb06 > 3) & (inrange(cb09a,1,7) | inlist(cb08a,1,2)) & (cb13z03==0 & cb13z04==0) & cb18z01==1 & (cb18z02 < 991 & cb06 < 991))"
+ },
+ {
+  "name": "c_lg_5",
+  "logic": "((cb06 + cb18z03 > 113) & (inrange(cb09a,1,7) | inlist(cb08a,1,2)) & cb18z01==3 & (cb18z03 < 9 & cb06 <990))"
+ },
+ {
+  "name": "c_lg_6",
+  "logic": "((cb13z03==1 | cb13z04==1) & (inrange(cb09a,1,7) | inlist(cb08a,1,2)) & cb18z01==1 & (cb18z02 - cb06 <= 3) & (cb18z02 < 990 & cb06 < 990))"
+ },
+ {
+  "name": "c_lg_7",
+  "logic": "((cb13z03==0 & cb13z04==0) & (inrange(cb09a,1,7) | inlist(cb08a,1,2)) & cb18z01==2)"
+ },
+ {
+  "name": "c_lg_8",
+  "logic": "((cb06 + cb18z03 > 113) & (cb08a==3 | cb09a==8) & (cb18z01==3) & (cb18z03 < 9 & cb06 <990 ))"
+ },
+ {
+  "name": "c_lg_9",
+  "logic": "((cb18z02 - cb06 < 5) & (cb08a==3 | cb09a==8) & (cb13z05==0) & (cb18z01==1) & (cb18z02 < 991 & cb06 < 991))"
+ },
+ {
+  "name": "c_lg_10",
+  "logic": "((cb18z02 - cb06 >= 5) & (cb08a==3 | cb09a==8) & (cb13z05==1) & (cb18z01==1) & (cb18z02 < 991 & cb06 < 991))"
+ },
+ {
+  "name": "c_lg_11",
+  "logic": "((cb18z02 - cb06 > 5) & (cb08a==3 | cb09a==8) & (cb13z03==0 & cb13z04==0) & cb18z01==1 & (cb18z02 < 991 & cb06 < 991))"
+ },
+ {
+  "name": "c_lg_12",
+  "logic": "((cb13z03==1 | cb13z04==1) & (cb08a==3 | cb09a==8) & cb18z01==1 & (cb18z02 - cb06 <= 5) & (cb18z02 < 991 & cb06 < 991))"
+ },
+ {
+  "name": "c_lg_13",
+  "logic": "((cb13z03==0 & cb13z04==0) & (cb08a==3 | cb09a==8) & b18z01==2)"
+ },
+ {
+  "name": "c_lg_14",
+  "logic": "((cb61z02 - cb47 < 2) & inlist(cb51,1,3) & (cb55z13==0) & cb61z01==1 & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "name": "c_lg_15",
+  "logic": "((cb61z02 - cb47 >= 2) & inlist(cb51,1,3) & (cb55z13==1) & cb61z01==1 & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "name": "c_lg_16",
+  "logic": "((cb61z02 - cb47 > 4) & inlist(cb51,1,3) & (cb55z05==0 & cb55z07==0) & cb61z01==1 & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "name": "c_lg_17",
+  "logic": "((cb47 + cb61z03 > 113) & inlist(cb51,1,3) & (cb61z01==3) & (cb61z03 < 10 & cb47 < 991))"
+ },
+ {
+  "name": "c_lg_18",
+  "logic": "((cb55z05==1 | cb55z07==1) & inlist(cb51,1,3) & cb61z01==1 & (cb61z02 - cb47 <= 2) & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "name": "c_lg_19",
+  "logic": "((cb55z05==0 & cb55z07==0 & cb55z11==0) & inlist(cb51,1,3) & cb61z01==2)"
+ },
+ {
+  "name": "c_lg_20",
+  "logic": "((cb61z02 - cb47 < 4) & inlist(cb51,3,4) & (cb55z13==0) & cb61z01==1 & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "name": "c_lg_21",
+  "logic": "((cb61z02 - cb47 >= 4) & inlist(cb51,3,4) & (cb55z13==1) & cb61z01==1 & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "name": "c_lg_22",
+  "logic": "((cb61z02 - cb47 > 4) & inlist(cb51,3,4) & (cb55z05==0 & cb55z07==0) & cb61z01==1 & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "name": "c_lg_23",
+  "logic": "((cb47 + cb61z03 > 113) & inlist(cb51,3,4) & (cb61z01==3) & (cb61z03 < 10 & cb47 <991))"
+ },
+ {
+  "name": "c_lg_24",
+  "logic": "((cb55z05==1 | cb55z07==1) & inlist(cb51,3,4) & cb61z01==1 & (cb61z02 - cb47 <= 4) & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "name": "c_lg_25",
+  "logic": "((cb55z05==0 & cb55z07==0 & cb55z11==0) & inlist(cb51,3,4) & cb61z01==2)"
+ },
+ {
+  "name": "c_lg_26",
+  "logic": "((cb41==7 | cb89==7) & d69a==2)"
+ },
+ {
+  "name": "c_lg_27",
+  "logic": "((cb24a==1 | cb24a==5 | cb24b==1 | cb24b==5) & cb23z01==1)"
+ },
+ {
+  "name": "c_lg_28",
+  "logic": "((cb26z01==95 & !inlist(h06f1,6,96)) | (inlist(cb26z01,1,2,3,4,97,98) & inlist(h06f1,6,96)))"
+ },
+ {
+  "name": "c_lg_29",
+  "logic": "((cb27==96 & cb18z01==3 & (h06f1 !=6 | h06f1 != 96)) | ((h06f1==6 | h06f1== 96) & cb27 != 96))"
+ },
+ {
+  "name": "c_lg_30",
+  "logic": "((cb26z02==95 & !inlist(h06m1,6,96)) | (inlist(cb26z02,1,2,3,4,97,98) & inlist(h06m1,6,96)))"
+ },
+ {
+  "name": "c_lg_31",
+  "logic": "((cb28==96 & cb18z01==3 & cb26z01==95 & (h06m1 !=6 | h06m1 != 96)) | ((h06m1==6 | h06m1== 96) & cb28 != 96))"
+ },
+ {
+  "name": "c_lg_32",
+  "logic": "((cb31z01==4 & (h06f1 !=6 | h06f1 != 96)) | ((h06f1==6 | h06f1== 96) & cb31z01 != 96))"
+ },
+ {
+  "name": "c_lg_33",
+  "logic": "((cb31z02==4 & (h06m1 !=6 | h06m1 != 96)) | ((h06m1==6 | h06m1== 96) & cb31z02 != 96))"
+ },
+ {
+  "name": "c_lg_34",
+  "logic": "((cb31z05==4 & (j01z01 !=0 & j01z02 != 0) & (j01z01 < 91 & j01z02 < 91)) | ((j01z01==0 & j01z02==0) & !inlist(cb31z05,4,96)))"
+ },
+ {
+  "name": "c_lg_35",
+  "logic": "((cb31z06==4 & (j01z03 !=0 & j01z04 != 0) & (j01z03 < 91 & j01z04 < 91)) | ((j01z03==0 & j01z04==0) & !inlist(cb31z06,4,96)))"
+ },
+ {
+  "name": "c_lg_36",
+  "logic": "((cb36 > 1 & cb36 < 96 & cb37==0) | (cb36==1 & cb37 > 0 & cb37 < 96))"
+ },
+ {
+  "name": "c_lg_37",
+  "logic": "((cb74 > 1 & cb74 < 96) & cb80==2)"
+ },
+ {
+  "name": "c_lg_38",
+  "logic": "(cb80==1 & cb81==0)"
+ },
+ {
+  "name": "c_lg_39",
+  "logic": "((cb64z02 > 180 & cb64z02 < 996) | (cb64z02 < 30))"
+ },
+ {
+  "name": "c_lg_40",
+  "logic": "((vx06city != vcb12g01city) & (cb18z01==3) & ((f05==2) | inlist(cb22,1,2,3)) & (x05==x06) & (vx06city <= 22 & vx05city <=22 & vcb12g01city <=22))"
+ },
+ {
+  "name": "c_lg_41",
+  "logic": "((vx06city != vcb50g01city) & (cb61z01==3) & ((f05==2) | inlist(cb65,1,2,3)) & (x05==x06) & (vx06city <= 22 & vx05city <=22 & vcb50g01city <=22))"
+ },
+ {
+  "name": "c_lg_42",
+  "logic": "(inlist(cb78,1,2,3) & ((cb79z01 *10 + cb79z02 ) <= 1) & (cb79z01 < 991 & cb79z02 < 10))"
+ },
+ {
+  "name": "c_lg_43",
+  "logic": "(cb79z01 != cb79z02 & ((cb79z01 > 990 & cb79z01 <=999) | (cb79z02 > 990 & cb79z02 <=999)))"
+ },
+ {
+  "name": "c_lg_43_1",
+  "logic": "(inlist(cb89,1,4,6,8) & ((cb91z01 *10 + cb91z02 ) <= 1) & (cb91z01 < 991 & cb91z02 < 10))"
+ },
+ {
+  "name": "c_lg_43_2",
+  "logic": "(cb91z01 != cb91z02 & ((cb91z01 > 990 & cb91z01 <=999) | (cb91z02 > 990 & cb91z02 <=999)))"
+ },
+ {
+  "name": "c_lg_44",
+  "logic": "(cb04==1 & cb06 > 0 & cb06 < 103)"
+ },
+ {
+  "name": "c_lg_45",
+  "logic": "(cb06 > x03z01 & (cb06 > 0 & cb06 < 991))"
+ },
+ {
+  "name": "c_lg_46",
+  "logic": "(cb18z02 > x03z01 & (cb18z02 > 0 & cb18z02 < 991))"
+ },
+ {
+  "name": "c_lg_47",
+  "logic": "(cb47 > x03z01 & (cb47 > 0 & cb47 < 991))"
+ },
+ {
+  "name": "c_lg_48",
+  "logic": "(cb61z02 > x03z01 & (cb61z02 > 0 & cb61z02 < 991))"
+ },
+ {
+  "name": "c_lg_49",
+  "logic": "((b01c==5 & !inlist(cb09a,1,96)) | (b01c==6 & !inlist(cb09a,2,96)) | (b01c==7 & !inlist(cb09a,3,96)) | (b01c==8 & !inlist(cb09a,4,96)) | (b01c==9 & !inlist(cb09a,8,96)))"
+ },
+ {
+  "name": "c_lg_50",
+  "logic": "((b01c==10 & cb51 != 1) | (b01c==12 & !inlist(cb51,2,3)) | (b01c==13 & cb51 != 4))"
+ },
+ {
+  "name": "c_lg_51",
+  "logic": "((d20z01 - a02z01 <= 18) & (d20z01 > 0 & d20z01 < 991) & (a02z01 > 0 & a02z01 <= 113) & inlist(Group,1))"
+ },
+ {
+  "name": "c_lg_52",
+  "logic": "(cb51==1 & cb55z04==0 & cb89==1 & inlist(b01,10,12,13))"
+ },
+ {
+  "name": "c_lg_53",
+  "logic": "(((cb08b==1 & !inlist(b01c,5,7) & cb18z01==3) | (cb08b==2 & !inlist(b01c,5,6) & cb18z01==3) | (cb08b==3 & !inlist(b01c,6,8) & cb18z01==3)) & (cb13z01==0 & cb13z02==0))"
+ },
+ {
+  "name": "c_lg_54",
+  "logic": "(cb21z01==2 & cb18z03==1 & inlist(f01,2,94))"
+ },
+ {
+  "name": "c_lg_55",
+  "logic": "(cb64z01==2 & cb61z03==1 & inlist(f01,2,94))"
+ },
+ {
+  "name": "c_lg_56",
+  "logic": "(b01c != b01)"
+ },
+ {
+  "name": "c_lg_57",
+  "logic": "cb23_count > 1)"
+ },
+ {
+  "name": "c_lg_58",
+  "logic": "cb66_count > 1)"
+ },
+ {
+  "name": "rcic_lg_1",
+  "logic": "(a04z03 > (113 - a02z01) & (a02z01 > 0 & a02z01 < 991 & a04z03 > 0 & a04z03 < 91))"
+ },
+ {
+  "name": "rcic_lg_2",
+  "logic": "(inlist(d02a,1) & (new_mar < last_time & last_time != .) & First==0)"
+ },
+ {
+  "name": "rcic_lg_3",
+  "logic": "(f04==1 & (inlist(d01,1) | inlist(d02b,1)))"
+ },
+ {
+  "name": "rcic_lg_4",
+  "logic": "(((inlist(d01,1,4,5) | inlist(d02b,1,4,5)) & (d13==2)) & f05==7)"
+ },
+ {
+  "name": "rcic_lg_5",
+  "logic": "((h24z01==95 | h25z01==95) & (j01z05 > 0 & j01z05 < 96))"
+ },
+ {
+  "name": "rrc_lg_4",
+  "logic": "((c32 + c19r1) > 110 & (c32 + c19r1) != . & (c32 > 0 & c32 < 996) & (c19r1 > 0 & c19r1 < 996))"
+ }
+]

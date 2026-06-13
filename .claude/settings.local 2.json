@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.google.com)",
+      "WebFetch(domain:dbdiagram.io)",
+      "WebFetch(domain:doc-0k-40-docstext.googleusercontent.com)",
+      "Bash(curl -sL \"https://docs.google.com/document/d/1O_4Wq2zmaiYxNZ4MKA83fsKbOVVq-zRHZZ4fx4isiaY/export?format=txt\" -o /tmp/quesfix_plan.txt)",
+      "Read(//tmp/**)",
+      "mcp__Claude_Preview__preview_start",
+      "Read(//Users/clarkhuang/Library/Application Support/Claude/local-agent-mode-sessions/skills-plugin/1d887cb8-ddb7-4a3a-a27d-9d2d7e663117/87f3b650-9dd2-4673-b2bb-82bcd53032e4/skills/xlsx/**)",
+      "Bash(./scripts/extract-text \"/Users/clarkhuang/Documents/檢核系統開發-邏輯項目匯入.xlsx\")",
+      "Bash(python3 -c ' *)",
+      "Bash(python3)",
+      "Bash(php --version)",
+      "Bash(composer --version)",
+      "Bash(composer install *)",
+      "Bash(./vendor/bin/phpunit)",
+      "Bash(npm --version)",
+      "Bash(mysql --version)",
+      "Bash(/opt/homebrew/opt/mysql/bin/mysql --version)",
+      "Bash(mysql -u quesfix -pDevQuesFix2026 -e \"SELECT VERSION\\(\\); SHOW DATABASES LIKE 'quesfix';\")",
+      "Read(//usr/local/mysql-8.0.26-macos11-arm64/bin/**)",
+      "Read(//opt/homebrew/Cellar/**)",
+      "Bash(lsof -iTCP:3306 -sTCP:LISTEN)",
+      "Bash(/usr/local/mysql/bin/mysql -u quesfix -pDevQuesFix2026 -h 127.0.0.1 -e \"SELECT VERSION\\(\\) AS v; SHOW DATABASES;\")",
+      "Bash(php -m)",
+      "Bash(composer global *)",
+      "Bash(rm -rf quesfix-scaffold)",
+      "Bash(composer create-project *)",
+      "Bash(php /tmp/quesfix-scaffold/artisan --version)",
+      "Bash(rsync -a ./ /Users/clarkhuang/Documents/quesfix/)",
+      "Bash(rm -rf /tmp/quesfix-scaffold)"
+    ]
+  }
+}
