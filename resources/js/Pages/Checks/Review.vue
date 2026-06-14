@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import Modal from '@/Components/Modal.vue';
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 const props = defineProps({
     question: Object,
@@ -14,7 +14,30 @@ const props = defineProps({
     result: Object,
     allConditions: Array,
     lockMinutes: Number,
+    // 來源：'sample'（依樣本→檢核條件）或 'logic'（依邏輯→樣本列表）
+    from: { type: String, default: 'sample' },
 });
+
+// 進入本頁的來源，供返回連結與條件切換時延續
+const reviewQuery = computed(() => `?from=${props.from}`);
+
+// 「回到前一動」：依來源回到該樣本的檢核條件列表，或該條件的樣本列表
+const backRoute = computed(() =>
+    props.from === 'logic'
+        ? route('checks.logic-samples', [props.question.id, props.checkItem.id])
+        : route('checks.sample-conditions', [props.question.id, props.sampleId]),
+);
+
+const backLabel = computed(() =>
+    props.from === 'logic' ? '← 回該條件的樣本列表' : '← 回該樣本的檢核條件列表',
+);
+
+// 「回到檢核列表」（完成後選單）：依來源回到依樣本／依邏輯頂層列表
+const topListRoute = computed(() =>
+    props.from === 'logic'
+        ? route('checks.by-logic', props.question.id)
+        : route('checks.by-sample', props.question.id),
+);
 
 // ---- 鎖定心跳 ----
 let heartbeatTimer = null;
@@ -118,13 +141,20 @@ const onAudioEnded = () => {
     if (next) mediaItem.value = next;
 };
 
+// 返回前一動：釋放本樣本鎖定後，回到來源的上一層列表
+const goBack = () => {
+    router.post(
+        route('checks.unlock', [props.question.id, props.sampleId]),
+        {},
+        { onFinish: () => router.get(backRoute.value) },
+    );
+};
+
 const backToList = () => {
     router.post(
         route('checks.unlock', [props.question.id, props.sampleId]),
         {},
-        {
-            onFinish: () => router.get(route('checks.by-sample', props.question.id)),
-        },
+        { onFinish: () => router.get(topListRoute.value) },
     );
 };
 
@@ -138,9 +168,14 @@ const continueSample = () => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ question.code }}｜樣本 {{ sampleId }}｜條件 {{ checkItem.item_name }}
-            </h2>
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                    {{ question.code }}｜樣本 {{ sampleId }}｜條件 {{ checkItem.item_name }}
+                </h2>
+                <button @click="goBack" class="shrink-0 text-sm text-gray-600 hover:underline">
+                    {{ backLabel }}
+                </button>
+            </div>
         </template>
 
         <div class="py-6">
@@ -348,7 +383,7 @@ const continueSample = () => {
                         <ul class="space-y-1 text-xs">
                             <li v-for="c in allConditions" :key="c.check_item_id">
                                 <Link
-                                    :href="route('checks.review', [question.id, sampleId, c.check_item_id])"
+                                    :href="route('checks.review', [question.id, sampleId, c.check_item_id]) + reviewQuery"
                                     :title="c.description"
                                     class="block truncate rounded px-2 py-1 font-mono"
                                     :class="[

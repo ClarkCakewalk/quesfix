@@ -48,6 +48,10 @@ defineProps({
                         </tbody>
                     </table>
                 </div>
+
+                <Link :href="route('checks.modes', question.id)" class="mt-6 inline-block text-sm text-gray-600 hover:underline">
+                    ← 回檢核作業
+                </Link>
             </div>
         </div>
     </AuthenticatedLayout>

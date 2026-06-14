@@ -18,20 +18,29 @@ defineProps({
         </template>
 
         <div class="py-12">
-            <div class="mx-auto grid max-w-3xl grid-cols-2 gap-6 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-3xl sm:px-6 lg:px-8">
+                <div class="grid grid-cols-2 gap-6">
+                    <Link
+                        :href="route('checks.by-sample', question.id)"
+                        class="rounded-lg bg-white p-10 text-center shadow hover:ring-2 hover:ring-indigo-400"
+                    >
+                        <div class="text-2xl font-semibold text-gray-800">依樣本檢核</div>
+                        <p class="mt-2 text-sm text-gray-500">列出包含未完成檢核條件的樣本，逐樣本處理</p>
+                    </Link>
+                    <Link
+                        :href="route('checks.by-logic', question.id)"
+                        class="rounded-lg bg-white p-10 text-center shadow hover:ring-2 hover:ring-indigo-400"
+                    >
+                        <div class="text-2xl font-semibold text-gray-800">依邏輯檢核</div>
+                        <p class="mt-2 text-sm text-gray-500">列出包含未完成樣本的檢核條件，逐條件處理</p>
+                    </Link>
+                </div>
+
                 <Link
-                    :href="route('checks.by-sample', question.id)"
-                    class="rounded-lg bg-white p-10 text-center shadow hover:ring-2 hover:ring-indigo-400"
+                    :href="route('questions.index')"
+                    class="mt-8 inline-block text-sm text-gray-600 hover:underline"
                 >
-                    <div class="text-2xl font-semibold text-gray-800">依樣本檢核</div>
-                    <p class="mt-2 text-sm text-gray-500">列出包含未完成檢核條件的樣本，逐樣本處理</p>
-                </Link>
-                <Link
-                    :href="route('checks.by-logic', question.id)"
-                    class="rounded-lg bg-white p-10 text-center shadow hover:ring-2 hover:ring-indigo-400"
-                >
-                    <div class="text-2xl font-semibold text-gray-800">依邏輯檢核</div>
-                    <p class="mt-2 text-sm text-gray-500">列出包含未完成樣本的檢核條件，逐條件處理</p>
+                    ← 回專案列表
                 </Link>
             </div>
         </div>

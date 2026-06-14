@@ -202,6 +202,8 @@ class CheckWorkflowController extends Controller
             ],
             'allConditions' => $allConditions,
             'lockMinutes' => Sample::LOCK_MINUTES,
+            // 來源：'sample'（依樣本→檢核條件）或 'logic'（依邏輯→樣本列表），供返回連結使用
+            'from' => $request->query('from') === 'logic' ? 'logic' : 'sample',
         ]);
     }
 

@@ -40,7 +40,7 @@ const done = computed(() => props.results.filter((r) => !r.pending));
                                 <tr v-for="r in pending" :key="r.id" class="border-b last:border-0">
                                     <td class="py-2 font-mono">
                                         <Link
-                                            :href="route('checks.review', [question.id, sampleId, r.check_item_id])"
+                                            :href="route('checks.review', [question.id, sampleId, r.check_item_id]) + '?from=sample'"
                                             class="text-indigo-600 hover:underline"
                                         >
                                             {{ r.item_name }}
@@ -63,7 +63,7 @@ const done = computed(() => props.results.filter((r) => !r.pending));
                                 <tr v-for="r in done" :key="r.id" class="border-b last:border-0">
                                     <td class="py-2 font-mono">
                                         <Link
-                                            :href="route('checks.review', [question.id, sampleId, r.check_item_id])"
+                                            :href="route('checks.review', [question.id, sampleId, r.check_item_id]) + '?from=sample'"
                                             class="text-indigo-600 hover:underline"
                                         >
                                             {{ r.item_name }}
