@@ -16,19 +16,30 @@ use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
-    public function create(): Response
+    /**
+     * 開放自助註冊僅用於建立系統的第一位使用者（系統管理者）。
+     * 一旦已有任何使用者，開放註冊即關閉，改由管理者邀請制註冊。
+     */
+    public function create(): Response|RedirectResponse
     {
+        if (User::exists()) {
+            return redirect()->route('login');
+        }
+
         return Inertia::render('Auth/Register');
     }
 
     /**
-     * 註冊：第一位註冊者為系統管理者；註冊後不自動登入，
-     * 需點擊驗證信連結開通帳號後才能登入。
+     * 註冊：第一位註冊者為系統管理者。
      *
      * @throws ValidationException
      */
     public function store(Request $request): RedirectResponse
     {
+        if (User::exists()) {
+            return redirect()->route('login');
+        }
+
         $request->validate([
             'username' => ['required', 'string', 'max:64', 'alpha_num:ascii', 'unique:users,username'],
             'name' => ['required', 'string', 'max:255'],

@@ -22,7 +22,15 @@ const genderLabel = (g) => ({ 0: '未指定', 1: '男', 2: '女' })[g] ?? '';
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">使用者管理</h2>
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">使用者管理</h2>
+                <Link
+                    :href="route('admin.invitations.index')"
+                    class="rounded-md bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-500"
+                >
+                    邀請使用者
+                </Link>
+            </div>
         </template>
 
         <div class="py-8">

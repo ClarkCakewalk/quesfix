@@ -41,7 +41,9 @@
       "Bash(curl -s http://127.0.0.1:8000/)",
       "Bash(lsof -iTCP:8000 -sTCP:LISTEN)",
       "Bash(curl -s -o /dev/null -w '%{http_code}\\\\n' http://localhost:8000/login)",
-      "Bash(tee /tmp/verify_url.txt)"
+      "Bash(tee /tmp/verify_url.txt)",
+      "Bash(curl -s -o /dev/null -w 'GET /register → %{http_code} redirect=%{redirect_url}\\\\n' http://localhost:8000/register)",
+      "Bash(curl -s -o /dev/null -w 'GET /register/invitation/BADTOKEN → %{http_code} redirect=%{redirect_url}\\\\n' http://localhost:8000/register/invitation/BADTOKEN)"
     ]
   }
 }
