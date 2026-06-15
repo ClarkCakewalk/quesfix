@@ -88,12 +88,14 @@ const displayValue = (v) => {
     return { text: label ? `${v.origin_value} ${label}` : v.origin_value, cls: '' };
 };
 
-const tooltipFor = (v) => {
-    const entries = Object.entries(v.all_labels ?? {});
-    return entries.length
-        ? entries.map(([val, lab]) => `${val}＝${lab}`).join('、')
-        : '無數值標籤';
-};
+// 編輯數值時對照用的標籤清單（依數值大小排序，無對應標籤者排在後）
+const labelEntries = (v) =>
+    Object.entries(v.all_labels ?? {}).sort((a, b) => {
+        const na = Number(a[0]);
+        const nb = Number(b[0]);
+        if (Number.isNaN(na) || Number.isNaN(nb)) return a[0].localeCompare(b[0]);
+        return na - nb;
+    });
 
 // ---- 檢核結果表單 ----
 const form = useForm({
@@ -217,16 +219,25 @@ const continueSample = () => {
                                             </td>
                                             <td class="py-1.5">
                                                 <template v-if="editingVar === v.var_id">
-                                                    <span class="flex gap-1" :title="tooltipFor(v)">
-                                                        <input
-                                                            v-model="editValue"
-                                                            class="w-28 rounded border-gray-300 px-1 py-0.5 text-sm"
-                                                            :title="tooltipFor(v)"
-                                                            @keyup.enter="saveEdit(v)"
-                                                        />
-                                                        <button @click="saveEdit(v)" class="rounded bg-indigo-600 px-2 text-xs text-white">儲存</button>
-                                                        <button @click="cancelEdit" class="text-xs text-gray-500">取消</button>
-                                                    </span>
+                                                    <div>
+                                                        <div class="flex gap-1">
+                                                            <input
+                                                                v-model="editValue"
+                                                                class="w-28 rounded border-gray-300 px-1 py-0.5 text-sm"
+                                                                @keyup.enter="saveEdit(v)"
+                                                            />
+                                                            <button @click="saveEdit(v)" class="rounded bg-indigo-600 px-2 text-xs text-white">儲存</button>
+                                                            <button @click="cancelEdit" class="text-xs text-gray-500">取消</button>
+                                                        </div>
+                                                        <ul
+                                                            v-if="labelEntries(v).length"
+                                                            class="mt-1 inline-block rounded border border-indigo-100 bg-indigo-50 px-2 py-1 text-xs leading-5 text-gray-600"
+                                                        >
+                                                            <li v-for="[val, lab] in labelEntries(v)" :key="val" class="font-mono">
+                                                                {{ val }} {{ lab }}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </template>
                                                 <template v-else>
                                                     <span :class="displayValue(v).cls">{{ displayValue(v).text }}</span>
@@ -273,16 +284,25 @@ const continueSample = () => {
                                             </td>
                                             <td class="py-1.5">
                                                 <template v-if="editingVar === v.var_id">
-                                                    <span class="flex gap-1">
-                                                        <input
-                                                            v-model="editValue"
-                                                            class="w-28 rounded border-gray-300 px-1 py-0.5 text-sm"
-                                                            :title="tooltipFor(v)"
-                                                            @keyup.enter="saveEdit(v)"
-                                                        />
-                                                        <button @click="saveEdit(v)" class="rounded bg-indigo-600 px-2 text-xs text-white">儲存</button>
-                                                        <button @click="cancelEdit" class="text-xs text-gray-500">取消</button>
-                                                    </span>
+                                                    <div>
+                                                        <div class="flex gap-1">
+                                                            <input
+                                                                v-model="editValue"
+                                                                class="w-28 rounded border-gray-300 px-1 py-0.5 text-sm"
+                                                                @keyup.enter="saveEdit(v)"
+                                                            />
+                                                            <button @click="saveEdit(v)" class="rounded bg-indigo-600 px-2 text-xs text-white">儲存</button>
+                                                            <button @click="cancelEdit" class="text-xs text-gray-500">取消</button>
+                                                        </div>
+                                                        <ul
+                                                            v-if="labelEntries(v).length"
+                                                            class="mt-1 inline-block rounded border border-indigo-100 bg-indigo-50 px-2 py-1 text-xs leading-5 text-gray-600"
+                                                        >
+                                                            <li v-for="[val, lab] in labelEntries(v)" :key="val" class="font-mono">
+                                                                {{ val }} {{ lab }}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </template>
                                                 <template v-else>
                                                     <span :class="displayValue(v).cls">{{ displayValue(v).text }}</span>
