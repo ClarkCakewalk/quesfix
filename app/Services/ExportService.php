@@ -61,7 +61,7 @@ class ExportService
         $fixes = DB::table('fix_data')
             ->join('origin_data', 'origin_data.id', '=', 'fix_data.data_id')
             ->join('ques_vars', 'ques_vars.id', '=', 'origin_data.var_id')
-            ->join('check_items', 'check_items.id', '=', 'fix_data.check_item_id')
+            ->leftJoin('check_items', 'check_items.id', '=', 'fix_data.check_item_id')
             ->join('users', 'users.id', '=', 'fix_data.user_id')
             ->where('origin_data.ques_id', $question->id)
             ->orderBy('origin_data.sample_id')
@@ -85,8 +85,9 @@ class ExportService
         foreach ($fixes as $fix) {
             $value = $this->stataValue($fix->value, (int) $fix->var_type);
             $id = $idIsString ? '"'.$fix->sample_id.'"' : $fix->sample_id;
+            $reason = $fix->item_name ?? '資料修改模式';
 
-            $lines[] = "replace {$fix->variable}={$value} if id=={$id} //修正邏輯：{$fix->item_name}，修正者：{$fix->fixer}";
+            $lines[] = "replace {$fix->variable}={$value} if id=={$id} //修正邏輯：{$reason}，修正者：{$fix->fixer}";
         }
 
         return implode("\n", $lines)."\n";

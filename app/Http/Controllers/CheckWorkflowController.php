@@ -315,6 +315,129 @@ class CheckWorkflowController extends Controller
         return back()->with('status', $message)->with('completed', true);
     }
 
+    /** 資料修改模式：輸入樣本編號的介面 */
+    public function editEntry(Request $request, Question $question): Response
+    {
+        abort_unless($question->isCheckableBy($request->user()), 403);
+
+        return Inertia::render('Checks/EditEntry', [
+            'question' => $question->only('id', 'code', 'name'),
+        ]);
+    }
+
+    /** 搜尋樣本編號，存在且未被他人鎖定則導向資料修改介面 */
+    public function editSearch(Request $request, Question $question): RedirectResponse
+    {
+        abort_unless($question->isCheckableBy($request->user()), 403);
+
+        $request->validate(['sample_id' => ['required', 'string']], [], ['sample_id' => '樣本編號']);
+        $sampleId = trim((string) $request->input('sample_id'));
+
+        $sample = Sample::where('ques_id', $question->id)->where('sample_id', $sampleId)->first();
+
+        if ($sample === null) {
+            throw ValidationException::withMessages(['sample_id' => "找不到樣本編號「{$sampleId}」。"]);
+        }
+
+        if ($sample->isLockedByOther($request->user())) {
+            throw ValidationException::withMessages([
+                'sample_id' => "樣本 {$sampleId} 正由 {$sample->lockedBy?->name} 處理中，無法開啟。",
+            ]);
+        }
+
+        return redirect()->route('checks.edit', [$question->id, $sampleId]);
+    }
+
+    /** 資料修改介面：僅「全部題目」，進入時鎖定樣本 */
+    public function edit(Request $request, Question $question, string $sampleId): Response|RedirectResponse
+    {
+        abort_unless($question->isCheckableBy($request->user()), 403);
+
+        $sample = Sample::where('ques_id', $question->id)->where('sample_id', $sampleId)->firstOrFail();
+
+        if ($sample->isLockedByOther($request->user())) {
+            return redirect()->route('checks.edit-entry', $question->id)->withErrors([
+                'sample_id' => "樣本 {$sampleId} 正由 {$sample->lockedBy?->name} 處理中，無法開啟。",
+            ]);
+        }
+
+        $sample->update([
+            'locked_by' => $request->user()->id,
+            'locked_at' => now(),
+            'lock_expires_at' => now()->addMinutes(Sample::LOCK_MINUTES),
+        ]);
+
+        return Inertia::render('Checks/EditData', [
+            'question' => $question->only('id', 'code', 'name'),
+            'sampleId' => $sampleId,
+            'allItems' => $this->sampleValues($question, $sampleId),
+            'lockMinutes' => Sample::LOCK_MINUTES,
+        ]);
+    }
+
+    /**
+     * 完成修訂：儲存修正並執行重新檢核連鎖（同「完成檢核」，但不綁定檢核條件，
+     * 也不寫入 check_results）。完成後釋放鎖定。
+     */
+    public function completeEdit(Request $request, Question $question, string $sampleId): RedirectResponse
+    {
+        abort_unless($question->isCheckableBy($request->user()), 403);
+
+        $data = $request->validate([
+            'fixes' => ['array'],
+            'fixes.*.var_id' => ['required', 'integer'],
+            'fixes.*.value' => ['nullable', 'string'],
+        ]);
+
+        $sample = Sample::where('ques_id', $question->id)->where('sample_id', $sampleId)->firstOrFail();
+
+        if ($sample->locked_by !== $request->user()->id || ! $sample->isLocked()) {
+            throw ValidationException::withMessages([
+                'lock' => '樣本鎖定已失效（可能已被強制解鎖），請重新進入資料修改介面。',
+            ]);
+        }
+
+        $fixedVariables = [];
+
+        DB::transaction(function () use ($request, $question, $sampleId, $data, &$fixedVariables) {
+            foreach ($data['fixes'] ?? [] as $fix) {
+                $origin = $question->originData()
+                    ->where('sample_id', $sampleId)
+                    ->where('var_id', $fix['var_id'])
+                    ->first();
+
+                if ($origin === null) {
+                    throw ValidationException::withMessages([
+                        'fixes' => '修正的變數不存在於該樣本的原始資料中。',
+                    ]);
+                }
+
+                $origin->fixes()->create([
+                    'value' => (string) ($fix['value'] ?? ''),
+                    'user_id' => $request->user()->id,
+                    'check_item_id' => null, // 資料修改模式：不綁定特定檢核條件
+                ]);
+
+                $fixedVariables[] = $origin->var->variable;
+            }
+        });
+
+        // 同「完成檢核」：有修正時，重新確認與被修正變數相關的檢核條件
+        $stats = $fixedVariables !== []
+            ? $this->checkRunService->recheckAfterFix($question, $sampleId, array_unique($fixedVariables))
+            : null;
+
+        $sample->update(['locked_by' => null, 'locked_at' => null, 'lock_expires_at' => null]);
+
+        $message = '資料修訂已儲存。';
+
+        if ($stats !== null) {
+            $message .= "重新檢核：消失 {$stats['resolved']}、復原 {$stats['restored']}、新增 {$stats['created']}、重新確認 {$stats['recheck']}。";
+        }
+
+        return redirect()->route('checks.edit-entry', $question->id)->with('status', $message);
+    }
+
     /** 樣本鎖定列表（專案管理介面）＋強制解鎖 */
     public function locks(Request $request, Question $question): Response
     {

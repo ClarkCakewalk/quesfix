@@ -67,6 +67,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('checks/by-sample/{sampleId}', [CheckWorkflowController::class, 'sampleConditions'])->name('checks.sample-conditions');
         Route::get('checks/by-logic', [CheckWorkflowController::class, 'byLogic'])->name('checks.by-logic');
         Route::get('checks/by-logic/{checkItem}', [CheckWorkflowController::class, 'logicSamples'])->name('checks.logic-samples');
+
+        // 資料修改模式（不依檢核條件，直接修改指定樣本資料）
+        Route::get('checks/edit', [CheckWorkflowController::class, 'editEntry'])->name('checks.edit-entry');
+        Route::post('checks/edit', [CheckWorkflowController::class, 'editSearch'])->name('checks.edit-search');
+        Route::get('checks/edit/{sampleId}', [CheckWorkflowController::class, 'edit'])->name('checks.edit');
+        Route::post('checks/edit/{sampleId}/complete', [CheckWorkflowController::class, 'completeEdit'])->name('checks.edit-complete');
+
         Route::get('checks/review/{sampleId}/{checkItem}', [CheckWorkflowController::class, 'review'])->name('checks.review');
         Route::post('checks/review/{sampleId}/{checkItem}/complete', [CheckWorkflowController::class, 'complete'])->name('checks.complete');
         Route::post('checks/heartbeat/{sampleId}', [CheckWorkflowController::class, 'heartbeat'])->name('checks.heartbeat');

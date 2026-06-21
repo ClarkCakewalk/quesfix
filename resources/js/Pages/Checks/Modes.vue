@@ -18,8 +18,8 @@ defineProps({
         </template>
 
         <div class="py-12">
-            <div class="mx-auto max-w-3xl sm:px-6 lg:px-8">
-                <div class="grid grid-cols-2 gap-6">
+            <div class="mx-auto max-w-5xl sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
                     <Link
                         :href="route('checks.by-sample', question.id)"
                         class="rounded-lg bg-white p-10 text-center shadow hover:ring-2 hover:ring-indigo-400"
@@ -33,6 +33,13 @@ defineProps({
                     >
                         <div class="text-2xl font-semibold text-gray-800">依邏輯檢核</div>
                         <p class="mt-2 text-sm text-gray-500">列出包含未完成樣本的檢核條件，逐條件處理</p>
+                    </Link>
+                    <Link
+                        :href="route('checks.edit-entry', question.id)"
+                        class="rounded-lg bg-white p-10 text-center shadow hover:ring-2 hover:ring-indigo-400"
+                    >
+                        <div class="text-2xl font-semibold text-gray-800">資料修改</div>
+                        <p class="mt-2 text-sm text-gray-500">輸入樣本編號，不依檢核條件直接修改該樣本資料</p>
                     </Link>
                 </div>
 
