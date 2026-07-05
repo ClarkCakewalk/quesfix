@@ -114,23 +114,21 @@ class CheckItemController extends Controller
             'related_items' => '關聯題目', 'logic' => '檢核邏輯',
         ]);
 
-        // 關聯題目（逗號分隔題目名稱）存在性
+        // 關聯題目：可填題目名稱或變數名稱（變數自動歸屬其題目）；
+        // 無法解析者以警告回報，不擋儲存（與批次匯入行為一致）
         $itemsByName = $question->items()->pluck('id', 'name');
+        $varsToItem = $question->vars()->pluck('item_id', 'variable');
         $itemIds = [];
-        $missing = [];
+        $unresolved = [];
 
-        foreach (array_filter(array_map('trim', explode(',', $data['related_items'] ?? ''))) as $name) {
-            if ($itemsByName->has($name)) {
-                $itemIds[] = $itemsByName[$name];
+        foreach (array_filter(array_map('trim', explode(',', $data['related_items'] ?? ''))) as $token) {
+            if ($itemsByName->has($token)) {
+                $itemIds[] = $itemsByName[$token];
+            } elseif ($varsToItem->has($token)) {
+                $itemIds[] = $varsToItem[$token];
             } else {
-                $missing[] = $name;
+                $unresolved[] = $token;
             }
-        }
-
-        if ($missing !== []) {
-            throw ValidationException::withMessages([
-                'related_items' => '關聯題目不存在：'.implode('、', $missing),
-            ]);
         }
 
         // 檢核邏輯驗證（語法、變數、型別）
@@ -142,8 +140,12 @@ class CheckItemController extends Controller
             ]);
         }
 
-        $data['item_ids'] = $itemIds;
+        $data['item_ids'] = array_values(array_unique($itemIds));
         $data['warnings'] = array_map('strval', $result->warnings);
+
+        if ($unresolved !== []) {
+            $data['warnings'][] = '關聯題目/變數無法對應（不影響儲存）：'.implode('、', $unresolved);
+        }
 
         return $data;
     }

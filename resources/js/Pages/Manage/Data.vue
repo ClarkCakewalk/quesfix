@@ -92,7 +92,7 @@ const runChecks = () => {
                     <div class="bg-white p-6 shadow sm:rounded-lg">
                         <h3 class="mb-1 text-lg font-medium">2. 檢核條件匯入（Excel）</h3>
                         <p class="mb-3 text-sm text-gray-500">
-                            欄位：條件代號、條件敘述、關聯題目（逗號分隔）、檢核邏輯（Stata 語法）。匯入時驗證語法、變數與型別。
+                            欄位：條件代號、條件敘述、關聯題目（逗號分隔，可填題目名稱或變數名稱）、檢核邏輯（Stata 語法）。匯入時驗證語法、變數與型別。
                         </p>
                         <div class="flex items-center gap-2">
                             <input type="file" accept=".xlsx,.xls" @change="checksForm.file = $event.target.files[0]" class="text-sm" />

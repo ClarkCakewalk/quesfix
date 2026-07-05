@@ -39,17 +39,28 @@ final class Validator
 
     public function validate(string $logic): ValidationResult
     {
-        $this->errors = [];
-        $this->warnings = [];
-
         try {
             $ast = (new Parser($logic))->parse();
         } catch (SyntaxError $e) {
             return new ValidationResult([new ValidationIssue($e->getMessage(), $e->pos)]);
         }
 
+        return $this->validateAst($ast);
+    }
+
+    /**
+     * 驗證一個已解析的運算式 AST（供程式格式逐式驗證使用）。
+     */
+    public function validateAst(Node $ast, bool $warnMixedAndOr = true): ValidationResult
+    {
+        $this->errors = [];
+        $this->warnings = [];
+
         $this->typeOf($ast);
-        $this->checkMixedAndOr($ast);
+
+        if ($warnMixedAndOr) {
+            $this->checkMixedAndOr($ast);
+        }
 
         return new ValidationResult($this->errors, $this->warnings);
     }

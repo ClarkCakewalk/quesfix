@@ -309,7 +309,9 @@ class CheckWorkflowController extends Controller
         $message = '檢核結果已儲存。';
 
         if ($stats !== null) {
-            $message .= "重新檢核：消失 {$stats['resolved']}、復原 {$stats['restored']}、新增 {$stats['created']}、重新確認 {$stats['recheck']}。";
+            $message .= isset($stats['error'])
+                ? "重新檢核未執行（{$stats['error']}）。"
+                : "重新檢核：消失 {$stats['resolved']}、復原 {$stats['restored']}、新增 {$stats['created']}、重新確認 {$stats['recheck']}。";
         }
 
         return back()->with('status', $message)->with('completed', true);
@@ -432,7 +434,9 @@ class CheckWorkflowController extends Controller
         $message = '資料修訂已儲存。';
 
         if ($stats !== null) {
-            $message .= "重新檢核：消失 {$stats['resolved']}、復原 {$stats['restored']}、新增 {$stats['created']}、重新確認 {$stats['recheck']}。";
+            $message .= isset($stats['error'])
+                ? "重新檢核未執行（{$stats['error']}）。"
+                : "重新檢核：消失 {$stats['resolved']}、復原 {$stats['restored']}、新增 {$stats['created']}、重新確認 {$stats['recheck']}。";
         }
 
         return redirect()->route('checks.edit-entry', $question->id)->with('status', $message);

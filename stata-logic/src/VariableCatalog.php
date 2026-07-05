@@ -19,6 +19,22 @@ final class VariableCatalog
     {
     }
 
+    /**
+     * 衍生一份目錄，額外加入指定的數值型變數（程式產生的衍生變數）。
+     *
+     * @param  string[]  $names
+     */
+    public function withNumeric(array $names): self
+    {
+        $types = $this->types;
+
+        foreach ($names as $name) {
+            $types[$name] = self::TYPE_NUMERIC;
+        }
+
+        return new self($types);
+    }
+
     public function has(string $name): bool
     {
         return array_key_exists($name, $this->types);

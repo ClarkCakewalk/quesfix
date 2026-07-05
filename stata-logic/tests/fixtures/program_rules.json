@@ -1,0 +1,1518 @@
+[
+ {
+  "code": "same_lg_1",
+  "logic": "gen  check = (a01 != Sex)"
+ },
+ {
+  "code": "same_lg_2",
+  "logic": "rename Birth Birth_\nsplit Birth_, p(\"民國\" \"年\" \"月\")\ndrop Birth_1    //此欄位為空值\ndestring Birth_2 Birth_3, replace\ngen check = ((Birth_2 != a02z01) | (Birth_3 != a02z02) & (a02z01 < 991))"
+ },
+ {
+  "code": "same_lg_3",
+  "logic": "rename Birth2 Birth2_\ncap split Birth2_ if Birth2_ != \"0\", p(\"民國\" \"年\" \"月\")\ncap drop Birth2_1    //此欄位為空值\ncap destring Birth2_2 Birth2_3, replace\ncap gen check = (((Birth2_2 != d37b01) | (Birth2_3 != d37b02)) & (inlist(d02a,2) | d15==2) & (d37b01 < 991 & Birth2_2 > 0)) "
+ },
+ {
+  "code": "same_lg_4",
+  "logic": "gen check = (d02a==2 & inlist(d02b,1) & Marry !=\"從未結婚\" & First==0)"
+ },
+ {
+  "code": "same_lg_5",
+  "logic": "gen check = (d02a==2 & inlist(d02b,2) & Marry !=\"已婚\" & First==0)"
+ },
+ {
+  "code": "same_lg_6",
+  "logic": "gen check = (d02a==2 & inlist(d02b,4) & Marry !=\"離婚\" & First==0)"
+ },
+ {
+  "code": "same_lg_7",
+  "logic": "gen check = (d02a==2 & inlist(d02b,3) & Marry !=\"分居\" & First==0)"
+ },
+ {
+  "code": "same_lg_8",
+  "logic": "gen check = (d02a==2 & inlist(d02b,5) & Marry !=\"喪偶\" & First==0)"
+ },
+ {
+  "code": "same_lg_9",
+  "logic": "gen check = ((inlist(a18,2,3,4,5) & (a19z01==1)) & (a18 < 96 & a19z01 < 96))"
+ },
+ {
+  "code": "same_lg_10",
+  "logic": "gen check = (!((a19z02 >=104  & a19z02 <= 107)  | (a19z10 >= 104 & a19z10 <=107 )) & (a18==5))"
+ },
+ {
+  "code": "same_lg_11",
+  "logic": "gen enter_time = (a19z10 + (a19z11/12)) if (a19z10 > 0 & a19z10 < 991) & (a19z11 > 0 & a19z11 < 13)\ngen leave_time =  (a19z12 + (a19z13/12)) if (a19z12 > 0 & a19z12 < 991) & (a19z13 > 0 & a19z13 < 13)\ngen check = (((leave_time - enter_time < 0.25) & (leave_time - enter_time) < . ) & (a19z01==2) & (a02z01 >= 83 & a02z01 < 94))"
+ },
+ {
+  "code": "same_lg_12",
+  "logic": "gen enter_time = (a19z10 + (a19z11/12)) if (a19z10 > 0 & a19z10 < 991) & (a19z11 > 0 & a19z11 < 13)\ngen leave_time =  (a19z12 + (a19z13/12)) if (a19z12 > 0 & a19z12 < 991) & (a19z13 > 0 & a19z13 < 13)\ngen check = (((leave_time - enter_time) >= 0.42 & (leave_time - enter_time) < . ) & (a19z01==2) & (a02z01 >= 83 & a02z01 < 94))"
+ },
+ {
+  "code": "same_lg_13",
+  "logic": "gen enter_time = (a19z10 + (a19z11/12)) if (a19z10 > 0 & a19z10 < 991) & (a19z11 > 0 & a19z11 < 13)\ngen leave_time =  (a19z12 + (a19z13/12)) if (a19z12 > 0 & a19z12 < 991) & (a19z13 > 0 & a19z13 < 13)\ngen check = (((leave_time - enter_time < 0.91) & (leave_time - enter_time) < . ) & (a19z01==2) & (a02z01 >= 94 & a02z01 < .))"
+ },
+ {
+  "code": "same_lg_14",
+  "logic": "gen enter_time = (a19z10 + (a19z11/12)) if (a19z10 > 0 & a19z10 < 991) & (a19z11 > 0 & a19z11 < 13)\ngen leave_time =  (a19z12 + (a19z13/12)) if (a19z12 > 0 & a19z12 < 991) & (a19z13 > 0 & a19z13 < 13)\ngen check = (((leave_time - enter_time) >= 1.00 & (leave_time - enter_time) < . ) & (a19z01==2) & (a02z01 >= 94 & a02z01 < .))"
+ },
+ {
+  "code": "same_lg_15",
+  "logic": "gen check = (((a19z02 > 0 & a19z02 < 89)  | (a19z10 > 0 & a19z10 < 89)) & (a18==3))"
+ },
+ {
+  "code": "same_lg_16",
+  "logic": "gen check = ((( b01 < 14) & (a18==2)) & (b01 < 96))"
+ },
+ {
+  "code": "same_lg_18",
+  "logic": "gen enter_time = (a19z10 + (a19z11/12)) if (a19z10 > 0 & a19z10 < 991) & (a19z11 > 0 & a19z11 < 13)\ngen leave_time =  (a19z12 + (a19z13/12)) if (a19z12 > 0 & a19z12 < 991) & (a19z13 > 0 & a19z13 < 13)\ngen check = (((leave_time - enter_time) > 3.00 & (leave_time - enter_time) < . ) & (a18==2 & a19z01==2) & (a02z01 > 0 & a02z01 <= 82))"
+ },
+ {
+  "code": "same_lg_19",
+  "logic": "gen enter_time = (a19z10 + (a19z11/12)) if (a19z10 > 0 & a19z10 < 991) & (a19z11 > 0 & a19z11 < 13)\ngen leave_time =  (a19z12 + (a19z13/12)) if (a19z12 > 0 & a19z12 < 991) & (a19z13 > 0 & a19z13 < 13)\ngen check = (((leave_time - enter_time) < 1.41 & (leave_time - enter_time) < . ) & (a18==2 & a19z01==2) & (a02z01 >= 83 & a02z01 <= .))"
+ },
+ {
+  "code": "same_lg_20",
+  "logic": "gen enter_time = (a19z10 + (a19z11/12)) if (a19z10 > 0 & a19z10 < 991) & (a19z11 > 0 & a19z11 < 13)\ngen leave_time =  (a19z12 + (a19z13/12)) if (a19z12 > 0 & a19z12 < 991) & (a19z13 > 0 & a19z13 < 13)\ngen check = (((leave_time - enter_time) > 1.5 & (leave_time - enter_time) < . ) & (a81==2 & a19z01==2) & (a02z01 >= 83 & a02z01 < .))"
+ },
+ {
+  "code": "same_lg_21",
+  "logic": "gen check = ((a19z02 - a02z01 < 18 & (a19z02 > 0 & a19z02 <= 113)) | (a19z10 - a02z01 < 18 & (a19z10 > 0 & a19z10 <=113 )) & (a02z01 > 0 & a02z01 <=113))"
+ },
+ {
+  "code": "same_lg_22",
+  "logic": "gen check = ((a19z04 < a19z02 & a19z02 <=113) | (a19z08 < a19z06 & a19z06 <=113) | (a19z12 < a19z10 & a19z10 <=113))"
+ },
+ {
+  "code": "same_lg_23",
+  "logic": "gen check = (((a19z04 + (a19z05/12) < a19z02 + (a19z03/12)) & (a19z02 <=113 & a19z04 <=113) & (a19z03 <= 12 & a19z05 <= 12)) | ((a19z08 + (a19z09/12) < a19z06 + (a19z07/12)) & (a19z06 <=113 & a19z08 <=113) & (a19z07 <= 12 & a19z09 <= 12)) | ((a19z12 + (a19z13/12) < a19z10 + (a19z11/12)) & (a19z10 <=113 & a19z12 <=113) & (a19z11 <= 12 & a19z13 <= 12)))"
+ },
+ {
+  "code": "same_lg_24",
+  "logic": "gen check = ((a19z06 + (a19z07/12) <= a19z02+ (a19z03/12)) & (a19z06 < 991 & a19z07 < 13) & (a19z02 < 991 & a19z03 < 13))"
+ },
+ {
+  "code": "same_lg_24_1",
+  "logic": "gen move_time = (f03z01 + (f03z02 / 12)) if f03z01 > 0 & f03z01 < 991 & f03z02 > 0 & f03z02 < 13\ngen graduate_time = (b03z01 + (b03z02 / 12)) if b03z01 > 0 & b03z01 < 991 & b03z02 > 0 & b03z02 <13\ngen enter2_time1 = (a19z02 + (a19z03 / 12)) if a19z02 > 0 & a19z02 <991 & a19z03 > 0 & a19z03 < 13\ngen enter2_time2 = (a19z04 + (a19z05 / 12)) if a19z04 > 0 & a19z04 <991 & a19z05 > 0 & a19z05 < 13\ngen enter2_time3 = (a19z06 + (a19z07 / 12)) if a19z06 > 0 & a19z06 <991 & a19z07 > 0 & a19z07 < 13\ngen enter2_time4 = (a19z08 + (a19z09 / 12)) if a19z08 > 0 & a19z08 <991 & a19z09 > 0 & a19z09 < 13\ngen enter1_time1 = (a19z10 + (a19z11 / 12)) if a19z10 > 0 & a19z10 <991 & a19z11 > 0 & a19z11 < 13 \ngen enter1_time2 = (a19z12 + (a19z13 / 12)) if a19z12 > 0 & a19z12 <991 & a19z13 > 0 & a19z13 < 13 \n\ngen check = (((move_time < graduate_time & move_time != . & graduate_time !=.) | (move_time < enter1_time2 & move_time !=. & enter1_time2 != .) | ((move_time < enter2_time2 & move_time != . & enter2_time2 != .) | (move_time < enter2_time4 & move_time != . & enter2_time4 != .))) & f04==10)"
+ },
+ {
+  "code": "same_lg_25",
+  "logic": "gen check = (c04z06r1==1 & (c04z01r1+c04z02r1+c04z03r1+c04z05r1+c04z94r1+c04z95r1) !=0)"
+ },
+ {
+  "code": "same_lg_26",
+  "logic": "gen check = (c20z06r1==1 & (c20z01r1+c20z02r1+c20z03r1+c20z05r1+c20z07r1+c20z94r1) !=0)"
+ },
+ {
+  "code": "same_lg_27",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\ngen check = (((c04z06r1==1) & (k04z02r1==0 &  k04z03r1==0) & Lastm_y <= 112) | ((c20z06r1==1) & (k04z02r1==0 &  k04z03r1==0) & Lastm_y <= 112))"
+ },
+ {
+  "code": "same_lg_28",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\n\ngen last_time = (Lastm_y + (Lastm_m/12)) if Lastm_y <=113\ngen start_time =  .\nreplace start_time = (c21z01r1 + (c21z02r1/12)) if ((c21z01r1 > 0 & c21z01r1 <=113) & (c21z02r1 > 0 & c21z02r1 <=12)) & start_time==.\nreplace start_time = (c22z01r1 + (c22z02r1/12)) if ((c22z01r1> 0 & c22z01r1 <=113) & (c22z02r1 > 0 & c22z02r1 <=12)) & start_time==.\ngen check = ((start_time < last_time | (Lastm_y > c21z01r1 & c21z01r1 < 996)  | (Lastm_y > c22z01r1  & c22z01r1 < 996)) & inlist(c02r1,1,2,3) & (inlist(Jobcheckr1,3) | (c04z01r1==1 | c04z06r1==1 | c04z94r1==1 | c20z01r1==1 | c20z06r1==1 | c20z07r1==1 | c20z94r1==1)) & !(First==1 & d01 != 96))\n"
+ },
+ {
+  "code": "same_lg_29",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\n\ngen last_time = (Lastm_y + (Lastm_m/12)) if Lastm_y <=113\ngen start_time = .\nreplace start_time = (c21z01r2 + (c21z02r2/12)) if ((c21z01r2> 0 & c21z01r2 <=113) & (c21z02r2 > 0 & c21z02r2 <=12)) & start_time == .\nreplace start_time = (c22z01r2 + (c22z02r2/12)) if ((c22z01r2> 0 & c22z01r2 <=113) & (c22z02r2 > 0 & c22z02r2 <=12)) & start_time == .\ngen check = ((start_time < last_time |  (Lastm_y > c21z01r2 & c21z01r2 < 996) | (Lastm_y > c22z01r2 & c22z01r2 < 996)) & inlist(c02r2,1,2,3) & ((d02a==2 & d15 !=1) | d15==2) & (inlist(Jobcheckr2,3) | (c04z01r2==1 | c04z06r2==1 | c04z94r2==1 | c20z01r2==1 | c20z06r2==1 | c20z07r2==1 | c20z94r2==1)))"
+ },
+ {
+  "code": "same_lg_30",
+  "logic": "gen check = ((inlist(c02r1,1,3) & c05r1==8) | (c02r1==2 & !inlist(c05r1,8) & c05r1 != 96))"
+ },
+ {
+  "code": "same_lg_31",
+  "logic": "gen check = ((inlist(c02r2,1,3) & c05r2==8) | (c02r2==2 & !inlist(c05r2,8) & c05r2 != 96))"
+ },
+ {
+  "code": "same_lg_32",
+  "logic": "gen check = (c02r1==2 & (!inlist(c05r1,8) & c05r1 != 96))"
+ },
+ {
+  "code": "same_lg_33",
+  "logic": "gen check = (c02r2==2 & (!inlist(c05r2,8) & c05r2 != 96))"
+ },
+ {
+  "code": "same_lg_34",
+  "logic": "gen check = ((c05r1==8 & ((c15z01r1 *10 + c15z02r1) > 0)) & (c15z01r1 <= 99 & c15z02r1 <= 99) & c16r1==1)"
+ },
+ {
+  "code": "same_lg_35",
+  "logic": "gen check = (c05r1==8 & (c18r1 > 1 & c18r1 <=24))"
+ },
+ {
+  "code": "same_lg_36",
+  "logic": "gen check = ((c05r2==8 & ((c15z01r2 *10 + c15z02r2) > 0)) & (c15z01r2 <= 99 & c15z02r2 <= 99) & c16r2==1)"
+ },
+ {
+  "code": "same_lg_37",
+  "logic": "gen check = (c05r2==8 & (c18r2 > 1 & c18r2 <=24))"
+ },
+ {
+  "code": "same_lg_38",
+  "logic": "gen check = ((c05r1==5 & ((c15z01r1 *10 + c15z02r1) <= 0)) & (c15z01r1 < 91 & c15z02r1 < 10) & c16r1==1)"
+ },
+ {
+  "code": "same_lg_39",
+  "logic": "gen check = ((c05r2==5 & ((c15z01r2 *10 + c15z02r2) <= 0)) & (c15z01r2 < 91 & c15z02r2 < 10) & c16r2==1)"
+ },
+ {
+  "code": "same_lg_40",
+  "logic": "gen check = (c05r1==5 & c18r1==1)"
+ },
+ {
+  "code": "same_lg_41",
+  "logic": "gen check = (c05r2==5 & c18r2==1)"
+ },
+ {
+  "code": "same_lg_42",
+  "logic": "gen check = (inlist(c02r1,1,3) & ((c15z01r1*10 + c15z02r1) <= 0 & (c15z01r1 < 91 & c15z02r1 < 10)) & c16r1==1)"
+ },
+ {
+  "code": "same_lg_43",
+  "logic": "gen check = (inlist(c02r1,1,3) & c18r1==1)"
+ },
+ {
+  "code": "same_lg_44",
+  "logic": "gen check = (c02r1==2 & ((c15z01r1 *10 + c15z02r1) > 0 & (c15z01r1 <= 95 & c15z02r1 <= 95)))"
+ },
+ {
+  "code": "same_lg_45",
+  "logic": "gen check = (c02r1==2 & inrange(c18r1,2,24))"
+ },
+ {
+  "code": "same_lg_46",
+  "logic": "gen check = (inlist(c02r2,1,3) & ((c15z01r2*10 + c15z02r2) <= 0 & (c15z01r2 < 91 & c15z02r2 < 10)) & c16r2==1)"
+ },
+ {
+  "code": "same_lg_47",
+  "logic": "gen check = (c02r2==1 & c18r2==1)"
+ },
+ {
+  "code": "same_lg_48",
+  "logic": "gen check = (c02r2==2 & ((c15z01r2 *10 + c15z02r2) > 0 & (c15z01r2 <= 95 & c15z02r2 <= 95)))"
+ },
+ {
+  "code": "same_lg_49",
+  "logic": "gen check = (c02r2==2 & inrange(c18r2,2,24))"
+ },
+ {
+  "code": "same_lg_50",
+  "logic": "gen check = (((c15z01r1*10 + c15z02r1) > 1000 |  (c15z01r1*10 + c15z02r1) < 24 ) & (c15z01r1 < 95 & c15z02r1 < 96) & c16r1==1 & (c19br1 >= 40 & c19br1 < 991))"
+ },
+ {
+  "code": "same_lg_51",
+  "logic": "gen check = ((c32 > c19br1) & (c32 > 0 & c32 < 996) & (c19br1 > 0 & c19br1 < 996))"
+ },
+ {
+  "code": "same_lg_52",
+  "logic": "gen check = ((c32 > 30) & (c32 > 0 & c32 < 996))"
+ },
+ {
+  "code": "same_lg_53",
+  "logic": "gen check = (((c15z01r2*10 + c15z02r2) > 1000 |  (c15z01r2*10 + c15z02r2) < 24 ) & (c15z01r2 < 95 & c15z02r2 < 96) & c16r2==1 & (c19br2 >= 40 & c19br2 < 991))"
+ },
+ {
+  "code": "same_lg_54",
+  "logic": "gen check = ((c19br1 >= 71 & c19br1 < 996 & inlist(c05r1,3,4,5,6,7,94)) | (c19br1 >= 71 & c19br1 < 996 & inlist(c05r1,96)))"
+ },
+ {
+  "code": "same_lg_55",
+  "logic": "gen check = ((c19br1 < 20 & inlist(c05r1,3,4,5,6,7,94)) | (c19br1 < 20 & inlist(c05r1,96)))"
+ },
+ {
+  "code": "same_lg_56",
+  "logic": "gen check = ((c19ar1==6 & c19d==1) | (c19d==3 & inlist(c19ar1,1,2,3,4,5)))"
+ },
+ {
+  "code": "same_lg_57",
+  "logic": "gen check = ((c19br2 >= 71 & c19br2 < 996 & inlist(c05r2,3,4,5,6,7,94)) | (c19br2 >= 71 & c19br2 < 996 & inlist(c05r2,96)))"
+ },
+ {
+  "code": "same_lg_58",
+  "logic": "gen check = ((c19br2 < 20 & inlist(c05r2,3,4,5,6,7,94)) | (c19br2 < 20 & inlist(c05r2,96)))"
+ },
+ {
+  "code": "same_lg_59",
+  "logic": "gen  check = (((c21z01r1 - a02z01) < 15) & (c21z01r1 < 991 & a02z01 < 991))"
+ },
+ {
+  "code": "same_lg_60",
+  "logic": "gen  check = (((c22z01r1 - a02z01) < 15) & (c22z01r1 < 991 & a02z01 < 991))"
+ },
+ {
+  "code": "same_lg_61",
+  "logic": "gen  check = (((c21z01r1 - a02z01) > 70) & (c21z01r1 < 991 & a02z01 < 991))"
+ },
+ {
+  "code": "same_lg_62",
+  "logic": "gen  check = (((c22z01r1 - a02z01) > 70) & (c22z01r1 < 991 & a02z01 < 991))"
+ },
+ {
+  "code": "same_lg_63",
+  "logic": "gen birth_spouse = .\nreplace birth_spouse = (d37a01) if (d37a01> 0 & d37a01< 991) & birth_spouse == .\nreplace birth_spouse = (d37b01) if (d37b01> 0 & d37b01< 991) & birth_spouse == .\nreplace birth_spouse = (113 - d38) if (d38 > 0 & d38 < 996) & birth_spouse == .\ngen start_work = .\nreplace start_work = c21z01r2 if c21z01r2 < 991 & start_work==.\ngen  check = (((start_work - birth_spouse) < 15) & (start_work !=. & birth_spouse !=.))"
+ },
+ {
+  "code": "same_lg_64",
+  "logic": "gen birth_spouse = .\nreplace birth_spouse = (d37a01) if (d37a01> 0 & d37a01< 991) & birth_spouse == .\nreplace birth_spouse = (d37b01) if (d37b01> 0 & d37b01< 991) & birth_spouse == .\nreplace birth_spouse = (113 - d38) if (d38 > 0 & d38 < 996) & birth_spouse == .\ngen start_work = .\nreplace start_work = c22z01r2 if c22z01r2 < 991 & start_work==.\ngen  check = (((start_work - birth_spouse) < 15) & (start_work !=. & birth_spouse !=.))"
+ },
+ {
+  "code": "same_lg_65",
+  "logic": "gen birth_spouse = .\nreplace birth_spouse = (d37a01) if (d37a01> 0 & d37a01< 991) & birth_spouse == .\nreplace birth_spouse = (d37b01) if (d37b01> 0 & d37b01< 991) & birth_spouse == .\nreplace birth_spouse = (113 - d38) if (d38 > 0 & d38 < 996) & birth_spouse == .\ngen start_work = .\nreplace start_work = c21z01r2 if c21z01r2 < 991 & start_work==.\ngen  check = (((start_work - birth_spouse) > 70) & (start_work != . & birth_spouse != .))"
+ },
+ {
+  "code": "same_lg_66",
+  "logic": "gen birth_spouse = .\nreplace birth_spouse = (d37a01) if (d37a01> 0 & d37a01< 991) & birth_spouse == .\nreplace birth_spouse = (d37b01) if (d37b01> 0 & d37b01< 991) & birth_spouse == .\nreplace birth_spouse = (113 - d38) if (d38 > 0 & d38 < 996) & birth_spouse == .\ngen start_work = .\nreplace start_work = c22z01r2 if c22z01r2 < 991 & start_work==.\ngen  check = (((start_work - birth_spouse) > 70) & (start_work !=.))"
+ },
+ {
+  "code": "same_lg_67",
+  "logic": "gen start_time = .\nreplace start_time = (c21z01r1 + (c21z02r1/12)) if (c21z01r1 > 0 & c21z01r1 < 991) & (c21z02r1 > 0 & c21z02r1 <= 12) & start_time==.\nreplace start_time = (c22z01r1 + (c22z02r1/12)) if (c22z01r1 > 0 & c22z01r1 < 991) & (c22z02r1 > 0 & c22z02r1 <= 12) & start_time==.\ngen leave_time = (c23z01 + (c23z02/12)) if (c23z01 > 0 & c23z01 < 991) & (c23z02 > 0 & c23z02 <= 12)  & inlist(Jobcheckr1,1,2)\ngen check = (start_time < leave_time & (leave_time > 0 & leave_time < .))"
+ },
+ {
+  "code": "same_lg_68",
+  "logic": "gen check = ((113 -  a02z01) < 50 & (inlist(c25,7) | inlist(c34r1,8)) & (a02z01 <= 113))"
+ },
+ {
+  "code": "same_lg_69",
+  "logic": "gen check = ((c13z02r1 != x05) & (c14z01r1==1) & (c13z02r1 < 9996))"
+ },
+ {
+  "code": "same_lg_70",
+  "logic": "gen check = (((c31z01 * 10 + c31z02) > (c15z01r1 *10 + c15z02r1)) & (c31z01 < 91 & c31z02 < 91 & c15z01r1 < 91 & c15z02r1 < 91) & c16r1==1)"
+ },
+ {
+  "code": "same_lg_71",
+  "logic": "gen check = (inlist(c13z02r1,2,3,99) & (x05 >=100 & x05 <=984))"
+ },
+ {
+  "code": "same_lg_72",
+  "logic": "gen check = (inlist(c13z02r2,2,3,99) & (f16z03==1 | d13==1 | d45==1) & (x05 >=100 & x05 <=984))"
+ },
+ {
+  "code": "same_lg_73",
+  "logic": "gen check = (d02a==1 & d02b==1)"
+ },
+ {
+  "code": "same_lg_74",
+  "logic": "gen meet_time = (d11z01 + (d11z02/12)) if d11z01 > 0 & d11z01 < 991 & d11z02 > 0 & d11z02 < 13\ngen cohabitate_time = (d16z01 + (d16z02/12)) if d16z01 > 0 & d16z01 < 991 & d16z02 > 0 & d16z02 < 13\ngen check = (((cohabitate_time < meet_time & (cohabitate_time != . & meet_time != .)) | (d16z01 < d11z01 & d11z01 <= 113)) | ((113 - d17z01) < d11z01 & (d17z01 > 0 & d17z01 < 96 & d11z01 > 0 & d11z01 < 996)))"
+ },
+ {
+  "code": "same_lg_75",
+  "logic": "gen check = (((d16z01 - a02z01 <= 15 & d16z01 > 0 & d16z01 < 991) | ((113 - d17z01 - a02z01 <= 15) & d17z01 < 96)) & a02z01 > 0 & a02z01 <= 113)"
+ },
+ {
+  "code": "same_lg_76",
+  "logic": "gen age = (113 - a02z01) if a02z01 > 0 & a02z01 < 96\ngen age2 = .\nreplace age2 = (113 - d37a01) if d37a01 > 0 & d37a01 < 991 & age2 == .\nreplace age2 = (113 - d37b01) if d37b01 > 0 & d37b01 < 991 & age2 == .\nreplace age2 = d38 if d38 > 0 & d38 < 996 & age2 == .\ngen check = (abs(age2 - age) >= 25 & (age < . & age2 < . ))"
+ },
+ {
+  "code": "same_lg_77",
+  "logic": "gen meet_time = (d11z01 + (d11z02/12)) if d11z01 > 0 & d11z01 < 991 & d11z02 > 0 & d11z02 < 13\ngen proposal_time = (d20z01 + (d20z02/12)) if d20z01 > 0 & d20z01 < 991 & d20z02 > 0 & d20z02 < 13\ngen check = (((proposal_time < meet_time) & (proposal_time != . & meet_time != .)) | (d11z01 > d20z01 & d11z01 < 996 & d20z01 < 996))"
+ },
+ {
+  "code": "same_lg_78",
+  "logic": "gen check = ((d20z01 - a02z01 <= 15) & (d20z01 > 0 & d20z01 < 991) & (a02z01 > 0 & a02z01 <= 113))"
+ },
+ {
+  "code": "same_lg_79",
+  "logic": "gen age_spouse = .\nreplace age_spouse = (113 - d37a01) if (d37a01> 0 & d37a01< 991) & age_spouse == .\nreplace age_spouse = (113 - d37b01) if (d37b01> 0 & d37b01< 991) & age_spouse == .\nreplace age_spouse = d38 if (d38 > 0 & d38 < 996) & age_spouse == .\ngen check = ((d40z03 > age_spouse) & (d40z03 < 96))"
+ },
+ {
+  "code": "same_lg_80",
+  "logic": "gen spouse_byr = .\nreplace spouse_byr = d37a01 if (d37a01> 0 & d37a01< 991) & spouse_byr == .\nreplace spouse_byr = d37b01 if (d37b01> 0 & d37b01< 991) & spouse_byr == .\nreplace spouse_byr = (113 - d38) if (d38 > 0 & d38 < 996) & spouse_byr == .\ngen check = ((d41 < spouse_byr) & (d41 < 995))"
+ },
+ {
+  "code": "same_lg_81",
+  "logic": "gen check = (d44==1 & (c13z02r1 != c13z02r2 | c13z01r1 != c13z01r2) & (c13z02r1 < 9996 & c13z02r2 < 9996))"
+ },
+ {
+  "code": "same_lg_82",
+  "logic": "gen check = ((g02z02 + g02z03 != g02z01) & (g02z01 < 95 & g02z02 < 95 & g02z03 < 95))"
+ },
+ {
+  "code": "same_lg_83",
+  "logic": "egen cores_ch = anymatch(f16z04 f16z05 f16z06 f16z07 f16z08 f16z09), value(1/90)\ngen check = (g02z01==0 & cores_ch != 0)"
+ },
+ {
+  "code": "same_lg_84",
+  "logic": "forvalue a = 1/5 {\ngen marbro_`a' = (inlist(j10s`a',2,3,4,5) & j05s`a'==1 & (j08s`a'==0))\n}\negen cores_marbro = anycount( marbro_*), value(1)\ngen check = ((cores_marbro > 0 & f16z10==0) & j01z05 < 5)"
+ },
+ {
+  "code": "same_lg_85",
+  "logic": "forvalue a = 1/5 {\ngen marsis_`a' = (inlist(j10s`a',2,3,4,5) & j05s`a'==2 & (j08s`a'==0))\n}\negen cores_marsis = anycount( marsis_*), value(1)\ngen check = ((cores_marsis > 0 & f16z11==0) & j01z05 < 5)"
+ },
+ {
+  "code": "same_lg_86",
+  "logic": "forvalue a = 1/5 {\ngen sinbro_`a' = (inlist(j10s`a',1) & j05s`a'==1 & (j08s`a'==0))\n}\negen cores_sinbro = anycount( sinbro_*), value(1)\ngen check = ((cores_sinbro > 0 & f16z12==0) & j01z05 < 5)"
+ },
+ {
+  "code": "same_lg_87",
+  "logic": "forvalue a = 1/5 {\ngen sinsis_`a' = (inlist(j10s`a',1) & j05s`a'==2 & (j08s`a'==0))\n}\negen cores_sinsis = anycount( sinsis_*), value(1)\ngen check = ((cores_sinsis > 0 & f16z13==0) & j01z05 < 5)"
+ },
+ {
+  "code": "same_lg_88",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\ngen check = ((h07af1 < Lastm_y & F1==1 & h07af1 <=113) | (h07bf1 > 0 & h07bf1 < 20))"
+ },
+ {
+  "code": "same_lg_89",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\ngen check = ((h07am1 < Lastm_y & M1==1 & h07am1 <=113) | (h07bm1 > 0 & h07bm1 < 20))"
+ },
+ {
+  "code": "same_lg_90",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\ngen check = ((h07af2 < Lastm_y  & h07af2 <=113 & ((d02a==2 & d15==96) | d15==2)) | (h07bf2 > 0 & h07bf2 <= 30))"
+ },
+ {
+  "code": "same_lg_91",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\ngen check = ((h07am2 < Lastm_y & h07am2 <=113 & ((d02a==2 & d15==96) | d15==2)) | (h07bm2 > 0 & h07bm2 <= 30))"
+ },
+ {
+  "code": "same_lg_92",
+  "logic": "gen check = (h13f1==5 & h14f1==6 & (h16f1 > 0 & h16f1 <96))"
+ },
+ {
+  "code": "same_lg_93",
+  "logic": "gen check = (h13m1==5 & h14m1==6 & (h16m1 > 0 & h16m1 <96))"
+ },
+ {
+  "code": "same_lg_94",
+  "logic": "gen check = ((h13f1==5 & h14f1==6) & (inlist(h17f1,1,2) | inlist(h18f1,1,2)))"
+ },
+ {
+  "code": "same_lg_95",
+  "logic": "gen check = ((h13f2==5 & h14f2==6) & (inlist(h17f2,1,2) | inlist(h18f2,1,2)))"
+ },
+ {
+  "code": "same_lg_96",
+  "logic": "gen check = ((h13m1==5 & h14m1==6) & (inlist(h17m1,1,2) | inlist(h18m1,1,2)))"
+ },
+ {
+  "code": "same_lg_97",
+  "logic": "gen check = ((h13m2==5 & h14m2==6) & (inlist(h17m2,1,2) | inlist(h18m2,1,2)))"
+ },
+ {
+  "code": "same_lg_98",
+  "logic": "gen check = ((d43z01 + d43z02 + d43z03 +d43z04) != d43z05 & (d43z01 >= 0 & d43z01 < 96))"
+ },
+ {
+  "code": "same_lg_99",
+  "logic": "gen check = ( d43z05==0 & h24z02==1)"
+ },
+ {
+  "code": "same_lg_100",
+  "logic": "gen check = ( d43z05==0 & h25z02==1)"
+ },
+ {
+  "code": "same_lg_101",
+  "logic": "gen check = (inlist(d02b,1,4,5) & (d13==2) & h24z02==1)"
+ },
+ {
+  "code": "same_lg_102",
+  "logic": "gen check = (inlist(d02b,1,4,5) & (d13==2) & h25z02==1)"
+ },
+ {
+  "code": "same_lg_103",
+  "logic": "gen check = ((d10z01*12 + d10z02) ==0 & (d10z01 < 91 & d10z02 < 13))"
+ },
+ {
+  "code": "same_lg_104",
+  "logic": "gen check = ((113 - (a02z01 + a02z02/12) - (d17z01 + (d17z02/12)) <=15) & (d17z01 < 96 & d17z02 < 13 & a02z01 < 991 & a02z02 < 13))"
+ },
+ {
+  "code": "same_lg_105",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\n\ngen last_view = (Lastm_y + (Lastm_m/12)) if (Lastm_y > 0 & Lastm_y < 113) & (Lastm_m > 0 & Lastm_m < 13)\ngen coh_start = .\nreplace coh_start = (d16z01+ (d16z02/12)) if (d16z01 > 0 & d16z01 < 991) & (d16z02 > 0 & d16z02 < 13) & coh_start==.\nreplace coh_start = (x03z01 + (x03z02/12)) - (d17z01 + (d17z02/12)) if (d17z01 > 0 & d17z01 < 96 & d17z02 > 0 & d17z02 <13) & coh_start==.\n\ngen check = (d15==2 & (last_view < coh_start) & coh_start != .)"
+ },
+ {
+  "code": "same_lg_106",
+  "logic": "gen cohabitate_time = (d16z01 + (d16z02/12)) if d16z01 > 0 & d16z01 < 991 & d16z02 > 0 & d16z02 < 13\ngen proposal_time = (d20z01 + (d20z02)) if d20z01 > 0 & d20z01 < 991 & d20z02 > 0 & d20z02 < 13\ngen check = (((proposal_time < cohabitate_time) & (proposal_time != . & cohabitate_time != .)) | (d16z01 > d20z01 & d16z01 < 991) | ((113 - d17z01) > d20z01 & (d17z01 < 96 & d20z01 < 996)))"
+ },
+ {
+  "code": "same_lg_107",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\n\ngen last_view = (Lastm_y + (Lastm_m/12)) if (Lastm_y > 0 & Lastm_y < 113) & (Lastm_m > 0 & Lastm_m < 13)\ngen coh_period = .\nreplace coh_period = (d17z01+ (d17z02/12)) if (d17z01 > 0 & d17z01 < 91) & (d17z02 > 0 & d17z02 < 13)\ngen until_now = (x03z01 + (x03z02/12)) if x03z01 > 0 & x03z01 <=113 & x03z02 > 0 & x03z02 < 13\n\ngen check = ((last_view + coh_period > until_now & last_view < . & coh_period < .) | (d17z01 + Lastm_y > 113 & d17z01 < 91))"
+ },
+ {
+  "code": "same_lg_108",
+  "logic": "gen check = ((d17z01*12 + d17z02) ==0 & (d17z01 < 91 & d17z02 < 13))"
+ },
+ {
+  "code": "same_lg_109",
+  "logic": "gen check = ((a27 / ((a26 / 100)^2)) < 10 & (a26 < 991 & a27 < 991))"
+ },
+ {
+  "code": "same_lg_110",
+  "logic": "gen check = ((a27 / ((a26 / 100)^2)) > 60 & (a26 < 991 & a27 < 991))"
+ },
+ {
+  "code": "same_lg_111",
+  "logic": "gen check = (d69a==1 & a27==995)"
+ },
+ {
+  "code": "same_lg_112",
+  "logic": "gen  check = (inlist(f01,1,94) & (f02==0))"
+ },
+ {
+  "code": "same_lg_113",
+  "logic": "gen  check = (inlist(f01,1,94) & (f02 >= 10 & f02 < 96))"
+ },
+ {
+  "code": "same_lg_114",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\ngen  check = ((f03z01 < Lastm_y | (f03z01<= Lastm_y & f03z02 < Lastm_m)) & (f01==1) & (f03z01 > 0 & f03z01 <= 113 & f03z02 > 0 & f03z02 < 13))"
+ },
+ {
+  "code": "same_lg_115",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\ngen livetime_y = (Lastm_y + f10z01) if f10z01 >=0 & f10z01 < 96\ngen livetime_m = (Lastm_m + f10z02) if f10z02 >=0 & f10z02 < 12\nreplace livetime_y = livetime_y + 1 if (livetime_m > 11 & livetime_m < .)\nreplace livetime_m = livetime_m - 12 if (livetime_m > 11 & livetime_m < .)\ngen check = ((livetime_y > x03z01 & livetime_y < . ) | (livetime_y >= x03z01 & livetime_m > x03z02 & (livetime_y < .  & livetime_m < . )) & !(First==1 & d01 !=96) & f01==1)"
+ },
+ {
+  "code": "same_lg_116",
+  "logic": "gen check = (f08z01==0 | f09z01==0)"
+ },
+ {
+  "code": "same_lg_117",
+  "logic": "gen check = ((f08z01 + f08z02==0) & (f08z01 < 991 & f08z02 < 991))"
+ },
+ {
+  "code": "same_lg_118",
+  "logic": "gen check = ((f09z01 + f09z02 + f09z03==0) & (f09z01 < 91 & f09z02 < 91 & f09z03 < 91))"
+ },
+ {
+  "code": "same_lg_119",
+  "logic": "gen check = (((f16z03==1 | d13==1) & inlist(d45,2,94,97,98)) | (f16z03 !=1 & inlist(d45,1)) | (inlist(d13,2,97,98) & inlist(d45,1)))"
+ },
+ {
+  "code": "same_lg_120",
+  "logic": "gen check = (f04==3 & (inlist(c04z06r1,1) | inlist(c20z06r1,1)))"
+ },
+ {
+  "code": "same_lg_121",
+  "logic": "gen check = (f04==13 & (inlist(d02a,2) | (d15==2)))"
+ },
+ {
+  "code": "same_lg_122",
+  "logic": "gen check = ((d13==2) & f16z03==1)"
+ },
+ {
+  "code": "same_lg_123",
+  "logic": "gen check = (inlist(h06f1,6,96) & inlist(h06m1,6,96) & f05==6)"
+ },
+ {
+  "code": "same_lg_124",
+  "logic": "gen check = (inlist(h06f2,6,96) & inlist(h06m2,6,96) & f05==7)"
+ },
+ {
+  "code": "same_lg_125",
+  "logic": "gen check = (inlist(c02r1,3) & ((c15z01r1*10) + c15z02r1)==0 & (c15z01r1 < 91 & c15z02r1 < 10))"
+ },
+ {
+  "code": "same_lg_126",
+  "logic": "gen check = (inlist(c02r1,3) & c19br1<= 1)"
+ },
+ {
+  "code": "same_lg_127",
+  "logic": "gen check = (inlist(c02r2,3) & ((c15z01r2*10) + c15z02r2)==0 & (c15z01r2 < 91 & c15z02r2 < 10))"
+ },
+ {
+  "code": "same_lg_128",
+  "logic": "gen check = (inlist(c02r2,3) & c19br2 <= 1)"
+ },
+ {
+  "code": "same_lg_129",
+  "logic": "gen check = ((inlist(c02r1,1,3) & inlist(c05r1,8)) | (c02r1==2 & inlist(c05r1,3,4,5,6,7)))"
+ },
+ {
+  "code": "same_lg_130",
+  "logic": "gen check = ((inlist(c02r2,1,3) & inlist(c05r2,8)) | (c02r2==2 & inlist(c05r2,3,4,5,6,7)))"
+ },
+ {
+  "code": "same_lg_131",
+  "logic": "gen check = ((c02r1==2 & !inlist(c05r1,8,96,97,98)) | (inlist(c02r1,1,3) & c05r1==8))"
+ },
+ {
+  "code": "same_lg_132",
+  "logic": "gen check = ((c02r2==2 & !inlist(c05r2,8,96,97,98)) | (inlist(c02r2,1,3) & c05r2==8))"
+ },
+ {
+  "code": "same_lg_133",
+  "logic": "gen check = (inlist(c30,8) & ((c31z01*10+c31z02) > 0) & (c31z01 < 91 & c31z02 < 10))"
+ },
+ {
+  "code": "same_lg_134",
+  "logic": "gen check = (inlist(c30,5) & ((c31z01*10+c31z02) == 0) & (c31z01 < 91 & c31z02 < 10))"
+ },
+ {
+  "code": "same_lg_135",
+  "logic": "gen check = ((c15z01r1==95 | c15z02r1==95) & c18r1 != 24) "
+ },
+ {
+  "code": "same_lg_136",
+  "logic": "gen check = ((c15z01r2==95 | c15z02r2==95) & c18r2 != 24) "
+ },
+ {
+  "code": "same_lg_137",
+  "logic": "gen check = ((c26z01==95 | c26z02==95) & c27 != 24) "
+ },
+ {
+  "code": "same_lg_138",
+  "logic": "gen check = (inlist(c30,1,2,3,4,5,6,7,9) & ((c31z01*10+c31z02) == 0) & (c31z01 < 991 & c31z02 < 10))"
+ },
+ {
+  "code": "same_lg_139",
+  "logic": "gen check = (inlist(c29,1) & (c30==8))"
+ },
+ {
+  "code": "same_lg_140",
+  "logic": "gen check = (inlist(Jobcheckr1,1) & c04z95r1==1) "
+ },
+ {
+  "code": "same_lg_141",
+  "logic": "gen check = (inlist(Jobcheckr1,2) & c20z07r1==1) "
+ },
+ {
+  "code": "same_lg_142",
+  "logic": "gen check = ((Jobcheckr1==3 & c20z07r1==0) & (c20z01r1==0 & c20z94r1==0))"
+ },
+ {
+  "code": "same_lg_142_1",
+  "logic": "gen check = ((Jobcheckr1==3 & inlist(c02r1,1,2,3)) & (c20z07r1!=1 & !inlist(c20z07r1,97,98)) & (First==1 & d01 != 96))"
+ },
+ {
+  "code": "same_lg_142_2",
+  "logic": "gen check = (inlist(c02r2,1,2,3) & (c20z07r2 !=1 & !inlist(c20z07r2,96,97,98)) & ((First==1 & d01 != 96) | (d02a==1 | d15==1)))"
+ },
+ {
+  "code": "same_lg_143",
+  "logic": "gen check = (inlist(Jobcheckr2,1) & (d02a==2 | d15==2) & (c04z95r2==1)) "
+ },
+ {
+  "code": "same_lg_144",
+  "logic": "gen check = (inlist(Jobcheckr2,2) & c20z07r2==1) "
+ },
+ {
+  "code": "same_lg_145",
+  "logic": "gen check = ((Jobcheckr2==3 & c20z07r2==0) & (c20z01r2==0 & c20z94r2==0))"
+ },
+ {
+  "code": "same_lg_146",
+  "logic": "gen check = ((k26z01==1 & (c23z01> 0 & c23z01 < 112)) | (k26z01==1 & c24==1 & (c23z01>110 & c23z01<=112)))"
+ },
+ {
+  "code": "same_lg_147",
+  "logic": "cap split Birth2, p(\"民國\" \"年\" \"月\")\ncap drop Birth21    //此欄位為空值\ncap destring Birth22 Birth23, replace\ncap rename Birth22 Birth2_y\ncap rename Birth23 Birth2_m\ncap gen check = (((d02a==2 & d02b==2) | d15==2) & ((d37b01 != Birth2_y & d37b01 < 96) | (d37b02 != Birth2_m & d37b02 < 13)) & First==0)"
+ },
+ {
+  "code": "same_lg_148",
+  "logic": "gen check = ((f16z03==1 | inlist(d45,1)) & (d02b==3 | d01==3))"
+ },
+ {
+  "code": "same_lg_149",
+  "logic": "gen check = ((d24==8 & d25z01==1) | (inlist(d24,1,2,3,4,5,6,7,9,94) & d25z01==2))"
+ },
+ {
+  "code": "same_lg_150",
+  "logic": "gen check = ((d29==8 & d30z01==1) | (inlist(d29,1,2,3,4,5,6,7,9,94) & d30z01==2))"
+ },
+ {
+  "code": "same_lg_151",
+  "logic": "gen check = (d24==8 & (d25z01==1 | ((d25z02*10 + d25z03) >= 0 & (d25z02 < 91 & d25z03 < 9))))"
+ },
+ {
+  "code": "same_lg_152",
+  "logic": "gen check = (d29==8 & (d30z01==1 | ((d30z02*10 + d30z03) >= 0 & (d30z02 < 91 & d30z03 < 10))))"
+ },
+ {
+  "code": "same_lg_153",
+  "logic": "gen check = (d24==5 & (d25z01==2 | ((d25z02*10 + d25z03) == 0 & (d25z02 < 91 & d25z03 < 10))))"
+ },
+ {
+  "code": "same_lg_154",
+  "logic": "gen check = (d29==5 & (d30z01==2 | ((d30z02*10 + d30z03) ==0 & (d30z02 < 91 & d30z03 < 10))))"
+ },
+ {
+  "code": "same_lg_155",
+  "logic": "gen check = (c05r1==1 & inrange(c12r1,2,9))"
+ },
+ {
+  "code": "same_lg_156",
+  "logic": "gen check = (c05r2==1 & inrange(c12r2,2,9))"
+ },
+ {
+  "code": "same_lg_157",
+  "logic": "gen check = (c14z01r1==1 & inlist(c05r1,3,4,6,7) & (c19cr1/c19br1) < 0.5 & (c19cr1 < 996 & c19br1 < 996))"
+ },
+ {
+  "code": "same_lg_158",
+  "logic": "gen check = (c14z01r2==1 & inlist(c05r2,3,4,6,7) & (c19cr2/c19br2) < 0.5 & (c19cr2 < 996 & c19br2 < 996))"
+ },
+ {
+  "code": "same_lg_159",
+  "logic": "gen check = (inlist(c05r1,1,2,5,8,9) & (c14z01r1==1) & (f14==95))"
+ },
+ {
+  "code": "same_lg_160",
+  "logic": "gen check = (inlist(c05r2,1,2,5,8,9) & (f16z03==1 | d13==1 | d45==1) & (c14z01r2==1) & (f14==95))"
+ },
+ {
+  "code": "same_lg_161",
+  "logic": "gen check = (c14z01r1==1 & (c13z02r1 != x05) & (c13z02r1 < 9996))"
+ },
+ {
+  "code": "same_lg_162",
+  "logic": "gen check = (c14z01r2==1 & (d13==1 | d45==1 | f16z03==1) & (c13z02r2 != x05) & (c13z02r2 < 9996 & x05 != . ))"
+ },
+ {
+  "code": "same_lg_163",
+  "logic": "gen check = (c14z01r2==1 & (d13==2 | d45==2 | f16z03==0) & (c13z02r2 != d47z02) & (c13z02r2 < 9996 & d47z02 < 9996))"
+ },
+ {
+  "code": "same_lg_164",
+  "logic": "gen check = ((c14z02r1 > 180 & c14z02r1 < 991) | ((c14z02r1 < 5) & (x05 != c13z02r1 & c13z02r1 != 9996)))"
+ },
+ {
+  "code": "same_lg_165",
+  "logic": "gen check = ((c14z02r2 > 180 & c14z02r2 < 991) | ((c14z02r2 < 5) & ((f16z03==1 & x05 != c13z02r2 & c13z02r2 != 9996) | (f16z03==0 & d47z02 != c13z02r2 & (d47z02 < 9996 & c13z02r2 < 9996)))))"
+ },
+ {
+  "code": "same_lg_166",
+  "logic": "gen check = ((c19cr1 > c19br1) & c19br1 < 991 & c19cr1 < 991)"
+ },
+ {
+  "code": "same_lg_167",
+  "logic": "gen check = ((c19cr2 > c19br2) & c19br2 < 991 & c19cr2 < 991)"
+ },
+ {
+  "code": "same_lg_168",
+  "logic": "gen check = (inlist(c05r1, 3, 4, 6, 7) & c37r1==2)"
+ },
+ {
+  "code": "same_lg_169",
+  "logic": "gen check = (inlist(c05r2, 3, 4, 6, 7) & c37r2==2)"
+ },
+ {
+  "code": "same_lg_170",
+  "logic": "gen check = (inlist(c37r1,3,4) & inlist(c05r1, 1,2,3,4,5,8,9))"
+ },
+ {
+  "code": "same_lg_171",
+  "logic": "gen check = (inlist(c37r2,3,4) & inlist(c05r2, 1,2,3,4,5,8,9))"
+ },
+ {
+  "code": "same_lg_172",
+  "logic": "gen check = (c02r1==4 & inlist(c37r1,1,2,3,4,5))"
+ },
+ {
+  "code": "same_lg_172_1",
+  "logic": "gen check = ((a19z04==995 | a19z08==995 | a19z12==995) & inlist(a18,1) & !inlist(c37r1,5))"
+ },
+ {
+  "code": "same_lg_172_2",
+  "logic": "gen check = ((a19z04==995 | a19z08==995 | a19z12==995) & inlist(a18,2,3,5) & !inlist(c37r1,1,5) & (a02z01 > 88 & a02z01 < 991))"
+ },
+ {
+  "code": "same_lg_172_3",
+  "logic": "gen check = ((a19z04==995 | a19z08==995 | a19z12==995) & inlist(a18,2,3,5) & !inlist(c37r1,1,5,6) & (a02z01> 0 & a02z01 <= 88))"
+ },
+ {
+  "code": "same_lg_173",
+  "logic": "gen check = (c02r2==4 & inlist(c37r2,1,2,3,4,5))"
+ },
+ {
+  "code": "same_lg_176",
+  "logic": "gen check = ((inlist(h24z01,1,2) & h25z01==3) | (h24z01==3 & h25z01 !=3) | (h25z01==96 & !inlist(h24z01,3,96)))"
+ },
+ {
+  "code": "same_lg_177",
+  "logic": "gen check = ((inlist(h24z02,1,2) & h25z02==3) | (h24z02==3 & h25z02 !=3) | (h25z02==96 & !inlist(h24z02,3,96)))"
+ },
+ {
+  "code": "same_lg_178",
+  "logic": "gen check = (h24z04==3 | h25z04==3)"
+ },
+ {
+  "code": "same_lg_179",
+  "logic": "gen check = (f04==1 & ((d02a==1 & inlist(d02b,3,4,5)) | d02a==2 | inlist(d01,3,4,5)))"
+ },
+ {
+  "code": "same_lg_180",
+  "logic": "gen check = (f04==13 & ((inlist(d02a,2) & d02b !=1) | (d15==2) | inlist(d01,2)))"
+ },
+ {
+  "code": "same_lg_181",
+  "logic": "gen check = (f06z01==1 & (f06z02*10 + f06z03) <=0)"
+ },
+ {
+  "code": "same_lg_182",
+  "logic": "gen check = (inlist(f11,1,5,6) & (f12 > 1 & f12 <= 95))"
+ },
+ {
+  "code": "same_lg_183",
+  "logic": "gen check = (inlist(f11,7) & (f12 > 5 & f12 < 94))"
+ },
+ {
+  "code": "same_lg_184",
+  "logic": "gen check = ((j01z01 + j01z02 + j01z03 +j01z04) != j01z05 & (j01z05 > 0 & j01z05 < 96))"
+ },
+ {
+  "code": "same_lg_185",
+  "logic": "gen check = ((inlist(h24z01,95) & (j01z05 > 0 & j01z05 < 96)) | (j01z05==0 & h24z01==1))"
+ },
+ {
+  "code": "same_lg_186",
+  "logic": "gen check = ((inlist(h25z01,95,96) & (j01z05 > 0 & j01z05 < 96)) | (j01z05==0 & h25z01==1))"
+ },
+ {
+  "code": "same_lg_186_1",
+  "logic": "forvalue a = 2/5 {\nlocal s = `a'-1\ngen errors_`a' = ((j03s`a' <=  j03s`s') & (j03s`a' > 0 & j03s`a' < 96) & (j03s`s' > 0 & j03s`s' < 96))\n}\negen check_sum = rowtotal(errors_?)\ngen check = (check_sum > 0)"
+ },
+ {
+  "code": "same_lg_187",
+  "logic": "forvalue a = 2/5 {\nlocal s = `a'-1\n\ngen birthc`s' = .\ncap replace birthc`s' = j02z01s`s' if j02z01s`s' > 0 & j02z01s`s' < 991 & birthc`s'==.    //RR問卷沒有J02題\nreplace birthc`s' = j06a01s`s' if j06a01s`s' > 0 & j06a01s`s' < 991 & birthc`s'==.\nreplace birthc`s' = (113 - j06b01s`s') if j06b01s`s' > 0 & j06b01s`s' < 96 & birthc`s'==.\n\ngen births`a' = .\ncap replace births`a' = j02z01s`a' if j02z01s`a' > 0 & j02z01s`a' < 991 & births`a'==.    //RR問卷沒有J02題\nreplace births`a' = j06a01s`a' if j06a01s`a' > 0 & j06a01s`a' < 991 & births`a'==.\nreplace births`a' = (113 - j06b01s`a') if j06b01s`a' > 0 & j06b01s`a' < 96 & births`a'==.\n\ngen sibs_e`a' = (births`a' < birthc`s' & births`a' != . & birthc`s' != . )\n}\negen check = anymatch(sibs_e?), value(1)"
+ },
+ {
+  "code": "same_lg_188",
+  "logic": "gen check = (k01 > 60 & k01 < 96)"
+ },
+ {
+  "code": "same_lg_189",
+  "logic": "gen check = (k02 > 60 & k02 < 96)"
+ },
+ {
+  "code": "same_lg_190",
+  "logic": "gen check = ((((k29a01*10 + k29a02) >= 1500 | (k29a01*10 + k29a02) < 50 ) & (k29a01 < 9991 & k29a02 < 10)) | (k29a01 > 150 & k29a01 < 9995))"
+ },
+ {
+  "code": "same_lg_191",
+  "logic": "gen k29_sum = (k29a01*10 + k29a02) if (k29a01 < 9995 & k29a02 < 10)\ngen k30_sum = (k30a01*10 + k30a02) if (k30a01 < 995 & k30a02 < 10)\ngen k31a_sum = (k31a01*10 + k31a02) if (k31a01 < 995 & k31a02 < 10)\ngen k31b1_sum = ((k31b101*10 + k31b102)*12) if (k31b101 < 995 & k31b102 < 10)\ngen k31b2_sum = ((k31b201*10 + k31b202)*12) if (k31b201 < 995 & k31b202 < 10)\negen k3031_total = rowtotal(k30_sum k31a_sum k31b1_sum k31b2_sum)\ngen check = ((k3031_total > k29_sum) & (k3031_total != . & k29_sum != .))"
+ },
+ {
+  "code": "same_lg_192",
+  "logic": "gen check = ((c02r1==2 & (((k04z02r1 *10 + k04z03r1) > 0) & ((k04z02r1 *10 + k04z03r1) < . ))) & (c04z06r1==1 | c20z06r1==1))"
+ },
+ {
+  "code": "same_lg_193",
+  "logic": "gen check = ((c02r1==2 & (((k04z02r1 *10 + k04z03r1) > 0) & ((k04z02r1 *10 + k04z03r1) < . ))) & (c21z01r1 <= 112 | c22z01r1 <=112))"
+ },
+ {
+  "code": "same_lg_194",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\ngen timefrom = c22z01r2 if c22z01r2 > 0 & c22z01r2 < 991\nreplace timefrom = timefrom + (c22z02r2 / 12) if c22z02r2 > 0 & c22z02r2 < 13\ngen check = ((c02r2==2 & ((c21z01r2 < Lastm_y | (c21z01r2 <= Lastm_y & c21z02r2 < Lastm_m)) | (c22z01r2 < Lastm_y | (c22z01r2 <= Lastm_y & c22z02r2 < Lastm_m)))) & ((k04z02r2 *10 + k04z03r2) > 0 & (k04z02r2 < 9991 & k04z03r2 < 9991)) & First2==1)"
+ },
+ {
+  "code": "same_lg_195",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\ngen check = ((c02r2==2  & ((k04z02r2 *10 + k04z03r2 > 0) & ((k04z02r2 *10 + k04z03r2) < . ) & (k04z02r2 < 9996 & k04z03r2 < 9996))) & (c04z06r2==1 | c20z06r2==1 | (c21z01r2 < Lastm_y | (c21z01r2 <= Lastm_y & c21z02r2 < Lastm_m)) | (c22z01r2 < Lastm_y | (c22z01r2 <= Lastm_y & c22z02r2 < Lastm_m))) & First2==0)"
+ },
+ {
+  "code": "same_lg_196",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\ngen last_time = (Lastm_y + (Lastm_m/12)) if Lastm_y != 0 & Lastm_y != .\ngen new_mar = (d03z01 + (d03z02/12)) if d03z01 > 0 & d03z01 < 991 & d03z02 > 0 & d03z02 < 13\ngen check = (((new_mar < last_time & last_time != .) | (d03z01 < Lastm_y & d03z01 > 0 & d03z01 <=113 )) & inlist(d02a,1))"
+ },
+ {
+  "code": "same_lg_197",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\ngen last_time = (Lastm_y + (Lastm_m/12)) if Lastm_y <=113\ngen last_time_leave = (c23z01 + (c23z02/12)) if ((c23z01> 0 & c23z01 <=113) & (c23z02 > 0 & c23z02 <=12))\ngen check = ((last_time > last_time_leave) | (c23z01 < Lastm_y & (c23z01 > 0 & c23z01 <=113)))"
+ },
+ {
+  "code": "same_lg_198",
+  "logic": "egen k2627sum = anycount(k26z01- k26z03 k27z01- k27z94), value(1)\ngen check = ((k2627sum > 0) & (k28z01 * 10 + k28z02 <= 3) & (k28z01 < 91 & k28z02 < 10))"
+ },
+ {
+  "code": "same_lg_199",
+  "logic": "gen check = (k26z01==1 & (c04z06r1==1 | c20z06r1==1))"
+ },
+ {
+  "code": "same_lg_200",
+  "logic": "gen check = (((c05r1==2 & (c04z06r1==1 | c20z06r1==1 | c22z01r1 <=112)) | c09r1==4) & k06z01==4)"
+ },
+ {
+  "code": "same_lg_201",
+  "logic": "gen check = (((c05r2==2 & (c04z06r2==1 | c20z06r2==1 | c22z01r2 <=112)) | c09r2==4) & k06z01==4)"
+ },
+ {
+  "code": "same_lg_202",
+  "logic": "gen check = (c15z01r1 != c15z02r1 & ((c15z01r1 > 90 & c15z01r1 <=99) | (c15z02r1 > 90 & c15z02r1 <=99)))"
+ },
+ {
+  "code": "same_lg_203",
+  "logic": "gen check = (c15z01r2 != c15z02r2 & ((c15z01r2 > 90 & c15z01r2 <=99) | (c15z02r2 > 90 & c15z02r2 <=99)))"
+ },
+ {
+  "code": "same_lg_204",
+  "logic": "gen check = (c26z01 != c26z02 & ((c26z01 > 90 & c26z01 <=99) | (c26z02 > 90 & c26z02 <=99)))"
+ },
+ {
+  "code": "same_lg_205",
+  "logic": "gen check = (c31z01 != c31z02 & ((c31z01 > 90 & c31z01 <=99) | (c31z02 > 90 & c31z02 <=99)))"
+ },
+ {
+  "code": "same_lg_206",
+  "logic": "gen check = (inlist(c35z01r1,1) & (c35z02r1 * 4 + c35z03r1)==0 & (c35z02r1 < 91 & c35z03r1 < 5))"
+ },
+ {
+  "code": "same_lg_207",
+  "logic": "gen check = (inlist(c35z01r2,1) & (c35z02r2 * 4 + c35z03r2)==0 & (c35z02r2 < 91 & c35z03r2 < 5))"
+ },
+ {
+  "code": "same_lg_208",
+  "logic": "gen check = (c35z02r1 != c35z03r1 & ((c35z02r1 > 90 & c35z02r1 <=99) | (c35z03r1 > 90 & c35z03r1 <=99)))"
+ },
+ {
+  "code": "same_lg_209",
+  "logic": "gen check = (c35z02r2 != c35z03r2 & ((c35z02r2 > 90 & c35z02r2 <=99) | (c35z03r2 > 90 & c35z03r2 <=99)))"
+ },
+ {
+  "code": "same_lg_210",
+  "logic": "gen check = (d03z01 != d03z02 & ((d03z01 > 990 & d03z01 <=999) | (d03z02 > 990 & d03z02 <=999)))"
+ },
+ {
+  "code": "same_lg_211",
+  "logic": "gen check = (d10z01 != d10z02 & ((d10z01 > 99 & d10z01 <=99) | (d10z02 > 90 & d10z02 <=99)))"
+ },
+ {
+  "code": "same_lg_212",
+  "logic": "gen check = (d11z01 != d11z02 & ((d11z01 > 990 & d11z01 <=999) | (d11z02 > 990 & d11z02 <=999)))"
+ },
+ {
+  "code": "same_lg_213",
+  "logic": "gen check = (d16z01 != d16z02 & ((d16z01 > 990 & d16z01 <=999) | (d16z02 > 990 & d16z02 <=999)))"
+ },
+ {
+  "code": "same_lg_214",
+  "logic": "gen check = (d17z01 != d17z02 & ((d17z01 > 90 & d17z01 <=99) | (d17z02 > 90 & d17z02 <=99)))"
+ },
+ {
+  "code": "same_lg_215",
+  "logic": "gen check = (d20z01 != d20z02 & ((d20z01 > 990 & d20z01 <=999) | (d20z02 > 990 & d20z02 <=999)))"
+ },
+ {
+  "code": "same_lg_216",
+  "logic": "gen check = (d25z01==1 & (d25z02 * 10 + d25z03)==0 & (d25z02 < 91 & d25z03 < 10))"
+ },
+ {
+  "code": "same_lg_217",
+  "logic": "gen check = (d25z02 != d25z03 & ((d25z02 > 90 & d25z03 <=99) | (d25z03 > 90 & d25z03 <=99)))"
+ },
+ {
+  "code": "same_lg_218",
+  "logic": "gen check = (d30z01==1 & (d30z02 * 10 + d30z03)==0 & (d30z02 < 91 & d30z03 < 10))"
+ },
+ {
+  "code": "same_lg_219",
+  "logic": "gen check = (d30z02 != d30z03 & ((d30z02 > 90 & d30z02 <=99) | (d30z03 > 90 & d30z03 <=99)))"
+ },
+ {
+  "code": "same_lg_220",
+  "logic": "gen check = (d31a01==1 & (d31a02 * 10 + d31a03)==0 & (d31a02 < 9991 & d31a03 < 10))"
+ },
+ {
+  "code": "same_lg_221",
+  "logic": "gen check = (d31a02 != d31a03 & ((d31a02 > 9990 & d31a02 <=9999) | (d31a03 > 9990 & d31a03 <=9999)))"
+ },
+ {
+  "code": "same_lg_222",
+  "logic": "gen check = (d31b01==1 & (d31b02 * 10 + d31b03)==0 & (d31b02 < 9991 & d31b03 < 10))"
+ },
+ {
+  "code": "same_lg_223",
+  "logic": "gen check = (d31b02 != d31b03 & ((d31b02 > 9990 & d31b02 <=9999) | (d31b03 > 9990 & d31b03 <=9999)))"
+ },
+ {
+  "code": "same_lg_224",
+  "logic": "gen check = (d33z03 != d33z04 & ((d33z03 > 9990 & d33z03 <=9999) | (d33z04 > 9990 & d33z04 <=9999)))"
+ },
+ {
+  "code": "same_lg_225",
+  "logic": "gen check = (inlist(d33z01,7,8) & (d33z03 * 10 + d33z04 < 2000) & (d33z03 < 9991 & d33z04 < 9991))"
+ },
+ {
+  "code": "same_lg_226",
+  "logic": "gen check = (((x03z01 - d03z01 + 1) < d33z02) & (d03z01 < 991 & d33z02 < 9991)) "
+ },
+ {
+  "code": "same_lg_227",
+  "logic": "gen check = (d37a01 != d37a02 & ((d37a01 > 996 & d37a01 <=999) | (d37a02 > 990 & d37a02 <=999)))"
+ },
+ {
+  "code": "same_lg_228",
+  "logic": "gen check = (d37b01 != d37b02 & ((d37b01 > 996 & d37b01 <=999) | (d37b02 > 990 & d37b02 <=999)))"
+ },
+ {
+  "code": "same_lg_229",
+  "logic": "gen check = (f03z01 != f03z02 & ((f03z01 > 990 & f03z01 <=999) | (f03z02 > 990 & f03z02 <=999)))"
+ },
+ {
+  "code": "same_lg_230",
+  "logic": "gen check = (h21z01p1==1 & ((h21z02p1 * 10 + h21z03p1)==0) & (h21z02p1 < 991 & h21z03p1 < 10))"
+ },
+ {
+  "code": "same_lg_231",
+  "logic": "gen check = (h22z01p1==1 & ((h22z02p1 * 10 + h22z03p1)==0) & (h22z02p1 < 991 & h22z03p1 < 10))"
+ },
+ {
+  "code": "same_lg_232",
+  "logic": "gen check = (h21z02p1 != h21z03p1 & ((h21z02p1 > 990 & h21z02p1 <=999) | (h21z03p1 > 990 & h21z03p1 <=999)))"
+ },
+ {
+  "code": "same_lg_233",
+  "logic": "gen check = (h22z02p1 != h22z03p1 & ((h22z02p1 > 990 & h22z02p1 <=999) | (h22z03p1 > 990 & h22z03p1 <=999)))"
+ },
+ {
+  "code": "same_lg_234",
+  "logic": "gen check = (h21z01p2==1 & ((h21z02p2 * 10 + h21z03p2)==0) & (h21z02p2 < 991 & h21z03p2 < 10))"
+ },
+ {
+  "code": "same_lg_235",
+  "logic": "gen check = (h22z01p2==1 & ((h22z02p2 * 10 + h22z03p2)==0) & (h22z02p2 < 991 & h22z03p2 < 10))"
+ },
+ {
+  "code": "same_lg_236",
+  "logic": "gen check = (h21z02p2 != h21z03p2 & ((h21z02p2 > 990 & h21z02p2 <=999) | (h21z03p2 > 990 & h21z03p2 <=999)))"
+ },
+ {
+  "code": "same_lg_237",
+  "logic": "gen check = (h22z02p2 != h22z03p2 & ((h22z02p2 > 990 & h22z02p2 <=999) | (h22z03p2 > 990 & h22z03p2 <=999)))"
+ },
+ {
+  "code": "same_lg_238",
+  "logic": "gen check = (k04z02r1 != k04z03r1 & ((k04z02r1 > 9990 & k04z02r1 <=9999) | (k04z03r1 > 9990 & k04z03r1 <=9999)))"
+ },
+ {
+  "code": "same_lg_239",
+  "logic": "gen check = (k04z02r2 != k04z03r2 & ((k04z02r2 > 9990 & k04z02r2 <=9999) | (k04z03r2 > 9990 & k04z03r2 <=9999)))"
+ },
+ {
+  "code": "same_lg_240",
+  "logic": "gen check = (inlist(k06z01,1,2) & ((k06z02 * 10 + k06z03)==0) & (k06z02 < 9991 & k06z03 < 10))"
+ },
+ {
+  "code": "same_lg_241",
+  "logic": "gen check = (k06z02 != k06z03 & ((k06z02 > 9990 & k06z02 <=9999) | (k06z03 > 9990 & k06z03 <=9999)))"
+ },
+ {
+  "code": "same_lg_242",
+  "logic": "gen check = (k28z01 != k28z02 & ((k28z01 > 90 & k28z01 <=99) | (k28z02 > 90 & k28z02 <=99)))"
+ },
+ {
+  "code": "same_lg_243",
+  "logic": "gen check = (k29a01 != k29a02 & ((k29a01 > 9990 & k29a01 <=9999) | (k29a02 > 9990 & k29a02 <=9999)))"
+ },
+ {
+  "code": "same_lg_244",
+  "logic": "gen check = (k30a01 != k30a02 & ((k30a01 > 990 & k30a01 <=999) | (k30a02 > 990 & k30a02 <=999)))"
+ },
+ {
+  "code": "same_lg_245",
+  "logic": "gen check = (k31a01 != k31a02 & ((k31a01 > 990 & k31a01 <=999) | (k31a02 > 990 & k31a02 <=999)))"
+ },
+ {
+  "code": "same_lg_246",
+  "logic": "gen check = (k31b101 != k31b102 & ((k31b101 > 990 & k31b101 <=999) | (k31b102 > 990 & k31b102 <=999)))"
+ },
+ {
+  "code": "same_lg_247",
+  "logic": "gen check = (k31b201 != k31b202 & ((k31b201 > 990 & k31b201 <=999) | (k31b202 > 990 & k31b202 <=999)))"
+ },
+ {
+  "code": "same_lg_248",
+  "logic": "gen check = (((a19z02 > x03z01) | (a19z02>=x03z01 & a19z03 > x03z02)) & (a19z02 < 991 & a19z03 < 13))"
+ },
+ {
+  "code": "same_lg_249",
+  "logic": "gen check = (((a19z04 > x03z01) | (a19z04>= x03z01 & a19z05 > x03z02)) & (a19z04 < 991 & a19z05 < 13))"
+ },
+ {
+  "code": "same_lg_250",
+  "logic": "gen check = (((a19z06 > x03z01) | (a19z06>= x03z01 & a19z07 > x03z02)) & (a19z06 < 991 & a19z07 < 13))"
+ },
+ {
+  "code": "same_lg_251",
+  "logic": "gen check = (((a19z08 > x03z01) | (a19z08>= x03z01 & a19z09 > x03z02)) & (a19z08 < 991 & a19z09 < 13))"
+ },
+ {
+  "code": "same_lg_252",
+  "logic": "gen check = (((a19z10 > x03z01) | (a19z10>= x03z01 & a19z11 > x03z02)) & (a19z10 < 991 & a19z11 < 13))"
+ },
+ {
+  "code": "same_lg_253",
+  "logic": "gen check = (((a19z12 > x03z01) | (a19z12>= x03z01 & a19z13 > x03z02)) & (a19z12 < 991 & a19z13 < 13))"
+ },
+ {
+  "code": "same_lg_254",
+  "logic": "gen check = (((c21z01r1 > x03z01) | (c21z01r1>= x03z01 & c21z02r1 > x03z02)) & (c21z01r1 < 991 & c21z02r1 < 13))"
+ },
+ {
+  "code": "same_lg_255",
+  "logic": "gen check = (((c22z01r1 > x03z01) | (c22z01r1>= x03z01 & c22z02r1 > x03z02)) & (c22z01r1 < 991 & c22z02r1 < 13))"
+ },
+ {
+  "code": "same_lg_256",
+  "logic": "gen check = (((c23z01 > x03z01) | (c23z01>= x03z01 & c23z02 > x03z02)) & (c23z01 < 991 & c23z02 < 13))"
+ },
+ {
+  "code": "same_lg_257",
+  "logic": "gen check = (((d03z01 > x03z01) | (d03z01>= x03z01 & d03z02 > x03z02)) & (d03z01 < 991 & d03z02 < 13))"
+ },
+ {
+  "code": "same_lg_258",
+  "logic": "gen check = (((d11z01 > x03z01) | (d11z01== x03z01 & d11z02 > x03z02)) & (d11z01 < 991 & d11z02 < 13))"
+ },
+ {
+  "code": "same_lg_259",
+  "logic": "gen check = (((d37a01 > x03z01) | (d37a01== x03z01 & d37a02 > x03z02)) & (d37a01 < 991 & d37a02 < 13))"
+ },
+ {
+  "code": "same_lg_260",
+  "logic": "gen check = (((d37b01> x03z01) | (d37b01== x03z01 & d37b02 > x03z02)) & (d37b01 < 991 & d37b02 < 13))"
+ },
+ {
+  "code": "same_lg_260_1",
+  "logic": "gen check = (((c21z01r2 > x03z01) | (c21z01r2== x03z01 & c21z02r2 > x03z02)) & (c21z01r2 < 991 & c21z02r2 < 13))"
+ },
+ {
+  "code": "same_lg_261",
+  "logic": "gen check = (((c22z01r2 > x03z01) | (c22z01r2== x03z01 & c22z02r2 > x03z02)) & (c22z01r2 < 991 & c22z02r2 < 13))"
+ },
+ {
+  "code": "same_lg_262",
+  "logic": "gen check = (((f03z01 > x03z01) | (f03z01== x03z01 & f03z02 > x03z02)) & (f03z01 < 991 & f03z02 < 13))"
+ },
+ {
+  "code": "same_lg_263",
+  "logic": "gen check = (d71==3 & d69a==d70 & d70 < 96)"
+ },
+ {
+  "code": "same_lg_264",
+  "logic": "gen check = (d71==1 & d69a != d70 & d70 < 96)"
+ },
+ {
+  "code": "same_lg_265",
+  "logic": "gen check = ((inlist(c33r1,1,2,3,4,5) & inlist(c02r1,1,2,3)) | (inlist(c33r1,96) & inlist(c02r1,4)))"
+ },
+ {
+  "code": "same_lg_266",
+  "logic": "gen check = ((inlist(c33r2,1,2,3,4,5) & inlist(c02r2,1,2,3)) | (inlist(c33r2,96) & inlist(c02r2,4)))"
+ },
+ {
+  "code": "same_lg_267",
+  "logic": "gen c15_total = c15z01r1 if c15z01r1 >= 0 & c15z01r1 < 91\nreplace c15_total = c15_total + (c15z02r1 / 10) if (c15z02r1 > 0 & c15z02r1 < 10) & c15_total != .\ngen k04_total = k04z02r1 if k04z02r1 >= 0 & k04z02r1 < 9991\nreplace k04_total =  k04_total + (k04z03r1 / 10) if (k04z03r1 > 0 & k04z03r1 < 10) & k04_total != .\ngen check = (c15_total >  k04_total & (c04z06r1==1 | c20z06r1==1) & c15_total < . & k04_total < . )"
+ },
+ {
+  "code": "same_lg_268",
+  "logic": "gen c15_total = c15z01r2 if c15z01r2 >= 0 & c15z01r2 < 91\nreplace c15_total = c15_total + (c15z02r2 / 10) if (c15z02r2 > 0 & c15z02r2 < 10) & c15_total != .\ngen k04_total = k04z02r2 if k04z02r2 >= 0 & k04z02r2 < 9991\nreplace k04_total =  k04_total + (k04z03r2 / 10) if (k04z03r2 > 0 & k04z03r2 < 10) & k04_total != .\ngen check = (c15_total >  k04_total & (c04z06r2==1 | c20z06r2==1) & c15_total < . & k04_total < . )"
+ },
+ {
+  "code": "same_lg_269",
+  "logic": "gen check = ((c19br1 + c32) >= 140 & (c19br1 > 0 & c19br1 < 991) & (c32 > 0 & c32 < 991))"
+ },
+ {
+  "code": "same_lg_270",
+  "logic": "gen wage = (c15z01r1*10) if c15z01r1 > 0 & c15z01r1 < 91\nreplace wage = (wage + c15z02r1) if c15z02r1 > 0 & c15z02r1 <10 & wage != .  \ngen check = ((wage / (c19br1*4)) < 0.10 & c19br1 > 0 & c19br1 < 991 & wage < . & c02r1==1)"
+ },
+ {
+  "code": "same_lg_271",
+  "logic": "gen swage = (c15z01r2*10) if c15z01r2 > 0 & c15z01r2 < 91\nreplace swage = (swage + c15z02r2) if c15z02r2 > 0 & c15z02r2 <10 & swage != .  \ngen check = ((swage / (c19br2*4)) < 0.10 & c19br2 > 0 & c19br2 < 991 & swage < . & c02r2==1)"
+ },
+ {
+  "code": "same_lg_272",
+  "logic": "gen lwage = (c26z01*10) if c26z01 > 0 & c26z01 < 91\nreplace lwage = (lwage + c26z02) if c26z02 > 0 & c26z02 <10 & lwage != .  \ngen check = ((lwage / (c28*4)) < 0.10 & c28 > 0 & c28 < 991 & lwage < . )"
+ },
+ {
+  "code": "same_lg_273",
+  "logic": "gen check = (m13z01 + m13z02 + m14z01 + m14z02 + m15z01 + m15z02 == 0)"
+ },
+ {
+  "code": "same_lg_274",
+  "logic": "gen check = ((m14z01*60 + m14z02) > (m13z01*60 + m13z02) & (m14z01 < 91 & m14z02 < 91 & m13z01 < 91 & m13z02 < 91))"
+ },
+ {
+  "code": "same_lg_275",
+  "logic": "gen check = ((m16z01*60 + m16z02) > (m15z01*60 + m15z02) & (m16z01 < 91 & m16z02 < 91 & m15z01 < 91 & m15z02 < 91))"
+ },
+ {
+  "code": "same_lg_276",
+  "logic": "gen check = (m17z05==1 & ((m14z01*10 + m14z02 > 0 & m14z01 < 91 & m14z02 < 91) | (m16z01*10 + m16z02 > 0 & m16z01 < 91 & m16z02 < 91)))"
+ },
+ {
+  "code": "same_lg_277",
+  "logic": "gen check = (p03h01==3 & inlist(p03h02,1,2,97,98) & (a02z01 >= 62 & a02z01 < 991))"
+ },
+ {
+  "code": "same_lg_278",
+  "logic": "gen check = (p03h03==3 & inlist(p03h04,1,2,97,98) & (a02z01 >= 62 & a02z01 < 991))"
+ },
+ {
+  "code": "same_lg_279",
+  "logic": "gen check = (p03h05==3 & inlist(p03h06,1,2,97,98) & (a02z01 >= 62 & a02z01 < 991))"
+ },
+ {
+  "code": "same_lg_280",
+  "logic": "gen check = (p03h07==3 & inlist(p03h08,1,2,97,98) & (a02z01 >= 62 & a02z01 < 991))"
+ },
+ {
+  "code": "same_lg_281",
+  "logic": "gen alive_sibs = j01z05 if j01z05 < 96\negen record_sibs = anycount(S?s), value(1)    //系統屬性中的手足數，最多記錄5位\negen incorrect = anycount(j02z01s?), value(0 995)    //受訪者回答的已死亡手足或資訊不正確手足數，最多記錄5位\negen new_sibs = anycount(j03s?), value(1/20 97 98 99)\ngen check = (alive_sibs != (record_sibs - incorrect + new_sibs) & (alive_sibs <= 5))\n"
+ },
+ {
+  "code": "same_lg_282",
+  "logic": "egen sib1 = anycount(j02z01s*), value(50/113 997 998 999)\negen sib2 = anycount(j03s*), value(1/90 97 98 99)    //包含不知道或拒答\ngen siblings = (sib1 + sib2)\ngen check = ((siblings != j01z05) & (j01z05 >= 0 & j01z05 < 6))    //表格題組至多僅記錄5位手足"
+ },
+ {
+  "code": "same_lg_283",
+  "logic": "\ncap split S1_birth, p(\"民國\" \"年\" \"月\")\ncap drop S1_birth1    //此欄位為空值\ncap destring S1_birth2 S1_birth3, replace\ncap rename S1_birth2 sib1_y\ncap rename S1_birth3 sib1_m\ncap gen check = ((sib1_y != j02z01s1 & j02z01s1 < 995) | (sib1_m != j02z02s1 & j02z02s1 < 995))"
+ },
+ {
+  "code": "same_lg_284",
+  "logic": "\ncap split S2_birth, p(\"民國\" \"年\" \"月\")\ncap drop S2_birth1    //此欄位為空值\ncap destring S2_birth2 S2_birth3, replace\ncap rename S2_birth2 sib2_y\ncap rename S2_birth3 sib2_m\ncap gen check = ((sib2_y != j02z01s2 & j02z01s2 < 995) | (sib2_m != j02z02s2 & j02z02s2 < 995))"
+ },
+ {
+  "code": "same_lg_285",
+  "logic": "\ncap split S3_birth, p(\"民國\" \"年\" \"月\")\ncap drop S3_birth1    //此欄位為空值\ncap destring S3_birth2 S3_birth3, replace\ncap rename S3_birth2 sib3_y\ncap rename S3_birth3 sib3_m\ncap gen check = ((sib3_y != j02z01s3 & j02z01s3 < 995) | (sib3_m != j02z02s3 & j02z02s3 < 995))"
+ },
+ {
+  "code": "same_lg_286",
+  "logic": "\ncap split S4_birth, p(\"民國\" \"年\" \"月\")\ncap drop S4_birth1    //此欄位為空值\ncap destring S4_birth2 S4_birth3, replace\ncap rename S4_birth2 sib4_y\ncap rename S4_birth3 sib4_m\ncap gen check = ((sib4_y != j02z01s4 & j02z01s4 < 995) | (sib4_m != j02z02s4 & j02z02s4 < 995))"
+ },
+ {
+  "code": "same_lg_287",
+  "logic": "\ncap split S5_birth, p(\"民國\" \"年\" \"月\")\ncap drop S5_birth1    //此欄位為空值\ncap destring S5_birth2 S5_birth3, replace\ncap rename S5_birth2 sib5_y\ncap rename S5_birth3 sib5_m\ncap gen check = ((sib5_y != j02z01s5 & j02z01s5 < 995) | (sib5_m != j02z02s5 & j02z02s5 < 995))"
+ },
+ {
+  "code": "same_lg_288",
+  "logic": "gen check = (j02z01s1 != j02z02s1 & ((j02z01s1 > 990 & j02z01s1 <=999) | (j02z02s1 > 990 & j02z02s1 <=999) | (j02z01s1==0) | (j02z02s1==0)))"
+ },
+ {
+  "code": "same_lg_289",
+  "logic": "gen check = (j02z01s2 != j02z02s2 & ((j02z01s2 > 990 & j02z01s2 <=999) | (j02z02s2 > 990 & j02z02s2 <=999) | (j02z01s2==0) | (j02z02s2==0)))"
+ },
+ {
+  "code": "same_lg_290",
+  "logic": "gen check = (j02z01s3 != j02z02s3 & ((j02z01s3 > 990 & j02z01s3 <=999) | (j02z02s3 > 990 & j02z02s3 <=999) | (j02z01s3==0) | (j02z02s3==0)))"
+ },
+ {
+  "code": "same_lg_291",
+  "logic": "gen check = (j02z01s4 != j02z02s4 & ((j02z01s4 > 990 & j02z01s4 <=999) | (j02z02s4 > 990 & j02z02s4 <=999) | (j02z01s4==0) | (j02z02s4==0)))"
+ },
+ {
+  "code": "same_lg_292",
+  "logic": "gen check = (j02z01s5 != j02z02s5 & ((j02z01s5 > 990 & j02z01s5 <=999) | (j02z02s5 > 990 & j02z02s5 <=999) | (j02z01s5==0) | (j02z02s5==0)))"
+ },
+ {
+  "code": "same_lg_293",
+  "logic": "gen check = (((j06a01s1 >  x03z01) | (j06a01s1 >=  x03z01 & j06a02s1 > x03z02)) & (j06a01s1 < 991 & j06a02s1 < 13))"
+ },
+ {
+  "code": "same_lg_294",
+  "logic": "gen check = (((j06a01s2 >  x03z01) | (j06a01s2 >=  x03z01 & j06a02s2 > x03z02)) & (j06a01s2 < 991 & j06a02s2 < 13))"
+ },
+ {
+  "code": "same_lg_295",
+  "logic": "gen check = (((j06a01s3 >  x03z01) | (j06a01s3 >=  x03z01 & j06a02s3 > x03z02)) & (j06a01s3 < 991 & j06a02s3 < 13))"
+ },
+ {
+  "code": "same_lg_296",
+  "logic": "gen check = (((j06a01s4 >  x03z01) | (j06a01s4 >=  x03z01 & j06a02s4 > x03z02)) & (j06a01s4 < 991 & j06a02s4 < 13))"
+ },
+ {
+  "code": "same_lg_297",
+  "logic": "gen check = (((j06a01s5 >  x03z01) | (j06a01s5 >=  x03z01 & j06a02s5 > x03z02)) & (j06a01s5 < 991 & j06a02s5 < 13))"
+ },
+ {
+  "code": "same_lg_298",
+  "logic": "forvalues a = 1/5 {\ngen j15errs_s`a' = (inrange(j15as`a',2,15) & inlist(h24z01,2,3))\n}\negen check = anymatch(j15errs_s?), value(1)"
+ },
+ {
+  "code": "same_lg_299",
+  "logic": "forvalues a = 1/5 {\ngen j15errs_s`a' = (inrange(j15cs`a',2,15) & inlist(h25z01,2,3))\n}\negen check = anymatch(j15errs_s?), value(1)"
+ },
+ {
+  "code": "same_lg_300",
+  "logic": "gen check = (d44==1 & (c05r1==1 | c05r2==1) & (c05r1 != 96 & c05r2 !=96))"
+ },
+ {
+  "code": "same_lg_305",
+  "logic": "gen check = ((c23z01 >=112 & c23z01 < 991) & (k04z02r1*10 + k04z03r1)==0)"
+ },
+ {
+  "code": "same_lg_305_1",
+  "logic": "gen check = (inlist(Jobcheckr1,1,2) & (c23z01==0))"
+ },
+ {
+  "code": "same_lg_306",
+  "logic": "gen check = (inlist(c02r1,1) & ((c21z01r1 >=112 & c21z01r1 < 113) | (c22z01r1 >=112 & c22z01r1 < 113)) & (k04z02r1*10 + k04z03r1)==0)"
+ },
+ {
+  "code": "same_lg_307",
+  "logic": "gen check = (inlist(c02r2,1) & ((c21z01r2 >=112 & c21z01r2 < 113) | (c22z01r2 >=112 & c22z01r2 < 113)) & (k04z02r2*10 + k04z03r2)==0)"
+ },
+ {
+  "code": "same_lg_308",
+  "logic": "gen check = ((((c15z01r1 *10) + c15z02r1) >= ((k04z02r1*10) + k04z03r1)) & (c15z01r1 >= 0 & c15z01r1 < 991 & c15z02r1 < 10) & (k04z02r1 >=0 & k04z02r1 < 9991 & k04z03r1 < 10))"
+ },
+ {
+  "code": "same_lg_309",
+  "logic": "gen check = ((((c15z01r2 *10) + c15z02r2) >= ((k04z02r2*10) + k04z03r2)) & (c15z01r2 >= 0 & c15z01r2 < 991 & c15z02r2 < 10) & (k04z02r2 >=0 & k04z02r2 < 9991 & k04z03r2 < 10))"
+ },
+ {
+  "code": "same_lg_310",
+  "logic": "gen check = ((d02a==7 & d08==2) & (inlist(h24z02,1,96,97,98,99) | inlist(h25z02,1,96,97,98,99)))"
+ },
+ {
+  "code": "same_lg_311",
+  "logic": "gen check = (d13==2 & (inlist(h24z02,1,96,97,98,99) | inlist(h25z02,1,96,97,98,99)))"
+ },
+ {
+  "code": "same_lg_312",
+  "logic": "gen check=((c04z01r1==1 | c20z01r1==1) & c23z01==993 & c29==2)"
+ },
+ {
+  "code": "c_lg_1",
+  "logic": "gen check = (((113 - a02z01) <= 16 | ((113 - a02z01) > 25 & (113 - a02z01) < . )) & a02z01 < 991 & inlist(Group,1) & (First==1 & d01 !=96))"
+ },
+ {
+  "code": "c_lg_2",
+  "logic": "gen check = ((cb18z02 - cb06 < 3) & (inrange(cb09a,1,7) | inlist(cb08a,1,2)) & (cb13z05==0) & (cb18z01==1) & (cb18z02 < 991 & cb06 < 991))"
+ },
+ {
+  "code": "c_lg_3",
+  "logic": "gen check = ((cb18z02 - cb06 >= 3) & (inrange(cb09a,1,7) | inlist(cb08a,1,2)) & (cb13z05==1) & (cb18z01==1) & (cb18z02 < 991 & cb06 < 991))"
+ },
+ {
+  "code": "c_lg_4",
+  "logic": "gen check = ((cb18z02 - cb06 > 3) & (inrange(cb09a,1,7) | inlist(cb08a,1,2)) & (cb13z03==0 & cb13z04==0) & cb18z01==1 & (cb18z02 < 991 & cb06 < 991))"
+ },
+ {
+  "code": "c_lg_5",
+  "logic": "gen check = ((cb06 + cb18z03 > 113) & (inrange(cb09a,1,7) | inlist(cb08a,1,2)) & cb18z01==3 & (cb18z03 < 9 & cb06 <990))"
+ },
+ {
+  "code": "c_lg_6",
+  "logic": "gen check = ((cb13z03==1 | cb13z04==1) & (inrange(cb09a,1,7) | inlist(cb08a,1,2)) & cb18z01==1 & (cb18z02 - cb06 <= 3) & (cb18z02 < 990 & cb06 < 990))"
+ },
+ {
+  "code": "c_lg_7",
+  "logic": "gen check = ((cb13z03==0 & cb13z04==0) & (inrange(cb09a,1,7) | inlist(cb08a,1,2)) & cb18z01==2)"
+ },
+ {
+  "code": "c_lg_8",
+  "logic": "gen check = ((cb06 + cb18z03 > 113) & (cb08a==3 | cb09a==8) & (cb18z01==3) & (cb18z03 < 9 & cb06 <990 )) "
+ },
+ {
+  "code": "c_lg_9",
+  "logic": "gen check = ((cb18z02 - cb06 < 5) & (cb08a==3 | cb09a==8) & (cb13z05==0) & (cb18z01==1) & (cb18z02 < 991 & cb06 < 991))"
+ },
+ {
+  "code": "c_lg_10",
+  "logic": "gen check = ((cb18z02 - cb06 >= 5) & (cb08a==3 | cb09a==8)  & (cb13z05==1) & (cb18z01==1) & (cb18z02 < 991 & cb06 < 991))"
+ },
+ {
+  "code": "c_lg_11",
+  "logic": "gen check = ((cb18z02 - cb06 > 5) & (cb08a==3 | cb09a==8) & (cb13z03==0 & cb13z04==0) & cb18z01==1 & (cb18z02 < 991 & cb06 < 991))"
+ },
+ {
+  "code": "c_lg_12",
+  "logic": "gen check = ((cb13z03==1 | cb13z04==1) & (cb08a==3 | cb09a==8) & cb18z01==1 & (cb18z02 - cb06 <= 5) & (cb18z02 < 991 & cb06 < 991))"
+ },
+ {
+  "code": "c_lg_13",
+  "logic": "gen check = ((cb13z03==0 & cb13z04==0) & (cb08a==3 | cb09a==8) & b18z01==2)"
+ },
+ {
+  "code": "c_lg_14",
+  "logic": "gen check = ((cb61z02 - cb47 < 2) & inlist(cb51,1,3) & (cb55z13==0) & cb61z01==1 & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "code": "c_lg_15",
+  "logic": "gen check = ((cb61z02 - cb47 >= 2) & inlist(cb51,1,3) & (cb55z13==1) & cb61z01==1 & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "code": "c_lg_16",
+  "logic": "gen check = ((cb61z02 - cb47 > 4) & inlist(cb51,1,3) & (cb55z05==0 & cb55z07==0) & cb61z01==1 & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "code": "c_lg_17",
+  "logic": "gen check = ((cb47 + cb61z03 > 113) & inlist(cb51,1,3) & (cb61z01==3) & (cb61z03 < 10 & cb47 < 991)) "
+ },
+ {
+  "code": "c_lg_18",
+  "logic": "gen check = ((cb55z05==1 | cb55z07==1) & inlist(cb51,1,3) & cb61z01==1 & (cb61z02 - cb47 <= 2) & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "code": "c_lg_19",
+  "logic": "gen check = ((cb55z05==0 & cb55z07==0 & cb55z11==0) & inlist(cb51,1,3) & cb61z01==2)"
+ },
+ {
+  "code": "c_lg_20",
+  "logic": "gen check = ((cb61z02 - cb47 < 4) & inlist(cb51,3,4) & (cb55z13==0) & cb61z01==1 & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "code": "c_lg_21",
+  "logic": "gen check = ((cb61z02 - cb47 >= 4) & inlist(cb51,3,4) & (cb55z13==1) & cb61z01==1 & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "code": "c_lg_22",
+  "logic": "gen check = ((cb61z02 - cb47 > 4) & inlist(cb51,3,4) & (cb55z05==0 & cb55z07==0) & cb61z01==1 & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "code": "c_lg_23",
+  "logic": "gen check = ((cb47 + cb61z03 > 113) & inlist(cb51,3,4) & (cb61z01==3) & (cb61z03 < 10 & cb47 <991)) "
+ },
+ {
+  "code": "c_lg_24",
+  "logic": "gen check = ((cb55z05==1 | cb55z07==1) & inlist(cb51,3,4) & cb61z01==1 & (cb61z02 - cb47 <= 4) & (cb61z02 < 991 & cb47 < 991))"
+ },
+ {
+  "code": "c_lg_25",
+  "logic": "gen check = ((cb55z05==0 & cb55z07==0 & cb55z11==0) & inlist(cb51,3,4) & cb61z01==2)"
+ },
+ {
+  "code": "c_lg_26",
+  "logic": "gen check = ((cb41==7 | cb89==7) & d69a==2)"
+ },
+ {
+  "code": "c_lg_27",
+  "logic": "gen check = ((cb24a==1 | cb24a==5 | cb24b==1 | cb24b==5) & cb23z01==1)"
+ },
+ {
+  "code": "c_lg_28",
+  "logic": "gen check = ((cb26z01==95 & !inlist(h06f1,6,96)) |  (inlist(cb26z01,1,2,3,4,97,98) & inlist(h06f1,6,96)))"
+ },
+ {
+  "code": "c_lg_29",
+  "logic": "gen check = ((cb27==96 & cb18z01==3 & (h06f1 !=6 | h06f1 != 96)) |  ((h06f1==6 | h06f1== 96) & cb27 != 96))"
+ },
+ {
+  "code": "c_lg_30",
+  "logic": "gen check = ((cb26z02==95 & !inlist(h06m1,6,96)) |  (inlist(cb26z02,1,2,3,4,97,98) & inlist(h06m1,6,96)))"
+ },
+ {
+  "code": "c_lg_31",
+  "logic": "gen check = ((cb28==96 & cb18z01==3 & cb26z01==95 & (h06m1 !=6 | h06m1 != 96)) |  ((h06m1==6 | h06m1== 96) & cb28 != 96))"
+ },
+ {
+  "code": "c_lg_32",
+  "logic": "gen check = ((cb31z01==4 & (h06f1 !=6 | h06f1 != 96)) |  ((h06f1==6 | h06f1== 96) & cb31z01 != 96))"
+ },
+ {
+  "code": "c_lg_33",
+  "logic": "gen check = ((cb31z02==4 & (h06m1 !=6 | h06m1 != 96)) |  ((h06m1==6 | h06m1== 96) & cb31z02 != 96))"
+ },
+ {
+  "code": "c_lg_34",
+  "logic": "gen check = ((cb31z05==4 & (j01z01 !=0 & j01z02 != 0) & (j01z01 < 91 & j01z02 < 91)) |  ((j01z01==0 & j01z02==0) & !inlist(cb31z05,4,96)))"
+ },
+ {
+  "code": "c_lg_35",
+  "logic": "gen check = ((cb31z06==4 & (j01z03 !=0 & j01z04 != 0) & (j01z03 < 91 & j01z04 < 91)) |  ((j01z03==0 & j01z04==0) & !inlist(cb31z06,4,96)))"
+ },
+ {
+  "code": "c_lg_36",
+  "logic": "gen check = ((cb36 > 1 & cb36 < 96 & cb37==0) | (cb36==1 & cb37 > 0 & cb37 < 96))"
+ },
+ {
+  "code": "c_lg_37",
+  "logic": "gen check = ((cb74 > 1 & cb74 < 96) & cb80==2)"
+ },
+ {
+  "code": "c_lg_38",
+  "logic": "gen check = (cb80==1 & cb81==0)"
+ },
+ {
+  "code": "c_lg_39",
+  "logic": "gen check = ((cb64z02 > 180 & cb64z02 < 996) | (cb64z02 < 30))"
+ },
+ {
+  "code": "c_lg_40",
+  "logic": "gen check = ((vx06city != vcb12g01city) & (cb18z01==3) & ((f05==2) | inlist(cb22,1,2,3)) & (x05==x06) & (vx06city <= 22 & vx05city <=22 &  vcb12g01city <=22))"
+ },
+ {
+  "code": "c_lg_41",
+  "logic": "gen check = ((vx06city != vcb50g01city) & (cb61z01==3) & ((f05==2) | inlist(cb65,1,2,3)) & (x05==x06) & (vx06city <= 22 &  vx05city <=22 & vcb50g01city <=22))"
+ },
+ {
+  "code": "c_lg_42",
+  "logic": "gen check = (inlist(cb78,1,2,3) & ((cb79z01 *10 + cb79z02 ) <= 1) & (cb79z01 < 991 & cb79z02 < 10))"
+ },
+ {
+  "code": "c_lg_43",
+  "logic": "gen check = (cb79z01 != cb79z02 & ((cb79z01 > 990 & cb79z01 <=999) | (cb79z02 > 990 & cb79z02 <=999)))"
+ },
+ {
+  "code": "c_lg_43_1",
+  "logic": "gen check = (inlist(cb89,1,4,6,8) & ((cb91z01 *10 + cb91z02 ) <= 1) & (cb91z01 < 991 & cb91z02 < 10))"
+ },
+ {
+  "code": "c_lg_43_2",
+  "logic": "gen check = (cb91z01 != cb91z02 & ((cb91z01 > 990 & cb91z01 <=999) | (cb91z02 > 990 & cb91z02 <=999)))"
+ },
+ {
+  "code": "c_lg_44",
+  "logic": "gen check = (cb04==1 & cb06 > 0 & cb06 < 103)"
+ },
+ {
+  "code": "c_lg_45",
+  "logic": "gen check = (cb06 > x03z01 & (cb06 > 0 & cb06 < 991))"
+ },
+ {
+  "code": "c_lg_46",
+  "logic": "gen check = (cb18z02 > x03z01 & (cb18z02 > 0 & cb18z02 < 991))"
+ },
+ {
+  "code": "c_lg_47",
+  "logic": "gen check = (cb47 > x03z01 & (cb47 > 0 & cb47 < 991))"
+ },
+ {
+  "code": "c_lg_48",
+  "logic": "gen check = (cb61z02 > x03z01 & (cb61z02 > 0 & cb61z02 < 991))"
+ },
+ {
+  "code": "c_lg_49",
+  "logic": "gen check = ((b01c==5 & !inlist(cb09a,1,96)) | (b01c==6 & !inlist(cb09a,2,96)) | (b01c==7 & !inlist(cb09a,3,96)) | (b01c==8 & !inlist(cb09a,4,96)) | (b01c==9 & !inlist(cb09a,8,96)))"
+ },
+ {
+  "code": "c_lg_50",
+  "logic": "gen check = ((b01c==10 & cb51 != 1) | (b01c==12 & !inlist(cb51,2,3)) | (b01c==13 & cb51 != 4))"
+ },
+ {
+  "code": "c_lg_51",
+  "logic": "gen check = ((d20z01 - a02z01 <= 18) & (d20z01 > 0 & d20z01 < 991) & (a02z01 > 0 & a02z01 <= 113) & inlist(Group,1))"
+ },
+ {
+  "code": "c_lg_52",
+  "logic": "gen check = (cb51==1 & cb55z04==0 & cb89==1 & inlist(b01,10,12,13))"
+ },
+ {
+  "code": "c_lg_53",
+  "logic": "gen check = (((cb08b==1 & !inlist(b01c,5,7) & cb18z01==3) | (cb08b==2 & !inlist(b01c,5,6) & cb18z01==3) | (cb08b==3 & !inlist(b01c,6,8) & cb18z01==3)) & (cb13z01==0 & cb13z02==0))"
+ },
+ {
+  "code": "c_lg_54",
+  "logic": "gen check = (cb21z01==2 & cb18z03==1 & inlist(f01,2,94))"
+ },
+ {
+  "code": "c_lg_55",
+  "logic": "gen check = (cb64z01==2 & cb61z03==1 & inlist(f01,2,94))"
+ },
+ {
+  "code": "c_lg_56",
+  "logic": "gen check = (b01c != b01)"
+ },
+ {
+  "code": "c_lg_57",
+  "logic": "egen cb23_count = anycount(cb23z03 cb23z04 cb23z05), value(1)\ngen check =(cb23_count > 1)"
+ },
+ {
+  "code": "c_lg_58",
+  "logic": "egen cb66_count = anycount(cb66z03 cb66z04 cb66z05), value(1)\ngen check =(cb66_count > 1)"
+ },
+ {
+  "code": "rcic_lg_1",
+  "logic": "gen check = (a04z03 > (113 - a02z01) & (a02z01 > 0 & a02z01 < 991 & a04z03 > 0 & a04z03 < 91)) "
+ },
+ {
+  "code": "rcic_lg_2",
+  "logic": "split Lastm, p(\"民國\" \"年\" \"月\")\ndrop Lastm1    //此欄位為空值\ndestring Lastm2 Lastm3, replace\nrename Lastm2 Lastm_y\nrename Lastm3 Lastm_m\ngen last_time = (Lastm_y + (Lastm_m/12)) if Lastm_y != 0 & Lastm_y != .\ngen new_mar = (d03z01 + (d03z02/12)) if d03z01 > 0 & d03z01 < 991 & d03z02 > 0 & d03z02 < 13\ngen check = (inlist(d02a,1) & (new_mar < last_time &  last_time != .) & First==0)"
+ },
+ {
+  "code": "rcic_lg_3",
+  "logic": "gen check = (f04==1 & (inlist(d01,1) | inlist(d02b,1)))"
+ },
+ {
+  "code": "rcic_lg_4",
+  "logic": "gen check = (((inlist(d01,1,4,5) | inlist(d02b,1,4,5)) & (d13==2)) & f05==7)"
+ },
+ {
+  "code": "rcic_lg_5",
+  "logic": "gen check = ((h24z01==95 | h25z01==95) & (j01z05 > 0 & j01z05 < 96))"
+ }
+]

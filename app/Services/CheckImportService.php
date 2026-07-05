@@ -28,12 +28,14 @@ class CheckImportService
 
         $catalog = $this->catalogService->catalogFor($question);
         $itemsByName = $question->items()->pluck('id', 'name');
+        // 關聯欄位可填題目名稱或變數名稱（變數自動歸屬其題目）
+        $varsToItem = $question->vars()->pluck('item_id', 'variable');
 
         $imported = 0;
         $rejected = [];
         $warnings = [];
 
-        DB::transaction(function () use ($question, $rows, $catalog, $itemsByName, &$imported, &$rejected, &$warnings) {
+        DB::transaction(function () use ($question, $rows, $catalog, $itemsByName, $varsToItem, &$imported, &$rejected, &$warnings) {
             foreach ($rows as $i => $row) {
                 $line = $i + 2;
                 [$name, $description, $relatedItems, $logic] =
@@ -53,20 +55,23 @@ class CheckImportService
                     continue;
                 }
 
-                // 關聯題目存在性
+                // 關聯題目：先比對題目名稱，再比對變數名稱（歸屬其題目）；
+                // 無法解析者（如 Stata 前處理的衍生變數）以警告回報，不拒絕整列
                 $itemIds = [];
-                $missingItems = [];
-                foreach (array_filter(array_map('trim', explode(',', $relatedItems))) as $itemName) {
-                    if ($itemsByName->has($itemName)) {
-                        $itemIds[] = $itemsByName[$itemName];
+                $unresolved = [];
+                foreach (array_filter(array_map('trim', explode(',', $relatedItems))) as $token) {
+                    if ($itemsByName->has($token)) {
+                        $itemIds[] = $itemsByName[$token];
+                    } elseif ($varsToItem->has($token)) {
+                        $itemIds[] = $varsToItem[$token];
                     } else {
-                        $missingItems[] = $itemName;
+                        $unresolved[] = $token;
                     }
                 }
+                $itemIds = array_values(array_unique($itemIds));
 
-                if ($missingItems !== []) {
-                    $rejected[] = "第 {$line} 列（{$name}）：關聯題目不存在：".implode('、', $missingItems);
-                    continue;
+                if ($unresolved !== []) {
+                    $warnings[] = "{$name}：關聯題目/變數無法對應（不影響匯入）：".implode('、', $unresolved);
                 }
 
                 // 檢核邏輯驗證

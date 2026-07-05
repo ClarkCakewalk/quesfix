@@ -151,7 +151,7 @@ const destroyItem = () => {
                         <InputError :message="form.errors.description" />
                     </div>
                     <div>
-                        <label class="text-gray-600">關聯題目（逗號分隔題目名稱）</label>
+                        <label class="text-gray-600">關聯題目（逗號分隔，可填題目名稱或變數名稱）</label>
                         <input v-model="form.related_items" class="mt-1 w-full rounded-md border-gray-300 text-sm font-mono" />
                         <InputError :message="form.errors.related_items" />
                     </div>

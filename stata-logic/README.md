@@ -3,6 +3,24 @@
 調查資料檢核輔助系統的核心模組：剖析、驗證並執行以 Stata 語法撰寫的檢核條件。
 獨立 Composer 套件，無框架相依，可直接於 Laravel 專案中 `composer require`（path repository）引入。
 
+## 兩種檢核邏輯格式（自動偵測）
+
+引擎同時支援兩種寫法，`LogicEngine` 會自動判別：
+
+1. **單一布林運算式**（早期格式）：例 `(a01 != Sex)`
+2. **Stata 子集程式**（`gen check` 格式）：以 `gen check = (...)` 或 `egen check = ...` 結尾，
+   前面可含衍生變數與迴圈。支援指令：
+   - `gen|generate VAR = EXPR [if COND]`、`replace VAR = EXPR [if COND]`
+   - `egen VAR = rowtotal(VARLIST)` / `anycount(VARLIST), value(NUMLIST)` / `anymatch(VARLIST), value(NUMLIST)`
+   - `forvalues X = A/B { ... }` 迴圈（解析期展開）＋ `local NAME = 整數運算` 巨集
+   - `cap`/`capture` 前綴（執行失敗時略過該句）、`drop`（忽略）
+   - VARLIST 支援 `?`/`*` 萬用字元與 `a- b` 範圍；NUMLIST 支援 `a/b` 連續範圍
+   - **不支援**：`rename` / `split` / `destring`（字串解析）→ 匯入時明確擋下，
+     需於 Stata 前處理階段算好衍生變數後一併匯入，再改以該變數撰寫檢核邏輯
+
+語意：`gen var = E if C` 的 `if` 限定中缺失視為假（不符合者該變數為缺失）；
+`check` 為非缺失且非零即代表此條件觸發。其餘運算式語意（缺失值為正無窮大等）同下。
+
 ## 快速開始
 
 ```php

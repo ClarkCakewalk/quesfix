@@ -6,7 +6,7 @@ use App\Models\CheckItem;
 use App\Models\CheckResult;
 use App\Models\Question;
 use Illuminate\Support\Collection;
-use Quesfix\StataLogic\Ast\Node;
+use Quesfix\StataLogic\CompiledLogic;
 use Quesfix\StataLogic\Exceptions\EvalError;
 use Quesfix\StataLogic\LogicEngine;
 
@@ -32,7 +32,7 @@ class CheckRunService
         $checkItems = $question->checkItems()->get();
         $catalog = $this->catalogService->catalogFor($question);
 
-        $asts = $this->parseAll($checkItems);
+        $compiled = $this->parseAll($checkItems);
 
         $samples = $question->samples()
             ->when($sampleIds !== null, fn ($q) => $q->whereIn('sample_id', $sampleIds))
@@ -43,7 +43,13 @@ class CheckRunService
         $evalErrors = [];
 
         foreach ($samples as $sampleId) {
-            $resolver = $this->catalogService->resolverFor($question, $sampleId, $catalog);
+            try {
+                $resolver = $this->catalogService->resolverFor($question, $sampleId, $catalog);
+            } catch (EvalError $e) {
+                // 單一樣本資料異常（如數值型變數含文字）→ 跳過該樣本並記錄，不中斷整批
+                $evalErrors[] = "樣本 {$sampleId}: {$e->getMessage()}";
+                continue;
+            }
 
             $existing = CheckResult::where('ques_id', $question->id)
                 ->where('sample_id', $sampleId)
@@ -51,13 +57,13 @@ class CheckRunService
                 ->keyBy('check_item_id');
 
             foreach ($checkItems as $item) {
-                $ast = $asts[$item->id] ?? null;
-                if ($ast === null) {
+                $logic = $compiled[$item->id] ?? null;
+                if ($logic === null) {
                     continue;
                 }
 
                 try {
-                    $hit = LogicEngine::evaluate($ast, $resolver);
+                    $hit = $logic->evaluate($resolver);
                 } catch (EvalError $e) {
                     $evalErrors[] = "{$item->item_name} @ {$sampleId}: {$e->getMessage()}";
                     continue;
@@ -100,24 +106,30 @@ class CheckRunService
             )->values();
         }
         $catalog = $this->catalogService->catalogFor($question);
-        $asts = $this->parseAll($checkItems);
-        $resolver = $this->catalogService->resolverFor($question, $sampleId, $catalog);
+        $compiled = $this->parseAll($checkItems);
+
+        $stats = ['resolved' => 0, 'restored' => 0, 'created' => 0, 'recheck' => 0];
+
+        try {
+            $resolver = $this->catalogService->resolverFor($question, $sampleId, $catalog);
+        } catch (EvalError $e) {
+            // 樣本資料異常時無法重新檢核（修正本身已儲存），回報原因不中斷流程
+            return [...$stats, 'error' => $e->getMessage()];
+        }
 
         $existing = CheckResult::where('ques_id', $question->id)
             ->where('sample_id', $sampleId)
             ->get()
             ->keyBy('check_item_id');
 
-        $stats = ['resolved' => 0, 'restored' => 0, 'created' => 0, 'recheck' => 0];
-
         foreach ($checkItems as $item) {
-            $ast = $asts[$item->id] ?? null;
-            if ($ast === null) {
+            $logic = $compiled[$item->id] ?? null;
+            if ($logic === null) {
                 continue;
             }
 
             try {
-                $hit = LogicEngine::evaluate($ast, $resolver);
+                $hit = $logic->evaluate($resolver);
             } catch (EvalError) {
                 continue;
             }
@@ -165,19 +177,19 @@ class CheckRunService
         return false;
     }
 
-    /** @return array<int, Node|null> check_item_id => AST */
+    /** @return array<int, CompiledLogic|null> check_item_id => 已編譯邏輯 */
     private function parseAll(Collection $checkItems): array
     {
-        $asts = [];
+        $compiled = [];
 
         foreach ($checkItems as $item) {
             try {
-                $asts[$item->id] = LogicEngine::parse($item->logic);
+                $compiled[$item->id] = LogicEngine::compile($item->logic);
             } catch (\Throwable) {
-                $asts[$item->id] = null; // 匯入時已驗證過，理論上不會發生
+                $compiled[$item->id] = null; // 匯入時已驗證過，理論上不會發生
             }
         }
 
-        return $asts;
+        return $compiled;
     }
 }
