@@ -31,7 +31,8 @@ class CheckResult extends Model
 
     protected $fillable = [
         'ques_id', 'sample_id', 'check_item_id', 'error', 're_survey',
-        're_survey_note', 'error_note', 'note', 'checked_by', 'checked_at', 'resolved_at',
+        're_survey_note', 'error_note', 'note', 're_check_note',
+        'checked_by', 'checked_at', 're_checked_by', 're_checked_at', 'resolved_at',
     ];
 
     protected function casts(): array
@@ -40,6 +41,7 @@ class CheckResult extends Model
             'error' => 'integer',
             're_survey' => 'boolean',
             'checked_at' => 'datetime',
+            're_checked_at' => 'datetime',
             'resolved_at' => 'datetime',
         ];
     }
@@ -52,6 +54,11 @@ class CheckResult extends Model
     public function checkedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'checked_by');
+    }
+
+    public function reCheckedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 're_checked_by');
     }
 
     /** 待處理：未處理或重新確認，且未因修正而失效 */

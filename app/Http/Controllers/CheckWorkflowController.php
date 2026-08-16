@@ -6,6 +6,7 @@ use App\Models\CheckItem;
 use App\Models\CheckResult;
 use App\Models\Question;
 use App\Models\Sample;
+use App\Models\User;
 use App\Services\CheckRunService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -186,6 +187,19 @@ class CheckWorkflowController extends Controller
             ->sortBy('item_name')
             ->values();
 
+        // 來源：'sample'（依樣本→檢核條件）、'logic'（依邏輯→樣本列表）、'recheck'（覆核模式，限專案管理者）
+        $from = match ($request->query('from')) {
+            'logic' => 'logic',
+            'recheck' => 'recheck',
+            default => 'sample',
+        };
+
+        if ($from === 'recheck') {
+            abort_unless($question->isManagedBy($request->user()), 403, '覆核模式限專案管理者使用');
+        }
+
+        $result->load('checkedBy:id,name', 'reCheckedBy:id,name');
+
         return Inertia::render('Checks/Review', [
             'question' => $question->only('id', 'code', 'name'),
             'sampleId' => $sampleId,
@@ -199,11 +213,17 @@ class CheckWorkflowController extends Controller
                 'note' => $result->note,
                 'error_note' => $result->error_note,
                 're_survey_note' => $result->re_survey_note,
+                're_check_note' => $result->re_check_note,
+                'checked_by_name' => $result->checkedBy?->name,
+                'checked_at' => $result->checked_at?->toDateTimeString(),
+                're_checked_by_name' => $result->reCheckedBy?->name,
+                're_checked_at' => $result->re_checked_at?->toDateTimeString(),
             ],
             'allConditions' => $allConditions,
             'lockMinutes' => Sample::LOCK_MINUTES,
-            // 來源：'sample'（依樣本→檢核條件）或 'logic'（依邏輯→樣本列表），供返回連結使用
-            'from' => $request->query('from') === 'logic' ? 'logic' : 'sample',
+            'from' => $from,
+            // 覆核模式返回時需知道是從哪位成員的列表進來
+            'memberId' => $request->integer('member') ?: null,
         ]);
     }
 
@@ -244,10 +264,19 @@ class CheckWorkflowController extends Controller
             'note' => ['nullable', 'string'],
             'error_note' => ['nullable', 'string'],
             're_survey_note' => ['nullable', 'string'],
+            're_check_note' => ['nullable', 'string'],
+            'recheck' => ['nullable', 'boolean'],
             'fixes' => ['array'],
             'fixes.*.var_id' => ['required', 'integer'],
             'fixes.*.value' => ['nullable', 'string'],
         ]);
+
+        // 覆核模式（規劃書 4.2.2）：限專案管理者，記錄覆核者而非改寫檢核者
+        $isRecheck = (bool) ($data['recheck'] ?? false);
+
+        if ($isRecheck) {
+            abort_unless($question->isManagedBy($request->user()), 403, '覆核模式限專案管理者使用');
+        }
 
         // 規格 4.3.3 的必填連動
         $this->validateNotes($data);
@@ -262,22 +291,32 @@ class CheckWorkflowController extends Controller
 
         $fixedVariables = [];
 
-        DB::transaction(function () use ($request, $question, $sampleId, $checkItem, $data, &$fixedVariables) {
+        DB::transaction(function () use ($request, $question, $sampleId, $checkItem, $data, $isRecheck, &$fixedVariables) {
             $result = CheckResult::where('ques_id', $question->id)
                 ->where('sample_id', $sampleId)
                 ->where('check_item_id', $checkItem->id)
                 ->lockForUpdate()
                 ->firstOrFail();
 
-            $result->update([
+            $attributes = [
                 'error' => $data['error'],
                 're_survey' => $data['re_survey'],
                 'note' => $data['note'] ?? null,
                 'error_note' => $data['error_note'] ?? null,
                 're_survey_note' => $data['re_survey_note'] ?? null,
-                'checked_by' => $request->user()->id,
-                'checked_at' => now(),
-            ]);
+            ];
+
+            if ($isRecheck) {
+                // 覆核：保留原檢核者，記錄覆核者與覆核說明
+                $attributes['re_check_note'] = $data['re_check_note'] ?? null;
+                $attributes['re_checked_by'] = $request->user()->id;
+                $attributes['re_checked_at'] = now();
+            } else {
+                $attributes['checked_by'] = $request->user()->id;
+                $attributes['checked_at'] = now();
+            }
+
+            $result->update($attributes);
 
             foreach ($data['fixes'] ?? [] as $fix) {
                 $origin = $question->originData()
@@ -306,7 +345,7 @@ class CheckWorkflowController extends Controller
             ? $this->checkRunService->recheckAfterFix($question, $sampleId, array_unique($fixedVariables))
             : null;
 
-        $message = '檢核結果已儲存。';
+        $message = $isRecheck ? '覆核結果已儲存。' : '檢核結果已儲存。';
 
         if ($stats !== null) {
             $message .= isset($stats['error'])
@@ -315,6 +354,110 @@ class CheckWorkflowController extends Controller
         }
 
         return back()->with('status', $message)->with('completed', true);
+    }
+
+    // ---- 覆核模式（規劃書 4.1.4，限專案管理者）----
+
+    /** 第一層：專案成員列表，含每位成員完成的檢核數 */
+    public function recheckMembers(Request $request, Question $question): Response
+    {
+        abort_unless($question->isManagedBy($request->user()), 403, '覆核模式限專案管理者使用');
+
+        $counts = CheckResult::where('ques_id', $question->id)
+            ->done()
+            ->whereNotNull('checked_by')
+            ->select('checked_by', DB::raw('count(*) as done_count'))
+            ->groupBy('checked_by')
+            ->pluck('done_count', 'checked_by');
+
+        $recheckedCounts = CheckResult::where('ques_id', $question->id)
+            ->done()
+            ->whereNotNull('checked_by')
+            ->whereNotNull('re_checked_by')
+            ->select('checked_by', DB::raw('count(*) as cnt'))
+            ->groupBy('checked_by')
+            ->pluck('cnt', 'checked_by');
+
+        // 專案成員 ∪ 曾完成檢核者（涵蓋已被除權但有紀錄的人）
+        $memberIds = $question->members()->pluck('users.id')->merge($counts->keys())->unique();
+        $users = User::whereIn('id', $memberIds)->orderBy('name')->get(['id', 'username', 'name']);
+
+        return Inertia::render('Checks/RecheckMembers', [
+            'question' => $question->only('id', 'code', 'name'),
+            'members' => $users->map(fn (User $u) => [
+                'id' => $u->id,
+                'username' => $u->username,
+                'name' => $u->name,
+                'done_count' => (int) ($counts[$u->id] ?? 0),
+                'rechecked_count' => (int) ($recheckedCounts[$u->id] ?? 0),
+            ]),
+        ]);
+    }
+
+    /** 第二層：該成員完成的邏輯檢核列表 */
+    public function recheckLogics(Request $request, Question $question, User $member): Response
+    {
+        abort_unless($question->isManagedBy($request->user()), 403, '覆核模式限專案管理者使用');
+
+        $items = CheckResult::where('check_results.ques_id', $question->id)
+            ->done()
+            ->where('check_results.checked_by', $member->id)
+            ->join('check_items', 'check_items.id', '=', 'check_results.check_item_id')
+            ->select(
+                'check_items.id',
+                'check_items.item_name',
+                'check_items.description',
+                DB::raw('count(*) as done_count'),
+                DB::raw('sum(case when check_results.re_checked_by is not null then 1 else 0 end) as rechecked_count'),
+            )
+            ->groupBy('check_items.id', 'check_items.item_name', 'check_items.description')
+            ->orderBy('check_items.item_name')
+            ->get();
+
+        return Inertia::render('Checks/RecheckLogics', [
+            'question' => $question->only('id', 'code', 'name'),
+            'member' => $member->only('id', 'username', 'name'),
+            'items' => $items,
+        ]);
+    }
+
+    /** 第三層：該邏輯中該成員已完成的樣本列表 */
+    public function recheckSamples(Request $request, Question $question, User $member, CheckItem $checkItem): Response
+    {
+        abort_unless($question->isManagedBy($request->user()) && $checkItem->ques_id === $question->id, 403);
+
+        $results = CheckResult::where('ques_id', $question->id)
+            ->where('check_item_id', $checkItem->id)
+            ->where('checked_by', $member->id)
+            ->done()
+            ->with('reCheckedBy:id,name')
+            ->orderBy('sample_id')
+            ->get()
+            ->map(fn (CheckResult $r) => [
+                'id' => $r->id,
+                'sample_id' => $r->sample_id,
+                'error' => $r->error,
+                're_survey' => $r->re_survey,
+                'checked_at' => $r->checked_at?->toDateTimeString(),
+                're_checked_by' => $r->reCheckedBy?->name,
+                're_checked_at' => $r->re_checked_at?->toDateTimeString(),
+            ]);
+
+        $locks = Sample::where('ques_id', $question->id)
+            ->whereNotNull('locked_by')
+            ->where('lock_expires_at', '>', now())
+            ->pluck('locked_by', 'sample_id');
+
+        return Inertia::render('Checks/RecheckSamples', [
+            'question' => $question->only('id', 'code', 'name'),
+            'member' => $member->only('id', 'username', 'name'),
+            'checkItem' => $checkItem->only('id', 'item_name', 'description'),
+            'results' => $results->map(fn ($r) => [
+                ...$r,
+                'locked' => $locks->has($r['sample_id']) && $locks[$r['sample_id']] !== $request->user()->id,
+            ]),
+            'errorLabels' => CheckResult::ERROR_LABELS,
+        ]);
     }
 
     /** 資料修改模式：輸入樣本編號的介面 */

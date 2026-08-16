@@ -16,6 +16,7 @@ const weeks = ref('');
 const formatForm = useForm({ file: null });
 const checksForm = useForm({ file: null });
 const dataForm = useForm({ file: null });
+const supplementForm = useForm({ file: null });
 const mediaForm = useForm({ file: null });
 
 const upload = (form, routeName) => {
@@ -123,6 +124,25 @@ const runChecks = () => {
                             </button>
                         </div>
                         <InputError class="mt-1" :message="dataForm.errors.file" />
+                    </div>
+
+                    <div class="bg-white p-6 shadow sm:rounded-lg">
+                        <h3 class="mb-1 text-lg font-medium">3-0. 補充變數匯入（CSV）</h3>
+                        <p class="mb-3 text-sm text-gray-500">
+                            資料匯入後若新增了題目／變數，可上傳僅含 <span class="font-mono">id</span> 與新變數欄位的 CSV，為既有樣本補上該變數的值。
+                            新變數需先於「題項格式」建立；不存在的 id 會略過；已有值者將被覆寫（不影響修正紀錄）。匯入後請重新「執行檢核」。
+                        </p>
+                        <div class="flex items-center gap-2">
+                            <input type="file" accept=".csv,.txt" @change="supplementForm.file = $event.target.files[0]" class="text-sm" />
+                            <button
+                                @click="upload(supplementForm, 'imports.supplement')"
+                                :disabled="!supplementForm.file || supplementForm.processing"
+                                class="rounded-md bg-indigo-600 px-4 py-2 text-sm text-white disabled:opacity-40"
+                            >
+                                補充匯入
+                            </button>
+                        </div>
+                        <InputError class="mt-1" :message="supplementForm.errors.file" />
                     </div>
 
                     <div class="bg-white p-6 shadow sm:rounded-lg">

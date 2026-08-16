@@ -45,6 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('imports/format', [ImportController::class, 'format'])->name('imports.format');
         Route::post('imports/checks', [ImportController::class, 'checks'])->name('imports.checks');
         Route::post('imports/data', [ImportController::class, 'data'])->name('imports.data');
+        Route::post('imports/supplement', [ImportController::class, 'supplement'])->name('imports.supplement');
         Route::post('checks/run', [ImportController::class, 'runChecks'])->name('checks.run');
 
         // 影音檔
@@ -61,12 +62,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // 檢核作業
         Route::get('checks', fn (\App\Models\Question $question) => Inertia\Inertia::render('Checks/Modes', [
             'question' => $question->only('id', 'code', 'name'),
+            'canManage' => $question->isManagedBy(request()->user()),
         ]))->name('checks.modes');
 
         Route::get('checks/by-sample', [CheckWorkflowController::class, 'bySample'])->name('checks.by-sample');
         Route::get('checks/by-sample/{sampleId}', [CheckWorkflowController::class, 'sampleConditions'])->name('checks.sample-conditions');
         Route::get('checks/by-logic', [CheckWorkflowController::class, 'byLogic'])->name('checks.by-logic');
         Route::get('checks/by-logic/{checkItem}', [CheckWorkflowController::class, 'logicSamples'])->name('checks.logic-samples');
+
+        // 覆核模式（限專案管理者）：成員 → 邏輯 → 樣本 → 檢核介面
+        Route::get('checks/recheck', [CheckWorkflowController::class, 'recheckMembers'])->name('checks.recheck-members');
+        Route::get('checks/recheck/{member}', [CheckWorkflowController::class, 'recheckLogics'])->name('checks.recheck-logics');
+        Route::get('checks/recheck/{member}/{checkItem}', [CheckWorkflowController::class, 'recheckSamples'])->name('checks.recheck-samples');
 
         // 資料修改模式（不依檢核條件，直接修改指定樣本資料）
         Route::get('checks/edit', [CheckWorkflowController::class, 'editEntry'])->name('checks.edit-entry');

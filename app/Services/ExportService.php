@@ -40,14 +40,15 @@ class ExportService
     {
         $base = fn () => CheckResult::where('ques_id', $question->id)
             ->active()
-            ->with('checkItem.quesItems.vars');
+            ->with('checkItem.quesItems.vars', 'checkedBy:id,username', 'reCheckedBy:id,username');
 
+        // 檢核結果報表額外欄位：補問訊息、檢核結果說明、檢核者id、覆核者id（規劃書 5.3.2）
         return [
-            '無誤' => $this->reportRows($question, $base()->where('error', CheckResult::ERROR_ACCEPTED)),
+            '無誤' => $this->reportRows($question, $base()->where('error', CheckResult::ERROR_ACCEPTED), [], true),
             '需修正' => $this->reportRows($question, $base()
                 ->whereIn('error', [CheckResult::ERROR_COUNTED, CheckResult::ERROR_NOT_COUNTED])
-                ->where('re_survey', false)),
-            '需補問' => $this->reportRows($question, $base()->where('re_survey', true)),
+                ->where('re_survey', false), [], true),
+            '需補問' => $this->reportRows($question, $base()->where('re_survey', true), [], true),
         ];
     }
 
@@ -160,8 +161,10 @@ class ExportService
 
     /**
      * 報表共用列組裝：訪員代號、樣本編號、邏輯相關答案、訪問相關訊息、檢核條件說明、回覆訊息。
+     *
+     * @param  bool  $withResultDetails  檢核結果報表專用欄位（補問訊息、檢核結果說明、檢核者id、覆核者id）
      */
-    private function reportRows(Question $question, $resultsQuery, array $weeks = []): Collection
+    private function reportRows(Question $question, $resultsQuery, array $weeks = [], bool $withResultDetails = false): Collection
     {
         $results = $resultsQuery->orderBy('sample_id')->get();
         $sampleIds = $results->pluck('sample_id')->unique()->values();
@@ -196,7 +199,7 @@ class ExportService
 
                 return in_array((string) ($values[$r->sample_id][$weekVarId] ?? ''), $weeks, true);
             })
-            ->map(function (CheckResult $r) use ($values, $labels, $varsById, $interviewerVarId, $reportVars) {
+            ->map(function (CheckResult $r) use ($values, $labels, $varsById, $interviewerVarId, $reportVars, $withResultDetails) {
                 $sampleValues = $values[$r->sample_id] ?? collect();
 
                 $applyLabel = function (?int $varId) use ($sampleValues, $labels, $varsById) {
@@ -238,8 +241,14 @@ class ExportService
 
                 $row['檢核條件說明'] = $r->checkItem->description;
                 $row['計畫回覆訊息'] = $r->error_note ?? '';
-                $row['補問訊息'] = $r->re_survey_note ?? '';
-                $row['檢核結果說明'] = $r->note ?? '';
+
+                if ($withResultDetails) {
+                    // 檢核結果報表專用（規劃書 5.3.2）
+                    $row['補問訊息'] = $r->re_survey_note ?? '';
+                    $row['檢核結果說明'] = $r->note ?? '';
+                    $row['檢核者id'] = $r->checkedBy?->username ?? '';
+                    $row['覆核者id'] = $r->reCheckedBy?->username ?? '';
+                }
 
                 return $row;
             })

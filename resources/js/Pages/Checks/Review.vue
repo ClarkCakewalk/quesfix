@@ -14,30 +14,43 @@ const props = defineProps({
     result: Object,
     allConditions: Array,
     lockMinutes: Number,
-    // 來源：'sample'（依樣本→檢核條件）或 'logic'（依邏輯→樣本列表）
+    // 來源：'sample'（依樣本→檢核條件）、'logic'（依邏輯→樣本列表）、'recheck'（覆核模式）
     from: { type: String, default: 'sample' },
+    // 覆核模式：來源成員 id（供返回連結）
+    memberId: { type: Number, default: null },
 });
 
+const isRecheck = computed(() => props.from === 'recheck');
+
 // 進入本頁的來源，供返回連結與條件切換時延續
-const reviewQuery = computed(() => `?from=${props.from}`);
+const reviewQuery = computed(() =>
+    isRecheck.value ? `?from=recheck&member=${props.memberId ?? ''}` : `?from=${props.from}`,
+);
 
-// 「回到前一動」：依來源回到該樣本的檢核條件列表，或該條件的樣本列表
-const backRoute = computed(() =>
-    props.from === 'logic'
+// 「回到前一動」：依來源回到對應的上一層列表
+const backRoute = computed(() => {
+    if (isRecheck.value) {
+        return props.memberId
+            ? route('checks.recheck-samples', [props.question.id, props.memberId, props.checkItem.id])
+            : route('checks.recheck-members', props.question.id);
+    }
+    return props.from === 'logic'
         ? route('checks.logic-samples', [props.question.id, props.checkItem.id])
-        : route('checks.sample-conditions', [props.question.id, props.sampleId]),
-);
+        : route('checks.sample-conditions', [props.question.id, props.sampleId]);
+});
 
-const backLabel = computed(() =>
-    props.from === 'logic' ? '← 回該條件的樣本列表' : '← 回該樣本的檢核條件列表',
-);
+const backLabel = computed(() => {
+    if (isRecheck.value) return '← 回覆核樣本列表';
+    return props.from === 'logic' ? '← 回該條件的樣本列表' : '← 回該樣本的檢核條件列表';
+});
 
-// 「回到檢核列表」（完成後選單）：依來源回到依樣本／依邏輯頂層列表
-const topListRoute = computed(() =>
-    props.from === 'logic'
+// 「回到檢核列表」（完成後選單）：依來源回到頂層列表
+const topListRoute = computed(() => {
+    if (isRecheck.value) return route('checks.recheck-members', props.question.id);
+    return props.from === 'logic'
         ? route('checks.by-logic', props.question.id)
-        : route('checks.by-sample', props.question.id),
-);
+        : route('checks.by-sample', props.question.id);
+});
 
 // ---- 鎖定心跳 ----
 let heartbeatTimer = null;
@@ -104,6 +117,8 @@ const form = useForm({
     note: props.result.note ?? '',
     error_note: props.result.error_note ?? '',
     re_survey_note: props.result.re_survey_note ?? '',
+    re_check_note: props.result.re_check_note ?? '',
+    recheck: isRecheck.value,
     fixes: [],
 });
 
@@ -330,7 +345,30 @@ const continueSample = () => {
                         </div>
 
                         <div class="rounded-lg bg-white p-4 shadow">
-                            <h3 class="mb-3 font-medium">檢核結果註記</h3>
+                            <div class="mb-3 flex items-center justify-between">
+                                <h3 class="font-medium">檢核結果註記</h3>
+                                <span
+                                    v-if="isRecheck"
+                                    class="rounded bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700"
+                                >
+                                    覆核模式
+                                </span>
+                            </div>
+
+                            <!-- 檢核者／覆核者資訊 -->
+                            <div
+                                v-if="result.checked_by_name || result.re_checked_by_name"
+                                class="mb-3 rounded-md bg-gray-50 px-3 py-2 text-xs text-gray-600"
+                            >
+                                <div v-if="result.checked_by_name">
+                                    檢核者：<span class="font-medium text-gray-800">{{ result.checked_by_name }}</span>
+                                    <span class="ml-1 text-gray-400">{{ result.checked_at }}</span>
+                                </div>
+                                <div v-if="result.re_checked_by_name" class="mt-0.5">
+                                    覆核者：<span class="font-medium text-gray-800">{{ result.re_checked_by_name }}</span>
+                                    <span class="ml-1 text-gray-400">{{ result.re_checked_at }}</span>
+                                </div>
+                            </div>
 
                             <div class="space-y-4 text-sm">
                                 <div>
@@ -380,6 +418,17 @@ const continueSample = () => {
                                     <InputError :message="form.errors.re_survey_note" />
                                 </div>
 
+                                <!-- 覆核模式專用：覆核說明（非必填） -->
+                                <div v-if="isRecheck" class="rounded-md border border-amber-200 bg-amber-50 p-3">
+                                    <div class="mb-1 text-amber-800">覆核說明（非必填）</div>
+                                    <textarea
+                                        v-model="form.re_check_note"
+                                        rows="2"
+                                        class="w-full rounded-md border-amber-300 text-sm focus:border-amber-500 focus:ring-amber-500"
+                                    />
+                                    <InputError :message="form.errors.re_check_note" />
+                                </div>
+
                                 <div v-if="Object.keys(pendingFixes).length" class="rounded-md bg-red-50 p-2 text-xs text-red-700">
                                     有 {{ Object.keys(pendingFixes).length }} 筆數值修訂待儲存，將於完成檢核時寫入。
                                 </div>
@@ -389,9 +438,10 @@ const continueSample = () => {
                                 <button
                                     @click="submit"
                                     :disabled="form.processing || form.error === null"
-                                    class="w-full rounded-md bg-indigo-600 py-2 text-white disabled:opacity-40"
+                                    class="w-full rounded-md py-2 text-white disabled:opacity-40"
+                                    :class="isRecheck ? 'bg-amber-600 hover:bg-amber-500' : 'bg-indigo-600 hover:bg-indigo-500'"
                                 >
-                                    完成檢核
+                                    {{ isRecheck ? '完成覆核' : '完成檢核' }}
                                 </button>
                             </div>
                         </div>
@@ -458,18 +508,28 @@ const continueSample = () => {
             </div>
         </Modal>
 
-        <!-- 完成檢核後的確認選單 -->
+        <!-- 完成檢核／覆核後的確認選單 -->
         <Modal :show="showConfirm" @close="showConfirm = false" max-width="md">
             <div class="p-6 text-center">
-                <h3 class="mb-2 text-lg font-medium">檢核結果已儲存</h3>
+                <h3 class="mb-2 text-lg font-medium">{{ isRecheck ? '覆核結果已儲存' : '檢核結果已儲存' }}</h3>
                 <p class="mb-6 text-sm text-gray-600">{{ $page.props.flash?.status }}</p>
                 <div class="flex justify-center gap-4">
-                    <button @click="backToList" class="rounded-md bg-gray-700 px-4 py-2 text-sm text-white">
-                        回到檢核列表
-                    </button>
-                    <button @click="continueSample" class="rounded-md bg-indigo-600 px-4 py-2 text-sm text-white">
-                        繼續該樣本檢核
-                    </button>
+                    <template v-if="isRecheck">
+                        <button @click="goBack" class="rounded-md bg-gray-700 px-4 py-2 text-sm text-white">
+                            回覆核樣本列表
+                        </button>
+                        <button @click="backToList" class="rounded-md bg-amber-600 px-4 py-2 text-sm text-white">
+                            回成員列表
+                        </button>
+                    </template>
+                    <template v-else>
+                        <button @click="backToList" class="rounded-md bg-gray-700 px-4 py-2 text-sm text-white">
+                            回到檢核列表
+                        </button>
+                        <button @click="continueSample" class="rounded-md bg-indigo-600 px-4 py-2 text-sm text-white">
+                            繼續該樣本檢核
+                        </button>
+                    </template>
                 </div>
             </div>
         </Modal>

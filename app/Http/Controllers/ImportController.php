@@ -93,6 +93,33 @@ class ImportController extends Controller
             ->with('warnings', $result['warnings']);
     }
 
+    /** 補充變數匯入：對既有樣本補上新增變數的值（CSV：id + 新變數欄位） */
+    public function supplement(Request $request, Question $question, DataImportService $service): RedirectResponse
+    {
+        abort_unless($question->isManagedBy($request->user()), 403);
+
+        $request->validate(['file' => ['required', 'file', 'mimes:csv,txt', 'max:102400']]);
+
+        try {
+            $result = $service->importSupplement($question, $request->file('file')->getRealPath());
+        } catch (\Throwable $e) {
+            return back()->withErrors(['file' => '匯入失敗：'.$e->getMessage()]);
+        }
+
+        $unknownNote = count($result['unknown_ids'])
+            ? '不存在於系統而略過的 id：'.count($result['unknown_ids']).' 筆。'
+            : '';
+
+        return back()
+            ->with('status', "補充匯入完成：更新 {$result['updated_samples']} 個樣本"
+                ."（新增 {$result['inserted']} 個值、覆寫 {$result['updated']} 個值）。{$unknownNote}"
+                .'如需納入檢核，請重新「執行檢核」。')
+            ->with('warnings', array_merge(
+                array_map(fn ($id) => "略過不存在的 id：{$id}", array_slice($result['unknown_ids'], 0, 30)),
+                $result['warnings'],
+            ));
+    }
+
     /** 執行檢核：產生待處理的檢核結果清單 */
     public function runChecks(Request $request, Question $question, CheckRunService $service): RedirectResponse
     {

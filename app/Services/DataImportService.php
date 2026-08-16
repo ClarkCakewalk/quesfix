@@ -121,4 +121,143 @@ class DataImportService
             fclose($handle);
         }
     }
+
+    /**
+     * 補充變數匯入：對「既有樣本」補上（或更新）指定變數的值。
+     * 用途：資料匯入後新增了題目/變數，需為既有樣本補進該變數的數值。
+     *
+     * 規則：
+     * - CSV 表頭必須包含 id，且其餘變數皆須已存在於資料格式
+     * - 只處理既有樣本；CSV 中不存在於系統的 id 略過並回報
+     * - 該樣本尚無此變數的值 → 新增；已有 → 覆寫原始值（origin_data.value）
+     *   （不影響 fix_data 修正紀錄）
+     *
+     * @return array{updated_samples: int, inserted: int, updated: int, unknown_ids: string[], warnings: string[]}
+     */
+    public function importSupplement(Question $question, string $filePath): array
+    {
+        $handle = fopen($filePath, 'r');
+
+        if ($handle === false) {
+            throw new RuntimeException('無法開啟上傳檔案');
+        }
+
+        try {
+            $header = fgetcsv($handle, null, ',', '"', '');
+
+            if ($header === false) {
+                throw new RuntimeException('檔案內容空白');
+            }
+
+            $header[0] = preg_replace('/^\xEF\xBB\xBF/', '', (string) $header[0]);
+            $header = array_map('trim', $header);
+
+            $idIndex = array_search('id', $header, true);
+
+            if ($idIndex === false) {
+                throw new RuntimeException('表頭未包含 id 變數，拒絕匯入。');
+            }
+
+            $varIds = $question->vars()->pluck('id', 'variable');
+            $unknown = array_diff($header, $varIds->keys()->all());
+
+            if ($unknown !== []) {
+                throw new RuntimeException('下列變數不存在於資料格式，請先於「題項格式」新增：'.implode('、', $unknown));
+            }
+
+            $supplementVars = array_values(array_filter($header, fn ($h) => $h !== 'id'));
+
+            if ($supplementVars === []) {
+                throw new RuntimeException('檔案除 id 外未包含任何變數欄位。');
+            }
+
+            $existingIds = $question->samples()->pluck('sample_id')->flip();
+
+            $updatedSamples = 0;
+            $inserted = 0;
+            $updated = 0;
+            $unknownIds = [];
+            $warnings = [];
+            $line = 1;
+
+            DB::transaction(function () use (
+                $handle, $header, $idIndex, $varIds, $existingIds, $question, $supplementVars,
+                &$updatedSamples, &$inserted, &$updated, &$unknownIds, &$warnings, &$line
+            ) {
+                $now = now();
+                $seen = [];
+
+                while (($row = fgetcsv($handle, null, ',', '"', '')) !== false) {
+                    $line++;
+
+                    if (count($row) === 1 && trim((string) $row[0]) === '') {
+                        continue;
+                    }
+
+                    if (count($row) !== count($header)) {
+                        $warnings[] = "第 {$line} 列：欄位數與表頭不符，略過。";
+                        continue;
+                    }
+
+                    $sampleId = trim((string) $row[$idIndex]);
+
+                    if ($sampleId === '') {
+                        $warnings[] = "第 {$line} 列：id 空白，略過。";
+                        continue;
+                    }
+
+                    if (! $existingIds->has($sampleId)) {
+                        $unknownIds[] = $sampleId;
+                        continue;
+                    }
+
+                    if (isset($seen[$sampleId])) {
+                        $warnings[] = "第 {$line} 列：id {$sampleId} 重複出現，以後者為準。";
+                    }
+                    $seen[$sampleId] = true;
+
+                    foreach ($header as $col => $variable) {
+                        if ($variable === 'id') {
+                            continue;
+                        }
+
+                        $value = (string) ($row[$col] ?? '');
+                        $varId = $varIds[$variable];
+
+                        $affected = DB::table('origin_data')
+                            ->where('ques_id', $question->id)
+                            ->where('sample_id', $sampleId)
+                            ->where('var_id', $varId)
+                            ->update(['value' => $value, 'updated_at' => $now]);
+
+                        if ($affected > 0) {
+                            $updated++;
+                        } else {
+                            DB::table('origin_data')->insert([
+                                'ques_id' => $question->id,
+                                'sample_id' => $sampleId,
+                                'var_id' => $varId,
+                                'value' => $value,
+                                'created_at' => $now,
+                                'updated_at' => $now,
+                            ]);
+                            $inserted++;
+                        }
+                    }
+
+                    $updatedSamples++;
+                }
+            });
+
+            return [
+                'updated_samples' => $updatedSamples,
+                'inserted' => $inserted,
+                'updated' => $updated,
+                'unknown_ids' => $unknownIds,
+                'warnings' => $warnings,
+            ];
+        } finally {
+            fclose($handle);
+        }
+    }
 }

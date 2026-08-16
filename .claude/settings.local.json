@@ -50,7 +50,23 @@
       "Bash(cd /Users/clarkhuang/Documents/quesfix/stata-logic && ./vendor/bin/phpunit 2>&1 | tail -6; rm -f /tmp/test_prog*.php /tmp/dbg*.php /tmp/prog_out.txt /tmp/test_program_engine.php)",
       "Bash(/usr/local/mysql/bin/mysql -u quesfix -pDevQuesFix2026 -h 127.0.0.1 quesfix -e ' *)",
       "Bash(/usr/local/mysql/bin/mysql -u quesfix -pDevQuesFix2026 -h 127.0.0.1 quesfix -e \"SELECT COUNT\\(*\\) AS text_vars FROM ques_vars WHERE ques_id=2 AND var_type=3;\")",
-      "Bash(php /tmp/rerun_c2024.php)"
+      "Bash(php /tmp/rerun_c2024.php)",
+      "Bash(python3 -c \"import pypdf\")",
+      "Bash(python3 -c \"import pdfminer\")",
+      "Bash(pip3 install *)",
+      "Bash(php -v)",
+      "Bash(npm -v)",
+      "Bash(php -r ' *)",
+      "Bash(mkdir -p docs)",
+      "Bash(mv \"PSFD樣本管理系統2.0開發規劃書-2.pdf\" \"psd sample db-2.sql\" docs/)",
+      "Bash(php -l config/services.php)",
+      "Bash(cat)",
+      "Bash(php /tmp/make_xlsx.php)",
+      "Bash(curl -sL \"https://docs.google.com/document/d/1O_4Wq2zmaiYxNZ4MKA83fsKbOVVq-zRHZZ4fx4isiaY/export?format=txt\" -o /tmp/plan_v2.txt)",
+      "Bash(grep -n '$message = '\\\\''檢核結果已儲存。'\\\\'';' app/Http/Controllers/CheckWorkflowController.php)",
+      "Bash(php /tmp/seed_done.php)",
+      "Bash(curl -s -o /dev/null -w '%{http_code}\\\\n' -b /dev/null http://localhost:8000/questions/1/checks/recheck)",
+      "Bash(php /tmp/verify_recheck.php)"
     ]
   }
 }
