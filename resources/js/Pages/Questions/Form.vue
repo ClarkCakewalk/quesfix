@@ -58,9 +58,14 @@ const submit = () => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ isEdit ? `專案設定：${question.code}` : '新增專案' }}
-            </h2>
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                    {{ isEdit ? `專案設定：${question.code}` : '新增專案' }}
+                </h2>
+                <Link :href="route('questions.index')" class="shrink-0 text-sm text-gray-600 hover:underline">
+                    ← 回專案列表
+                </Link>
+            </div>
         </template>
 
         <div class="py-8">

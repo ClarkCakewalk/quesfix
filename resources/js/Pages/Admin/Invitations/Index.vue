@@ -41,8 +41,8 @@ const statusLabel = {
         <template #header>
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-semibold leading-tight text-gray-800">使用者邀請</h2>
-                <Link :href="route('admin.users.index')" class="text-sm text-gray-600 hover:underline">
-                    使用者管理 →
+                <Link :href="route('admin.users.index')" class="shrink-0 text-sm text-gray-600 hover:underline">
+                    ← 回使用者管理
                 </Link>
             </div>
         </template>

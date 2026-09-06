@@ -20,10 +20,17 @@ const done = computed(() => props.results.filter((r) => !r.pending));
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ question.code }}｜{{ checkItem.item_name }}
-            </h2>
-            <p class="mt-1 text-sm text-gray-600">{{ checkItem.description }}</p>
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                        {{ question.code }}｜{{ checkItem.item_name }}
+                    </h2>
+                    <p class="mt-1 text-sm text-gray-600">{{ checkItem.description }}</p>
+                </div>
+                <Link :href="route('checks.by-logic', question.id)" class="shrink-0 text-sm text-gray-600 hover:underline">
+                    ← 回依邏輯檢核列表
+                </Link>
+            </div>
         </template>
 
         <div class="py-8">
@@ -78,9 +85,6 @@ const done = computed(() => props.results.filter((r) => !r.pending));
                         </table>
                     </div>
 
-                    <Link :href="route('checks.by-logic', question.id)" class="inline-block text-sm text-gray-600 hover:underline">
-                        ← 回依邏輯檢核列表
-                    </Link>
                 </div>
             </div>
         </div>

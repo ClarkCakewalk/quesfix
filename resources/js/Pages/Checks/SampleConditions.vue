@@ -20,9 +20,14 @@ const done = computed(() => props.results.filter((r) => !r.pending));
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ question.code }}｜樣本 {{ sampleId }} 檢核條件
-            </h2>
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                    {{ question.code }}｜樣本 {{ sampleId }} 檢核條件
+                </h2>
+                <Link :href="route('checks.by-sample', question.id)" class="shrink-0 text-sm text-gray-600 hover:underline">
+                    ← 回依樣本檢核列表
+                </Link>
+            </div>
         </template>
 
         <div class="py-8">
@@ -80,9 +85,6 @@ const done = computed(() => props.results.filter((r) => !r.pending));
                         </table>
                     </div>
 
-                    <Link :href="route('checks.by-sample', question.id)" class="inline-block text-sm text-gray-600 hover:underline">
-                        ← 回依樣本檢核列表
-                    </Link>
                 </div>
             </div>
         </div>

@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import FlashMessages from '@/Components/FlashMessages.vue';
 import InputError from '@/Components/InputError.vue';
 import ManageNav from '@/Components/ManageNav.vue';
-import { Head, router, useForm } from '@inertiajs/vue3';
+import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const props = defineProps({
@@ -38,9 +38,14 @@ const runChecks = () => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ question.code }}｜資料管理
-            </h2>
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                    {{ question.code }}｜資料管理
+                </h2>
+                <Link :href="route('questions.index')" class="shrink-0 text-sm text-gray-600 hover:underline">
+                    ← 回專案列表
+                </Link>
+            </div>
         </template>
 
         <div class="py-8">

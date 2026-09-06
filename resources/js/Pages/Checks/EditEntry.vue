@@ -20,9 +20,14 @@ const submit = () => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ question.code }}｜資料修改
-            </h2>
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                    {{ question.code }}｜資料修改
+                </h2>
+                <Link :href="route('checks.modes', question.id)" class="shrink-0 text-sm text-gray-600 hover:underline">
+                    ← 回檢核作業
+                </Link>
+            </div>
         </template>
 
         <div class="py-8">
@@ -56,12 +61,6 @@ const submit = () => {
                     </form>
                 </div>
 
-                <Link
-                    :href="route('checks.modes', question.id)"
-                    class="mt-6 inline-block text-sm text-gray-600 hover:underline"
-                >
-                    ← 回檢核作業
-                </Link>
             </div>
         </div>
     </AuthenticatedLayout>

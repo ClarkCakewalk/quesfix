@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import FlashMessages from '@/Components/FlashMessages.vue';
-import { Head, router } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 
 const props = defineProps({
     question: Object,
@@ -20,9 +20,14 @@ const forceUnlock = (s) => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ question.code }}｜樣本鎖定列表
-            </h2>
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                    {{ question.code }}｜樣本鎖定列表
+                </h2>
+                <Link :href="route('manage.data', question.id)" class="shrink-0 text-sm text-gray-600 hover:underline">
+                    ← 回資料匯入與檢核
+                </Link>
+            </div>
         </template>
 
         <div class="py-8">

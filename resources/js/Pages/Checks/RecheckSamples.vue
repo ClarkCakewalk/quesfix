@@ -17,10 +17,17 @@ defineProps({
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ question.code }}｜覆核｜{{ member.name }}｜{{ checkItem.item_name }}
-            </h2>
-            <p class="mt-1 text-sm text-gray-600">{{ checkItem.description }}</p>
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                        {{ question.code }}｜覆核｜{{ member.name }}｜{{ checkItem.item_name }}
+                    </h2>
+                    <p class="mt-1 text-sm text-gray-600">{{ checkItem.description }}</p>
+                </div>
+                <Link :href="route('checks.recheck-logics', [question.id, member.id])" class="shrink-0 text-sm text-gray-600 hover:underline">
+                    ← 回該成員的邏輯列表
+                </Link>
+            </div>
         </template>
 
         <div class="py-8">
@@ -69,9 +76,6 @@ defineProps({
                     </table>
                 </div>
 
-                <Link :href="route('checks.recheck-logics', [question.id, member.id])" class="mt-6 inline-block text-sm text-gray-600 hover:underline">
-                    ← 回該成員的邏輯列表
-                </Link>
             </div>
         </div>
     </AuthenticatedLayout>

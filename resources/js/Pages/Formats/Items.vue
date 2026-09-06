@@ -72,9 +72,14 @@ const typeLabel = { 1: '選項', 2: '數值', 3: '文字' };
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ question.code }}｜資料管理
-            </h2>
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                    {{ question.code }}｜資料管理
+                </h2>
+                <Link :href="route('questions.index')" class="shrink-0 text-sm text-gray-600 hover:underline">
+                    ← 回專案列表
+                </Link>
+            </div>
         </template>
 
         <div class="py-8">

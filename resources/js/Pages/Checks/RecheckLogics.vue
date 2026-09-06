@@ -15,9 +15,14 @@ defineProps({
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                {{ question.code }}｜覆核｜{{ member.name }} 完成的邏輯檢核
-            </h2>
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                    {{ question.code }}｜覆核｜{{ member.name }} 完成的邏輯檢核
+                </h2>
+                <Link :href="route('checks.recheck-members', question.id)" class="shrink-0 text-sm text-gray-600 hover:underline">
+                    ← 回成員列表
+                </Link>
+            </div>
         </template>
 
         <div class="py-8">
@@ -56,9 +61,6 @@ defineProps({
                     </table>
                 </div>
 
-                <Link :href="route('checks.recheck-members', question.id)" class="mt-6 inline-block text-sm text-gray-600 hover:underline">
-                    ← 回成員列表
-                </Link>
             </div>
         </div>
     </AuthenticatedLayout>

@@ -51,10 +51,15 @@ const destroyUser = () => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                使用者：{{ editUser.username }}
-                <span v-if="editUser.locked_at" class="ml-2 rounded bg-red-100 px-2 py-0.5 text-xs text-red-700">已鎖定</span>
-            </h2>
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                    使用者：{{ editUser.username }}
+                    <span v-if="editUser.locked_at" class="ml-2 rounded bg-red-100 px-2 py-0.5 text-xs text-red-700">已鎖定</span>
+                </h2>
+                <Link :href="route('admin.users.index')" class="shrink-0 text-sm text-gray-600 hover:underline">
+                    ← 回使用者列表
+                </Link>
+            </div>
         </template>
 
         <div class="py-8">
@@ -142,12 +147,6 @@ const destroyUser = () => {
                         >
                             刪除使用者
                         </button>
-                        <Link
-                            :href="route('admin.users.index')"
-                            class="ml-auto self-center text-sm text-gray-600 hover:underline"
-                        >
-                            回使用者列表
-                        </Link>
                     </div>
                 </div>
             </div>
