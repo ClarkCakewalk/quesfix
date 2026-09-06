@@ -66,7 +66,8 @@
       "Bash(grep -n '$message = '\\\\''檢核結果已儲存。'\\\\'';' app/Http/Controllers/CheckWorkflowController.php)",
       "Bash(php /tmp/seed_done.php)",
       "Bash(curl -s -o /dev/null -w '%{http_code}\\\\n' -b /dev/null http://localhost:8000/questions/1/checks/recheck)",
-      "Bash(php /tmp/verify_recheck.php)"
+      "Bash(php /tmp/verify_recheck.php)",
+      "Bash(/usr/local/mysql/bin/mysql -u quesfix -pDevQuesFix2026 -h 127.0.0.1 quesfix -e \"UPDATE samples SET locked_by=NULL, locked_at=NULL, lock_expires_at=NULL WHERE ques_id=2 AND sample_id='10014120';\")"
     ]
   }
 }

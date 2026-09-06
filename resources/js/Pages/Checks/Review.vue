@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import Modal from '@/Components/Modal.vue';
 import { Head, Link, router, useForm } from '@inertiajs/vue3';
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 
 const props = defineProps({
     question: Object,
@@ -71,17 +71,37 @@ const editingVar = ref(null);
 const editValue = ref('');
 const pendingFixes = ref({}); // var_id -> value
 
+// 編輯列展開／收折後，把該變數所在列捲到其捲動區正中央（兩個表格各自處理，不動整頁）
+const centerVarRow = (varId) => {
+    nextTick(() => {
+        document.querySelectorAll(`tr[data-var-id="${varId}"]`).forEach((row) => {
+            const container = row.closest('.overflow-y-auto');
+            if (!container) return;
+            const c = container.getBoundingClientRect();
+            const r = row.getBoundingClientRect();
+            const delta = r.top + r.height / 2 - (c.top + c.height / 2);
+            container.scrollTo({ top: container.scrollTop + delta, behavior: 'smooth' });
+        });
+    });
+};
+
 const startEdit = (v) => {
     editingVar.value = v.var_id;
     editValue.value = pendingFixes.value[v.var_id] ?? v.fix_value ?? v.origin_value ?? '';
+    centerVarRow(v.var_id);
 };
 
 const saveEdit = (v) => {
     pendingFixes.value = { ...pendingFixes.value, [v.var_id]: editValue.value };
     editingVar.value = null;
+    centerVarRow(v.var_id);
 };
 
-const cancelEdit = () => (editingVar.value = null);
+const cancelEdit = () => {
+    const varId = editingVar.value;
+    editingVar.value = null;
+    if (varId !== null) centerVarRow(varId);
+};
 
 const displayValue = (v) => {
     if (v.var_id in pendingFixes.value) {
@@ -201,14 +221,14 @@ const continueSample = () => {
                 <div class="space-y-4">
                     <div class="rounded-lg bg-white p-4 shadow">
                         <h3 class="mb-2 border-b pb-2 font-medium text-indigo-700">關聯題目</h3>
-                        <div class="max-h-[38vh] overflow-y-auto">
+                        <div class="max-h-[38vh] overflow-y-auto pr-5">
                             <table class="w-full text-left text-sm">
                                 <thead class="sticky top-0 bg-white text-gray-500">
                                     <tr><th class="py-1 w-24">題號</th><th class="w-64">題目</th><th>變數</th><th>數值</th></tr>
                                 </thead>
                                 <tbody>
                                     <template v-for="item in relatedItems" :key="item.item_id">
-                                        <tr v-for="(v, vi) in item.vars" :key="v.var_id" class="border-b align-top last:border-0">
+                                        <tr v-for="(v, vi) in item.vars" :key="v.var_id" :data-var-id="v.var_id" class="border-b align-top last:border-0">
                                             <td v-if="vi === 0" :rowspan="item.vars.length" class="py-1.5 font-mono">
                                                 <button
                                                     v-if="item.has_media"
@@ -235,7 +255,7 @@ const continueSample = () => {
                                             <td class="py-1.5">
                                                 <template v-if="editingVar === v.var_id">
                                                     <div>
-                                                        <div class="flex gap-1">
+                                                        <div class="flex flex-wrap items-center gap-1">
                                                             <input
                                                                 v-model="editValue"
                                                                 class="w-28 rounded border-gray-300 px-1 py-0.5 text-sm"
@@ -270,14 +290,14 @@ const continueSample = () => {
 
                     <div class="rounded-lg bg-white p-4 shadow">
                         <h3 class="mb-2 border-b pb-2 font-medium text-gray-700">全部題目</h3>
-                        <div class="max-h-[38vh] overflow-y-auto">
+                        <div class="max-h-[38vh] overflow-y-auto pr-5">
                             <table class="w-full text-left text-sm">
                                 <thead class="sticky top-0 bg-white text-gray-500">
                                     <tr><th class="py-1 w-24">題號</th><th class="w-64">題目</th><th>變數</th><th>數值</th></tr>
                                 </thead>
                                 <tbody>
                                     <template v-for="item in allItems" :key="item.item_id">
-                                        <tr v-for="(v, vi) in item.vars" :key="v.var_id" class="border-b align-top last:border-0">
+                                        <tr v-for="(v, vi) in item.vars" :key="v.var_id" :data-var-id="v.var_id" class="border-b align-top last:border-0">
                                             <td v-if="vi === 0" :rowspan="item.vars.length" class="py-1.5 font-mono">
                                                 <button
                                                     v-if="item.has_media"
@@ -300,7 +320,7 @@ const continueSample = () => {
                                             <td class="py-1.5">
                                                 <template v-if="editingVar === v.var_id">
                                                     <div>
-                                                        <div class="flex gap-1">
+                                                        <div class="flex flex-wrap items-center gap-1">
                                                             <input
                                                                 v-model="editValue"
                                                                 class="w-28 rounded border-gray-300 px-1 py-0.5 text-sm"
