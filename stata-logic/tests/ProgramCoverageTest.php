@@ -76,7 +76,6 @@ final class ProgramCoverageTest extends TestCase
 
         $parseFail = [];
         $runFail = [];
-        $unsupported = [];
         $ok = 0;
 
         foreach ($rules as $rule) {
@@ -84,13 +83,6 @@ final class ProgramCoverageTest extends TestCase
                 $program = new StataProgram($rule['logic']);
             } catch (\Throwable $e) {
                 $parseFail[] = "{$rule['code']}: {$e->getMessage()}";
-
-                continue;
-            }
-
-            // 含不支援指令者列為「需 Stata 前處理」，不算解析失敗
-            if ($program->analyze()['unsupported'] !== []) {
-                $unsupported[] = $rule['code'];
 
                 continue;
             }
@@ -104,8 +96,8 @@ final class ProgramCoverageTest extends TestCase
         }
 
         fwrite(STDERR, sprintf(
-            "\n[程式涵蓋率] 可執行 %d／%d；需Stata前處理(rename/split/destring) %d；解析失敗 %d；執行失敗 %d\n",
-            $ok, count($rules), count($unsupported), count($parseFail), count($runFail),
+            "\n[程式涵蓋率] 可執行 %d／%d；解析失敗 %d；執行失敗 %d\n",
+            $ok, count($rules), count($parseFail), count($runFail),
         ));
         if ($parseFail) {
             fwrite(STDERR, "解析失敗:\n  " . implode("\n  ", array_slice($parseFail, 0, 30)) . "\n");
@@ -114,7 +106,7 @@ final class ProgramCoverageTest extends TestCase
             fwrite(STDERR, "執行失敗:\n  " . implode("\n  ", array_slice($runFail, 0, 30)) . "\n");
         }
 
-        // 可執行 + 需前處理 應涵蓋全部；解析/執行失敗應為 0
+        // 解析/執行失敗應為 0
         $this->assertSame([], $parseFail, '有程式無法解析');
         $this->assertSame([], $runFail, '有程式執行時丟出例外');
     }

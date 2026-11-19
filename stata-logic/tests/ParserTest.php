@@ -14,15 +14,20 @@ use Quesfix\StataLogic\LogicEngine;
 
 final class ParserTest extends TestCase
 {
-    public function testAndBindsTighterThanOr(): void
+    public function testOrBindsTighterThanAnd(): void
     {
-        // A | B & C → A | (B & C)
+        // 本系統規則：A | B & C → (A | B) & C
         $ast = LogicEngine::parse('a == 1 | b == 2 & c == 3');
 
         $this->assertInstanceOf(BinaryOp::class, $ast);
-        $this->assertSame('|', $ast->op);
-        $this->assertInstanceOf(BinaryOp::class, $ast->right);
-        $this->assertSame('&', $ast->right->op);
+        $this->assertSame('&', $ast->op);
+        $this->assertInstanceOf(BinaryOp::class, $ast->left);
+        $this->assertSame('|', $ast->left->op);
+
+        // C & A | B → C & (A | B)
+        $ast = LogicEngine::parse('c == 3 & a == 1 | b == 2');
+        $this->assertSame('&', $ast->op);
+        $this->assertSame('|', $ast->right->op);
     }
 
     public function testParenthesizedFlagTracksExplicitGrouping(): void
@@ -102,7 +107,7 @@ final class ParserTest extends TestCase
     {
         $this->expectException(SyntaxError::class);
         $this->expectExceptionMessageMatches('/未知的函數/u');
-        LogicEngine::parse('regexm(x, "a")');
+        LogicEngine::parse('foobar(x, "a")');
     }
 
     public function testWildcardOutsideAnyMatchThrows(): void

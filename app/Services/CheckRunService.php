@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Quesfix\StataLogic\CompiledLogic;
 use Quesfix\StataLogic\Exceptions\EvalError;
 use Quesfix\StataLogic\LogicEngine;
+use Quesfix\StataLogic\VariableCatalog;
 
 /**
  * 檢核執行引擎：
@@ -32,7 +33,7 @@ class CheckRunService
         $checkItems = $question->checkItems()->get();
         $catalog = $this->catalogService->catalogFor($question);
 
-        $compiled = $this->parseAll($checkItems);
+        $compiled = $this->parseAll($checkItems, $catalog);
 
         $samples = $question->samples()
             ->when($sampleIds !== null, fn ($q) => $q->whereIn('sample_id', $sampleIds))
@@ -106,7 +107,7 @@ class CheckRunService
             )->values();
         }
         $catalog = $this->catalogService->catalogFor($question);
-        $compiled = $this->parseAll($checkItems);
+        $compiled = $this->parseAll($checkItems, $catalog);
 
         $stats = ['resolved' => 0, 'restored' => 0, 'created' => 0, 'recheck' => 0];
 
@@ -178,13 +179,14 @@ class CheckRunService
     }
 
     /** @return array<int, CompiledLogic|null> check_item_id => 已編譯邏輯 */
-    private function parseAll(Collection $checkItems): array
+    private function parseAll(Collection $checkItems, VariableCatalog $catalog): array
     {
         $compiled = [];
 
         foreach ($checkItems as $item) {
             try {
-                $compiled[$item->id] = LogicEngine::compile($item->logic);
+                // 傳入變數目錄：foreach … of varlist 的萬用字元/範圍需依資料格式展開
+                $compiled[$item->id] = LogicEngine::compile($item->logic, $catalog);
             } catch (\Throwable) {
                 $compiled[$item->id] = null; // 匯入時已驗證過，理論上不會發生
             }

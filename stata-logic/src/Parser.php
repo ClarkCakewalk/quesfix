@@ -7,6 +7,7 @@ namespace Quesfix\StataLogic;
 use Quesfix\StataLogic\Ast\AbsCall;
 use Quesfix\StataLogic\Ast\AnyMatch;
 use Quesfix\StataLogic\Ast\BinaryOp;
+use Quesfix\StataLogic\Ast\FuncCall;
 use Quesfix\StataLogic\Ast\InList;
 use Quesfix\StataLogic\Ast\InRange;
 use Quesfix\StataLogic\Ast\MissingLiteral;
@@ -18,9 +19,9 @@ use Quesfix\StataLogic\Ast\Variable;
 use Quesfix\StataLogic\Exceptions\SyntaxError;
 
 /**
- * 遞迴下降剖析器。優先順序（低至高）依 Stata 規則：
+ * 遞迴下降剖析器。優先順序（低至高）：
  *
- *   |  →  &  →  比較（== != > < >= <=，左結合可串接）
+ *   &  →  |  →  比較（== != > < >= <=，左結合可串接）
  *   →  + -  →  * /  →  單元負號  →  ^  →  !
  */
 final class Parser
@@ -39,7 +40,7 @@ final class Parser
 
     public function parse(): Node
     {
-        $node = $this->parseOr();
+        $node = $this->parseExpression();
 
         if ($this->peek()->type === TokenType::Question) {
             throw new SyntaxError("意外的 '?'（萬用字元僅能用於 anymatch 的變數樣式中）", $this->peek()->pos);
@@ -50,25 +51,30 @@ final class Parser
         return $node;
     }
 
-    private function parseOr(): Node
+    /**
+     * 本系統規則：同層未加括號混用 & 與 | 時，| 先結合（與 Stata 原生相反）。
+     * 例：a | b & c ＝ (a | b) & c；c & a | b ＝ c & (a | b)。
+     * 有括號者依括號；未混用時兩種規則結果相同。
+     */
+    private function parseExpression(): Node
     {
-        $left = $this->parseAnd();
+        $left = $this->parseOr();
 
-        while ($this->peek()->type === TokenType::Or) {
+        while ($this->peek()->type === TokenType::And) {
             $op = $this->next();
-            $left = new BinaryOp('|', $left, $this->parseAnd(), $op->pos);
+            $left = new BinaryOp('&', $left, $this->parseOr(), $op->pos);
         }
 
         return $left;
     }
 
-    private function parseAnd(): Node
+    private function parseOr(): Node
     {
         $left = $this->parseComparison();
 
-        while ($this->peek()->type === TokenType::And) {
+        while ($this->peek()->type === TokenType::Or) {
             $op = $this->next();
-            $left = new BinaryOp('&', $left, $this->parseComparison(), $op->pos);
+            $left = new BinaryOp('|', $left, $this->parseComparison(), $op->pos);
         }
 
         return $left;
@@ -179,7 +185,7 @@ final class Parser
                 return new MissingLiteral($token->pos);
 
             case TokenType::LParen:
-                $node = $this->parseOr();
+                $node = $this->parseExpression();
                 $this->expect(TokenType::RParen, "缺少右括號 ')'");
                 $node->parenthesized = true;
 
@@ -207,9 +213,17 @@ final class Parser
 
     private function parseFunction(Token $name): Node
     {
+        if (Functions::exists($name->text)) {
+            return $this->parseGenericFunction($name);
+        }
+
         if (! in_array($name->text, self::FUNCTIONS, true)) {
             throw new SyntaxError(
-                sprintf("未知的函數 '%s'（支援：%s）", $name->text, implode(', ', self::FUNCTIONS)),
+                sprintf(
+                    "未知的函數 '%s'（支援：%s）",
+                    $name->text,
+                    implode(', ', [...self::FUNCTIONS, ...array_keys(Functions::SIGNATURES)]),
+                ),
                 $name->pos,
             );
         }
@@ -217,9 +231,9 @@ final class Parser
         $this->expect(TokenType::LParen, "函數後需接 '('");
 
         $node = match ($name->text) {
-            'abs' => new AbsCall($this->parseOr(), $name->pos),
+            'abs' => new AbsCall($this->parseExpression(), $name->pos),
             'inlist' => $this->parseInList($name),
-            'inrange' => new InRange($this->parseOr(), $this->expectComma()->parseConstant(), $this->expectComma()->parseConstant(), $name->pos),
+            'inrange' => new InRange($this->parseExpression(), $this->expectComma()->parseConstant(), $this->expectComma()->parseConstant(), $name->pos),
             'anymatch' => $this->parseAnyMatch($name),
         };
 
@@ -228,9 +242,40 @@ final class Parser
         return $node;
     }
 
+    private function parseGenericFunction(Token $name): FuncCall
+    {
+        $this->expect(TokenType::LParen, "函數後需接 '('");
+        $args = [];
+
+        if ($this->peek()->type !== TokenType::RParen) {
+            $args[] = $this->parseExpression();
+
+            while ($this->peek()->type === TokenType::Comma) {
+                $this->next();
+                $args[] = $this->parseExpression();
+            }
+        }
+
+        $this->expect(TokenType::RParen, sprintf("%s 缺少右括號 ')'", $name->text));
+
+        [$min, $max] = Functions::SIGNATURES[$name->text];
+        $count = count($args);
+
+        if ($count < $min || ($max !== -1 && $count > $max)) {
+            $expected = $max === -1 ? "至少 {$min}" : ($min === $max ? (string) $min : "{$min}～{$max}");
+
+            throw new SyntaxError(
+                sprintf('%s() 需要 %s 個參數，實際為 %d 個', $name->text, $expected, $count),
+                $name->pos,
+            );
+        }
+
+        return new FuncCall($name->text, $args, $name->pos);
+    }
+
     private function parseInList(Token $name): InList
     {
-        $expr = $this->parseOr();
+        $expr = $this->parseExpression();
         $values = [];
 
         $this->expect(TokenType::Comma, 'inlist 至少需要一個比對值');

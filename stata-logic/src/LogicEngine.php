@@ -13,8 +13,8 @@ use Quesfix\StataLogic\Program\StataProgram;
  *
  * 檢核邏輯有兩種形式，皆自動偵測：
  *   (a) 單一布林運算式：例 (a01 != Sex)
- *   (b) Stata 子集程式：以 gen check = (...) 或 egen check = ... 結尾，
- *       前可含 gen/replace/egen 衍生變數與 forvalues 迴圈。
+ *   (b) Stata 子集程式：以 gen check = (...) 或 egen check = ... 產生 check，
+ *       前可含 gen/replace/egen/recode/split/destring/rename、if 區塊與 forvalues/foreach 迴圈。
  *
  * 匯入驗證：
  *   $result = LogicEngine::validate($logic, $catalog);
@@ -38,11 +38,12 @@ final class LogicEngine
 
     /**
      * 編譯檢核邏輯（運算式或程式）為可重複求值的物件，供批次檢核快取使用。
+     * 程式含 foreach … of varlist 萬用字元/範圍時，需傳入 $catalog 以展開變數清單。
      */
-    public static function compile(string $logic): CompiledLogic
+    public static function compile(string $logic, ?VariableCatalog $catalog = null): CompiledLogic
     {
         return new CompiledLogic(
-            self::isProgram($logic) ? new StataProgram($logic) : self::parse($logic),
+            self::isProgram($logic) ? new StataProgram($logic, $catalog?->names() ?? []) : self::parse($logic),
         );
     }
 
@@ -61,7 +62,7 @@ final class LogicEngine
         $resolver = is_array($row) ? new ArrayResolver($row) : $row;
 
         if (is_string($logic) && self::isProgram($logic)) {
-            return (new StataProgram($logic))->run($resolver);
+            return (new StataProgram($logic, $resolver->names()))->run($resolver);
         }
 
         $ast = is_string($logic) ? self::parse($logic) : $logic;

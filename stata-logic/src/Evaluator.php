@@ -7,6 +7,7 @@ namespace Quesfix\StataLogic;
 use Quesfix\StataLogic\Ast\AbsCall;
 use Quesfix\StataLogic\Ast\AnyMatch;
 use Quesfix\StataLogic\Ast\BinaryOp;
+use Quesfix\StataLogic\Ast\FuncCall;
 use Quesfix\StataLogic\Ast\InList;
 use Quesfix\StataLogic\Ast\InRange;
 use Quesfix\StataLogic\Ast\MissingLiteral;
@@ -53,6 +54,7 @@ final class Evaluator
             $node instanceof InRange => $this->inRange($node),
             $node instanceof AbsCall => $this->absCall($node),
             $node instanceof AnyMatch => $this->anyMatch($node),
+            $node instanceof FuncCall => $this->funcCall($node),
             default => throw new \LogicException('未知的 AST 節點：' . $node::class),
         };
     }
@@ -199,6 +201,26 @@ final class Evaluator
         }
 
         return 0.0;
+    }
+
+    private function funcCall(FuncCall $node): float|string|null
+    {
+        if ($node->name === 'cond') {
+            // 只對選中的分支求值
+            $test = $this->evaluate($node->args[0]);
+
+            if (is_string($test)) {
+                throw new EvalError('cond() 的第 1 個參數應為數值，不能是字串');
+            }
+
+            if ($test === null && isset($node->args[3])) {
+                return $this->evaluate($node->args[3]);
+            }
+
+            return $this->evaluate($node->args[$this->truthy($test) ? 1 : 2]);
+        }
+
+        return Functions::call($node->name, array_map($this->evaluate(...), $node->args));
     }
 
     private function equals(float|string|null $value, float|string $candidate): bool

@@ -59,10 +59,11 @@ final class EvaluatorTest extends TestCase
 
     // ---- 優先順序 ----
 
-    public function testAndBindsTighterThanOr(): void
+    public function testOrBindsTighterThanAnd(): void
     {
-        $this->assertTrue(LogicEngine::evaluate('1 | 0 & 0', []));   // 1 | (0 & 0)
-        $this->assertFalse(LogicEngine::evaluate('(1 | 0) & 0', []));
+        $this->assertFalse(LogicEngine::evaluate('1 | 0 & 0', []));   // (1 | 0) & 0
+        $this->assertFalse(LogicEngine::evaluate('0 & 1 | 1', []));   // 0 & (1 | 1)
+        $this->assertTrue(LogicEngine::evaluate('1 | (0 & 0)', []));  // 括號優先
     }
 
     public function testPower(): void
@@ -167,19 +168,18 @@ final class EvaluatorTest extends TestCase
         $this->assertFalse(LogicEngine::evaluate($logic, ['a26' => 170, 'a27' => 65]));
     }
 
-    public function testSameLg2DocumentsThePrecedencePitfall(): void
+    public function testSameLg2MixedAndOrReadsAsOrFirst(): void
     {
-        // same_lg_2 原始邏輯：A | B & C → 防呆 (a02z01 < 991) 只保護到後半段。
-        // a02z01 = 995（不知道）時，前半段 Birth_2 != a02z01 仍會觸發——
-        // 此測試固定住這個行為，作為「混用 &/| 須加括號」警告的依據。
+        // same_lg_2 原始邏輯：A | B & C → 本系統解讀為 (A | B) & C，
+        // 防呆 (a02z01 < 991) 套用到整個條件：a02z01 = 995（不知道）時不觸發。
         $logic = '((Birth_2 != a02z01) | (Birth_3 != a02z02) & (a02z01 < 991))';
         $row = ['Birth_2' => 80, 'a02z01' => 995, 'Birth_3' => 5, 'a02z02' => 5];
 
-        $this->assertTrue(LogicEngine::evaluate($logic, $row));
+        $this->assertFalse(LogicEngine::evaluate($logic, $row));
 
-        // 若原意是 (A | B) & C，加上括號後同一筆資料不觸發
-        $fixed = '(((Birth_2 != a02z01) | (Birth_3 != a02z02)) & (a02z01 < 991))';
-        $this->assertFalse(LogicEngine::evaluate($fixed, $row));
+        // 若要 Stata 原生的 A | (B & C)，須明確加括號
+        $stata = '((Birth_2 != a02z01) | ((Birth_3 != a02z02) & (a02z01 < 991)))';
+        $this->assertTrue(LogicEngine::evaluate($stata, $row));
     }
 
     // ---- ArrayResolver::fromStrings（模擬 DB 字串值） ----

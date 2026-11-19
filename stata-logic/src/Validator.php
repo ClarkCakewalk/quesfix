@@ -7,6 +7,7 @@ namespace Quesfix\StataLogic;
 use Quesfix\StataLogic\Ast\AbsCall;
 use Quesfix\StataLogic\Ast\AnyMatch;
 use Quesfix\StataLogic\Ast\BinaryOp;
+use Quesfix\StataLogic\Ast\FuncCall;
 use Quesfix\StataLogic\Ast\InList;
 use Quesfix\StataLogic\Ast\InRange;
 use Quesfix\StataLogic\Ast\MissingLiteral;
@@ -33,6 +34,12 @@ final class Validator
     /** @var ValidationIssue[] */
     private array $warnings = [];
 
+    /** 最近一次 validateAst 的運算式結果型別 */
+    private string $lastType = VariableCatalog::TYPE_NUMERIC;
+
+    /** 不存在的變數改報警告（cap 語句：執行時該句會被略過） */
+    private bool $unknownAsWarning = false;
+
     public function __construct(private readonly VariableCatalog $catalog)
     {
     }
@@ -42,7 +49,7 @@ final class Validator
         try {
             $ast = (new Parser($logic))->parse();
         } catch (SyntaxError $e) {
-            return new ValidationResult([new ValidationIssue($e->getMessage(), $e->pos)]);
+            return new ValidationResult([new ValidationIssue($e->detail, $e->pos)]);
         }
 
         return $this->validateAst($ast);
@@ -51,18 +58,25 @@ final class Validator
     /**
      * 驗證一個已解析的運算式 AST（供程式格式逐式驗證使用）。
      */
-    public function validateAst(Node $ast, bool $warnMixedAndOr = true): ValidationResult
+    public function validateAst(Node $ast, bool $warnMixedAndOr = true, bool $unknownAsWarning = false): ValidationResult
     {
         $this->errors = [];
         $this->warnings = [];
+        $this->unknownAsWarning = $unknownAsWarning;
 
-        $this->typeOf($ast);
+        $this->lastType = $this->typeOf($ast);
 
         if ($warnMixedAndOr) {
             $this->checkMixedAndOr($ast);
         }
 
         return new ValidationResult($this->errors, $this->warnings);
+    }
+
+    /** @return VariableCatalog::TYPE_* 最近一次 validateAst 的運算式結果型別 */
+    public function lastType(): string
+    {
+        return $this->lastType;
     }
 
     /** @return VariableCatalog::TYPE_* */
@@ -78,7 +92,14 @@ final class Validator
 
         if ($node instanceof Variable) {
             if (! $this->catalog->has($node->name)) {
-                $this->error(sprintf("檢核邏輯包含不存在的變數 '%s'", $node->name), $node->pos);
+                if ($this->unknownAsWarning) {
+                    $this->warnings[] = new ValidationIssue(
+                        sprintf("引用不存在的變數 '%s'（位於 cap 語句內，不阻擋匯入；執行時該句會被略過）", $node->name),
+                        $node->pos,
+                    );
+                } else {
+                    $this->error(sprintf("檢核邏輯包含不存在的變數 '%s'", $node->name), $node->pos);
+                }
 
                 return VariableCatalog::TYPE_NUMERIC;
             }
@@ -135,6 +156,10 @@ final class Validator
             return VariableCatalog::TYPE_NUMERIC;
         }
 
+        if ($node instanceof FuncCall) {
+            return $this->typeOfFuncCall($node);
+        }
+
         throw new \LogicException('未知的 AST 節點：' . $node::class);
     }
 
@@ -167,6 +192,39 @@ final class Validator
         return VariableCatalog::TYPE_NUMERIC;
     }
 
+    private function typeOfFuncCall(FuncCall $node): string
+    {
+        $types = array_map($this->typeOf(...), $node->args);
+
+        foreach ($types as $i => $type) {
+            $expected = Functions::argType($node->name, $i);
+
+            if ($expected !== Functions::ANY && $expected !== $type) {
+                $this->error(sprintf(
+                    '%s() 的第 %d 個參數應為%s',
+                    $node->name,
+                    $i + 1,
+                    $expected === VariableCatalog::TYPE_STRING ? '字串' : '數值',
+                ), $node->pos);
+            }
+        }
+
+        $returns = Functions::SIGNATURES[$node->name][3];
+
+        if ($returns !== 'cond') {
+            return $returns;
+        }
+
+        // cond(x, a, b[, c])：a、b（、c）型別須一致，回傳該型別
+        $branchTypes = array_unique(array_slice($types, 1));
+
+        if (count($branchTypes) > 1) {
+            $this->error('cond() 各結果值的型別須一致（字串與數值不能混用）', $node->pos);
+        }
+
+        return $types[1];
+    }
+
     private function typeOfAnyMatch(AnyMatch $node): void
     {
         $matched = $this->catalog->matching($node->pattern);
@@ -191,16 +249,16 @@ final class Validator
 
     /**
      * 同一層混用 & 與 | 且未以括號分組時提出警告——
-     * 這是範例檔中實際發現過疑似邏輯錯誤的模式（如 A | B & C）。
+     * 本系統將其解讀為 (A | B) & C，與 Stata 原生的 A | (B & C) 不同，故提醒確認。
      */
     private function checkMixedAndOr(Node $node): void
     {
         if ($node instanceof BinaryOp) {
-            if ($node->op === '|') {
+            if ($node->op === '&') {
                 foreach ([$node->left, $node->right] as $child) {
-                    if ($child instanceof BinaryOp && $child->op === '&' && ! $child->parenthesized) {
+                    if ($child instanceof BinaryOp && $child->op === '|' && ! $child->parenthesized) {
                         $this->warnings[] = new ValidationIssue(
-                            "運算式同層混用 '&' 與 '|' 且未以括號分組：依 Stata 優先順序，A | B & C 將解讀為 A | (B & C)，請確認是否符合原意",
+                            "運算式同層混用 '&' 與 '|' 且未以括號分組：本系統將 A | B & C 解讀為 (A | B) & C（Stata 原生為 A | (B & C)），請確認是否符合原意",
                             $child->pos,
                         );
                     }
@@ -219,6 +277,10 @@ final class Validator
             $this->checkMixedAndOr($node->expr);
         } elseif ($node instanceof InList) {
             $this->checkMixedAndOr($node->expr);
+        } elseif ($node instanceof FuncCall) {
+            foreach ($node->args as $arg) {
+                $this->checkMixedAndOr($arg);
+            }
         }
     }
 

@@ -140,7 +140,14 @@ class FormatImportService
 
     private function resolveType(string $typeText, bool $hasGroup): int
     {
-        return match (mb_strtolower(trim($typeText))) {
+        $type = mb_strtolower(trim($typeText));
+
+        // Stata 儲存型別：str1～str2045、strL 為文字；byte/int/long/float/double 為數值
+        if (preg_match('/^str(\d+|l)$/', $type) === 1) {
+            return QuesVar::TYPE_TEXT;
+        }
+
+        return match ($type) {
             '文字', 'string', 'str' => QuesVar::TYPE_TEXT,
             '選項', 'option' => QuesVar::TYPE_OPTION,
             '數值', 'numeric', 'num' => QuesVar::TYPE_NUMERIC,

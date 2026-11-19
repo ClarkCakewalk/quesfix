@@ -200,12 +200,12 @@ final class ProgramTest extends TestCase
     public function testValidateProgramRejectsUnsupportedCommand(): void
     {
         $logic = <<<'STATA'
-        split Birth, p("年" "月")
+        tostring a01, replace
         gen check = (a01 == 1)
         STATA;
         $result = LogicEngine::validate($logic, $this->catalog());
         $this->assertFalse($result->ok());
-        $this->assertStringContainsString('split', $result->errors[0]->message);
+        $this->assertStringContainsString('無法解析的語句', $result->errors[0]->message);
     }
 
     public function testValidateProgramMixedAndOrWarns(): void
