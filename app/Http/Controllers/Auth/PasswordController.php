@@ -25,6 +25,9 @@ class PasswordController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
+        // 密碼變更後，所有裝置須重新通過雙重驗證
+        app(\App\Services\TwoFactorService::class)->revokeDevices($request->user());
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

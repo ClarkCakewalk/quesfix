@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
@@ -14,9 +13,6 @@ use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
-    /** 連續失敗達此次數顯示 reCAPTCHA */
-    public const CAPTCHA_THRESHOLD = 3;
-
     /** 連續失敗達此次數鎖定帳戶 */
     public const LOCK_THRESHOLD = 5;
 
@@ -35,14 +31,13 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * 以帳號＋密碼驗證。規格：
-     * - 連續 3 次錯誤顯示 reCAPTCHA（前端據 failed_attempts 顯示）
+     * 以帳號＋密碼驗證，通過則回傳使用者（尚未登入，是否需雙重驗證由呼叫端決定）。規格：
      * - 連續 5 次錯誤鎖定帳戶，需系統管理者重設密碼解鎖
      * - Email 未驗證（含變更 Email 後尚未重新驗證）禁止登入
      *
      * @throws ValidationException
      */
-    public function authenticate(): void
+    public function validateCredentials(): User
     {
         $this->ensureIsNotRateLimited();
 
@@ -71,7 +66,6 @@ class LoginRequest extends FormRequest
 
             throw ValidationException::withMessages([
                 'username' => '帳號或密碼錯誤。',
-                'failed_attempts' => (string) ($user?->failed_attempts ?? 0),
             ]);
         }
 
@@ -83,9 +77,9 @@ class LoginRequest extends FormRequest
 
         $user->forceFill(['failed_attempts' => 0])->save();
 
-        Auth::login($user, $this->boolean('remember'));
-
         RateLimiter::clear($this->throttleKey());
+
+        return $user;
     }
 
     /** @throws ValidationException */

@@ -54,6 +54,9 @@ class NewPasswordController extends Controller
                     'locked_at' => null,
                 ])->save();
 
+                // 密碼重設後，所有裝置須重新通過雙重驗證
+                app(\App\Services\TwoFactorService::class)->revokeDevices($user);
+
                 event(new PasswordReset($user));
             }
         );
